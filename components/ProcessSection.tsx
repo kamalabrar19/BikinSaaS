@@ -12,7 +12,6 @@ export function ProcessSection() {
     <section id="proses" className="scroll-mt-20 px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="Proses"
           title="Empat langkah dari ide sampai online"
           description="Sederhana, terstruktur, dan Anda tahu apa yang terjadi di setiap tahap."
         />

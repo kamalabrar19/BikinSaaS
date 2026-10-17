@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Quote, Smartphone } from "lucide-react";
+import { ArrowRight, Quote } from "lucide-react";
 import { MOBILE_SOLUTION, TESTIMONIAL } from "@/constants/site-data";
 import { scrollToId } from "@/lib/utils";
 import { InteractiveCard } from "./InteractiveCard";
@@ -13,7 +13,6 @@ export function TestimonialSection() {
     <section id="testimonial" className="scroll-mt-20 bg-white/70 px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="Testimonial"
           title="Cerita dari klien yang sudah merasakan hasilnya"
           description="Kami percaya hasil kerja yang baik berbicara lebih keras dari janji."
         />
@@ -57,10 +56,7 @@ export function TestimonialSection() {
             <InteractiveCard className="h-full !border-charcoal !bg-charcoal p-7 text-white sm:p-9">
               <div className="grid h-full items-center gap-6 sm:grid-cols-[1fr_auto]">
                 <div>
-                  <span className="inline-flex items-center gap-2 rounded-full bg-primary-green/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary-green">
-                    <Smartphone className="h-3.5 w-3.5" /> {MOBILE_SOLUTION.title}
-                  </span>
-                  <h3 className="mt-4 text-2xl font-extrabold leading-tight tracking-tight">
+                  <h3 className="text-2xl font-extrabold leading-tight tracking-tight">
                     Dirancang <span className="text-primary-green">mobile-first</span>
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-white/70">{MOBILE_SOLUTION.description}</p>

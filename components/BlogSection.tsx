@@ -77,7 +77,7 @@ export function BlogSection() {
   return (
     <section id="blog" className="scroll-mt-20 px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow="Blog" title="Latest insights" description="Tulisan singkat seputar branding, pemasaran, dan sistem digital untuk bisnis." />
+        <SectionHeading title="Latest insights" description="Tulisan singkat seputar branding, pemasaran, dan sistem digital untuk bisnis." />
         <div className="grid gap-5 md:grid-cols-3">
           {BLOG_POSTS.map((post, i) => (
             <Reveal key={post.id} delay={i * 0.08}>

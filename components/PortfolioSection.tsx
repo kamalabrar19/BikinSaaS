@@ -113,7 +113,6 @@ export function PortfolioSection() {
     <section id="portofolio" className="scroll-mt-20 px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="Portofolio"
           title="Dari nol, maupun menyelamatkan sistem yang sudah ada"
           description="Selain membangun dari awal, kami mengambil alih (takeover) dan merapikan sistem atau website yang bermasalah."
         />

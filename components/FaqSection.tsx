@@ -13,7 +13,7 @@ export function FaqSection() {
   return (
     <section id="faq" className="scroll-mt-20 bg-white/60 px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-3xl">
-        <SectionHeading eyebrow="FAQ" title="Pertanyaan yang sering ditanyakan" />
+        <SectionHeading title="Pertanyaan yang sering ditanyakan" />
         <div className="space-y-3">
           {FAQS.map((f, i) => {
             const isOpen = open === i;

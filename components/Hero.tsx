@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { scrollToId } from "@/lib/utils";
 import { Logo, Monogram } from "./Logo";
@@ -79,25 +79,17 @@ export function Hero() {
   }, [reduce]);
 
   return (
-    <section className="relative overflow-hidden px-4 pb-20 pt-12 sm:px-6 sm:pt-16 lg:pb-28">
+    <section className="relative overflow-hidden px-4 pb-20 pt-28 sm:px-6 sm:pt-32 lg:pb-28">
       <div aria-hidden className="pointer-events-none absolute -right-32 -top-32 h-[28rem] w-[28rem] rounded-full bg-primary-green/15 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute -left-40 top-72 h-80 w-80 rounded-full bg-soft-green blur-3xl" />
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1fr_1.05fr]">
         <div>
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 rounded-full border border-primary-green/30 bg-soft-green px-4 py-1.5 text-sm font-semibold text-deep-green"
-          >
-            <Sparkles className="h-4 w-4" /> Tailored services, designed exclusively for you
-          </motion.span>
-
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.08, duration: 0.6 }}
-            className="mt-6 text-4xl font-extrabold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-[3.4rem]"
+            className="text-4xl font-extrabold leading-[1.08] tracking-tight text-charcoal sm:text-5xl lg:text-[3.4rem]"
           >
             Pakar Website dan Sistem Digital untuk <span className="text-primary-green">Segala Bisnis</span>
           </motion.h1>

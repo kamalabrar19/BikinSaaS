@@ -26,7 +26,6 @@ export function ServicesSection() {
     <section id="layanan" className="scroll-mt-20 px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="Layanan"
           title="Tailored services, designed exclusively for you"
           description="Pilih layanan yang paling dekat dengan kebutuhan Anda. Tidak yakin? Ceritakan saja, kami bantu tentukan."
         />

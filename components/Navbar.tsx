@@ -39,13 +39,18 @@ export function Navbar() {
   };
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-50 transition-all duration-300",
-        scrolled ? "border-b border-stone-200/80 bg-canvas/85 backdrop-blur-xl" : "bg-transparent"
-      )}
-    >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6" aria-label="Navigasi utama">
+    <header className="sticky top-0 z-50 h-0">
+      <div className="absolute inset-x-0 top-3 px-3 sm:top-4 sm:px-6">
+        <nav
+          className={cn(
+            "mx-auto flex h-14 max-w-5xl items-center justify-between rounded-full border border-white/60 pl-4 pr-2 sm:pl-5",
+            "bg-white/35 backdrop-blur-2xl backdrop-saturate-200",
+            "shadow-[0_8px_32px_rgba(17,24,39,0.10),inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-1px_0_rgba(255,255,255,0.25)]",
+            "transition-[background-color,box-shadow] duration-300",
+            scrolled && "bg-white/55 shadow-[0_12px_40px_rgba(17,24,39,0.14),inset_0_1px_0_rgba(255,255,255,0.95),inset_0_-1px_0_rgba(255,255,255,0.3)]"
+          )}
+          aria-label="Navigasi utama"
+        >
         <a
           href="#"
           onClick={(e) => {
@@ -99,7 +104,7 @@ export function Navbar() {
           </a>
           <button
             type="button"
-            className="rounded-full p-2 text-stone-700 hover:bg-stone-100 md:hidden"
+            className="rounded-full p-2 text-stone-700 hover:bg-white/60 md:hidden"
             aria-label={open ? "Tutup menu" : "Buka menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"
@@ -117,7 +122,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden border-b border-stone-200 bg-canvas md:hidden"
+            className="mx-auto mt-2 max-w-5xl overflow-hidden rounded-3xl border border-white/60 bg-white/55 shadow-[0_12px_40px_rgba(17,24,39,0.14),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl backdrop-saturate-200 md:hidden"
           >
             <ul className="space-y-1 px-4 py-3">
               {NAV_ITEMS.map((item) => (
@@ -130,7 +135,7 @@ export function Navbar() {
                     }}
                     className={cn(
                       "block rounded-xl px-4 py-3 text-base font-medium",
-                      active === item.id ? "bg-soft-green text-deep-green" : "text-stone-700 hover:bg-stone-100"
+                      active === item.id ? "bg-soft-green/80 text-deep-green" : "text-stone-700 hover:bg-white/60"
                     )}
                   >
                     {item.label}
@@ -141,6 +146,7 @@ export function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </header>
   );
 }

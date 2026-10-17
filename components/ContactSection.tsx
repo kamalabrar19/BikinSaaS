@@ -5,6 +5,7 @@ import { CheckCircle2, Clock, Send } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { BRAND, BUDGET_BRACKETS, CONTACT_SERVICES } from "@/constants/site-data";
 import { openWhatsApp } from "@/lib/whatsapp";
+import { Select } from "./Select";
 import { Reveal, SectionHeading } from "./ui";
 
 interface FormState {
@@ -24,7 +25,7 @@ export function ContactSection() {
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
 
-  const set = (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const set = (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((f) => ({ ...f, [k]: e.target.value }));
     if (errors[k]) setErrors((er) => ({ ...er, [k]: undefined }));
   };
@@ -80,9 +81,9 @@ export function ContactSection() {
   };
 
   const base =
-    "w-full rounded-xl border bg-white px-4 py-3 text-sm text-charcoal outline-none transition placeholder:text-stone-400 focus:ring-2";
+    "w-full rounded-xl border bg-stone-50 px-4 py-3 text-sm text-charcoal outline-none transition placeholder:text-stone-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(37,211,102,0.12)]";
   const cls = (k: keyof FormState) =>
-    `${base} ${errors[k] ? "border-red-400 focus:border-red-500 focus:ring-red-200" : "border-stone-300 focus:border-primary-green focus:ring-primary-green/20"}`;
+    `${base} ${errors[k] ? "border-red-400 focus:border-red-500" : "border-stone-200 hover:border-stone-300 focus:border-primary-green"}`;
 
   const Err = ({ k }: { k: keyof FormState }) =>
     errors[k] ? (
@@ -95,7 +96,6 @@ export function ContactSection() {
     <section id="kontak" className="scroll-mt-20 px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-3xl">
         <SectionHeading
-          eyebrow="Kontak"
           title="Ceritakan kebutuhan Anda"
           description="Isi form singkat ini. Pesan akan terbuka di WhatsApp dengan format yang rapi, tinggal Anda kirim."
         />
@@ -137,7 +137,7 @@ export function ContactSection() {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="c-name" className="mb-1.5 block text-sm font-medium text-stone-800">
-                        Nama <span className="text-deep-green">*</span>
+                        Nama
                       </label>
                       <input id="c-name" className={cls("name")} value={form.name} onChange={set("name")} placeholder="Nama Anda" autoComplete="name" aria-invalid={!!errors.name} aria-describedby={errors.name ? "err-name" : undefined} />
                       <Err k="name" />
@@ -153,36 +153,22 @@ export function ContactSection() {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="c-service" className="mb-1.5 block text-sm font-medium text-stone-800">
-                        Pilih layanan <span className="text-deep-green">*</span>
+                        Pilih layanan
                       </label>
-                      <select id="c-service" className={cls("service")} value={form.service} onChange={set("service")} aria-invalid={!!errors.service} aria-describedby={errors.service ? "err-service" : undefined}>
-                        <option value="">Pilih layanan…</option>
-                        {CONTACT_SERVICES.map((s) => (
-                          <option key={s} value={s}>
-                            {s}
-                          </option>
-                        ))}
-                      </select>
+                      <Select id="c-service" value={form.service} options={CONTACT_SERVICES} placeholder="Pilih layanan" onChange={(v) => { setForm((f) => ({ ...f, service: v })); setErrors((er) => ({ ...er, service: undefined })); }} invalid={!!errors.service} describedBy={errors.service ? "err-service" : undefined} />
                       <Err k="service" />
                     </div>
                     <div>
                       <label htmlFor="c-budget" className="mb-1.5 block text-sm font-medium text-stone-800">
-                        Budget bracket
+                        Kisaran budget
                       </label>
-                      <select id="c-budget" className={cls("budget")} value={form.budget} onChange={set("budget")}>
-                        <option value="">Pilih kisaran budget…</option>
-                        {BUDGET_BRACKETS.map((b) => (
-                          <option key={b} value={b}>
-                            {b}
-                          </option>
-                        ))}
-                      </select>
+                      <Select id="c-budget" value={form.budget} options={BUDGET_BRACKETS} placeholder="Pilih kisaran budget" onChange={(v) => setForm((f) => ({ ...f, budget: v }))} />
                     </div>
                   </div>
 
                   <div>
                     <label htmlFor="c-desc" className="mb-1.5 block text-sm font-medium text-stone-800">
-                      Deskripsi kebutuhan <span className="text-deep-green">*</span>
+                      Deskripsi kebutuhan
                     </label>
                     <textarea id="c-desc" rows={5} className={cls("description")} value={form.description} onChange={set("description")} placeholder="Ceritakan bisnis Anda dan apa yang ingin dibuat…" aria-invalid={!!errors.description} aria-describedby={errors.description ? "err-description" : undefined} />
                     <Err k="description" />

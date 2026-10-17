@@ -118,7 +118,6 @@ export function PricingSection() {
     <section id="harga" className="scroll-mt-20 bg-white/60 px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="Harga"
           title="Pricelist jelas, tanpa biaya tersembunyi"
           description="Semua paket, add-on, maintenance, dan kebijakan ada di satu tempat. Klik “Pilih Paket Ini” untuk langsung kirim pesanan via WhatsApp."
         />

@@ -16,10 +16,7 @@ export function SsbSection() {
           <div className="relative overflow-hidden rounded-[2rem] bg-charcoal p-8 text-white shadow-xl shadow-charcoal/20 sm:p-12">
             <div aria-hidden className="absolute -right-16 -top-16 h-64 w-64 rounded-full border-[18px] border-primary-green/20" />
             <div aria-hidden className="absolute -bottom-24 right-24 h-56 w-56 rounded-full border-[14px] border-primary-green/10" />
-            <span className="relative inline-block rounded-full bg-primary-green/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary-green">
-              Spesialis Sekolah Sepak Bola
-            </span>
-            <h2 className="relative mt-4 max-w-2xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
+            <h2 className="relative max-w-2xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
               Calon pemain bisa mengenal dan mendaftar ke SSB kamu lewat satu website.
             </h2>
             <p className="relative mt-4 max-w-xl text-white/80">

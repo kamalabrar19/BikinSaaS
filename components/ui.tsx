@@ -27,22 +27,17 @@ export function Reveal({
 }
 
 export function SectionHeading({
-  eyebrow,
   title,
   description,
   align = "center",
 }: {
-  eyebrow: string;
   title: string;
   description?: string;
   align?: "center" | "left";
 }) {
   return (
     <Reveal className={cn("mb-12 max-w-2xl", align === "center" ? "mx-auto text-center" : "")}>
-      <span className="inline-block rounded-full border border-primary-green/20 bg-soft-green px-3 py-1 text-xs font-semibold uppercase tracking-wider text-deep-green">
-        {eyebrow}
-      </span>
-      <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-charcoal sm:text-4xl">{title}</h2>
+      <h2 className="text-3xl font-extrabold tracking-tight text-charcoal sm:text-4xl">{title}</h2>
       {description && <p className="mt-4 text-base leading-relaxed text-stone-600 sm:text-lg">{description}</p>}
     </Reveal>
   );
