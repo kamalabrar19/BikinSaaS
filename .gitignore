@@ -3,6 +3,7 @@ node_modules/
 
 # next.js
 .next/
+.next-dev/
 next-env.d.ts
 
 # typescript

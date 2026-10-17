@@ -8,7 +8,14 @@ import { notFound } from "next/navigation";
 import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 
 import { getContent } from "@/content";
+import { FloatingContact } from "@/components/site/FloatingContact";
+import { Providers } from "@/components/site/Providers";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { consultTarget } from "@/lib/contact";
 import { htmlLang, isLocale, locales, ogLocale, otherLocale, type Locale } from "@/lib/locale";
+import { siteCopy } from "@/lib/site-copy";
+import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "../globals.css";
 
 /* Both faces are variable, so no `weight` is passed: naming weights makes
@@ -34,10 +41,14 @@ const display = Fraunces({
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const viewport: Viewport = {
-  themeColor: "#F3F3F1",
+  themeColor: "#080b0a",
   width: "device-width",
   initialScale: 1,
 };
+
+/* Runs before first paint so a visitor who chose the light theme never sees
+   a dark flash. Dark is the default. */
+const themeScript = `try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");document.documentElement.dataset.theme=t==="light"?"light":"dark"}catch(e){}`;
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -98,18 +109,36 @@ export default async function RootLayout({
   if (!isLocale(lang)) notFound();
 
   const locale: Locale = lang;
-  const { ui } = getContent(locale);
+  const content = getContent(locale);
+  const { ui } = content;
+  const copy = siteCopy[locale];
+  const consult = consultTarget(locale, ui.wa.consult, ui.meta.title);
 
   return (
-    <html lang={htmlLang[locale]} className={`${text.variable} ${display.variable}`}>
+    <html
+      lang={htmlLang[locale]}
+      data-theme="dark"
+      className={`${text.variable} ${display.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-action focus:px-4 focus:py-2 focus:text-paper"
-        >
+        <a href="#main" className="skip-link">
           {ui.nav.skipToContent}
         </a>
-        {children}
+        <Providers>
+          <div className="site-bg" aria-hidden="true" />
+          <SiteHeader locale={locale} nav={copy.nav} action={ui.nav.action} actionTarget={consult} />
+          <div className="site-frame">
+            <main id="main" className="site-main">
+              {children}
+            </main>
+            <SiteFooter locale={locale} content={content} copy={copy} consult={consult} />
+          </div>
+          <FloatingContact label={copy.floating} target={consult} />
+        </Providers>
       </body>
     </html>
   );

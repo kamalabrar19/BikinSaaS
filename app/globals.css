@@ -1,3 +1,7 @@
+@import "./spatial.css";
+@import "./scroll-theme.css";
+@import "./next-enhancements.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
