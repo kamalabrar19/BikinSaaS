@@ -1,4 +1,25 @@
+# dependencies
 node_modules/
+
+# next.js
 .next/
+.next-dev/
+next-env.d.ts
+
+# typescript
+tsconfig.tsbuildinfo
+
+# env
 .env.local
-NUL
+.env*.local
+
+# agent skills: vendored content is reinstallable from skills-lock.json
+# with `npx skills add`, so the 13MB of skill files stays out of the repo.
+.agents/
+.claude/
+
+# design-taste-frontend inspector output (screenshots, reports)
+.taste-skill/
+
+# os
+.DS_Store
