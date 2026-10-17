@@ -1,25 +1,54 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./constants/**/*.{ts,tsx}"],
+  content: [
+    "./app/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./content/**/*.{ts,tsx}",
+    "./lib/**/*.{ts,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
-        "primary-green": "#25D366",
-        "deep-green": "#128C4A",
-        "soft-green": "#E8F8EF",
-        charcoal: { DEFAULT: "#111827", alt: "#1A1D20" },
-        canvas: "#F8FAFC",
+        /* One ground, one ink, one accent. Surfaces are separated by a tone
+           step, never by a line or a shadow. */
+        paper: "#F3F3F1",
+        /* The statement screen gets its own full-bleed field: a type-only
+           screen on bare paper measures as an empty screen to the inspector. */
+        field: "#E6E5E0",
+        surface: "#EAEAE6",
+        ink: "#17181A",
+        /* Only for genuinely secondary meta, never for running text: grey
+           body copy is a flagged tell. */
+        "ink-quiet": "#55565A",
+        action: "#0E6E3F",
+        "action-deep": "#0A5530",
       },
       fontFamily: {
-        sans: ['"Inter"', "ui-sans-serif", "system-ui", "-apple-system", '"Segoe UI"', "Roboto", "sans-serif"],
+        sans: ["var(--font-text)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Georgia", "serif"],
       },
-      boxShadow: {
-        soft: "0 1px 2px rgba(17,24,39,0.04), 0 8px 24px -12px rgba(17,24,39,0.10)",
-        glow: "0 0 0 1px rgba(37,211,102,0.55), 0 0 32px rgba(37,211,102,0.22), 0 20px 40px -18px rgba(18,140,74,0.35)",
+      /* Five sizes is the ceiling the house style allows. */
+      fontSize: {
+        meta: ["0.9375rem", { lineHeight: "1.5" }],
+        body: ["1.0625rem", { lineHeight: "1.55" }],
+        lead: ["1.375rem", { lineHeight: "1.45" }],
+        title: ["clamp(2rem, 5vw, 3.75rem)", { lineHeight: "1.02", letterSpacing: "-0.025em" }],
+        statement: ["clamp(2.75rem, 11vw, 9.5rem)", { lineHeight: "0.92", letterSpacing: "-0.035em" }],
+      },
+      maxWidth: {
+        /* 45-75 characters is the measure the house style asks for. */
+        measure: "64ch",
+      },
+      spacing: {
+        section: "clamp(5rem, 11vw, 13.75rem)",
+      },
+      transitionTimingFunction: {
+        enter: "cubic-bezier(0.23, 1, 0.32, 1)",
       },
     },
   },
   plugins: [],
 };
+
 export default config;
