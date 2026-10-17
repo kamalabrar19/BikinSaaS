@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 
 import { getContent } from "@/content";
 import { HeroOrb } from "@/components/site/HeroOrb";
-import { Magnetic, Reveal, RevealText } from "@/components/site/Motion";
+import { Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { Panel } from "@/components/site/Panel";
 import { PortfolioExplorer, type ExplorerEntry } from "@/components/site/PortfolioExplorer";
 import { isLocale, locales } from "@/lib/locale";
@@ -50,7 +50,9 @@ export default async function PortfolioPage({ params }: { params: Promise<{ lang
   return (
     <>
       <Panel kicker="/ PORTFOLIO" tone="hero" className="page-hero" labelledBy="portfolio-title">
-        <HeroOrb className="page-orb" />
+        <Parallax className="page-orb" distance={60}>
+          <HeroOrb className="page-orb-body" />
+        </Parallax>
         <div className="page-hero-body">
           <Reveal y={12}>
             <Link className="back-link" href={home}>

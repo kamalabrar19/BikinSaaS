@@ -8,7 +8,7 @@ import { ContactForm } from "@/components/site/ContactForm";
 import { HeroOrb } from "@/components/site/HeroOrb";
 import { buildContactLabels, buildOrderLabels } from "@/components/site/labels";
 import { Marquee } from "@/components/site/Marquee";
-import { CountUp, Magnetic, Reveal, RevealText } from "@/components/site/Motion";
+import { CountUp, Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { OrderButton } from "@/components/site/OrderDialog";
 import { Panel, SectionHeading } from "@/components/site/Panel";
 import { PlanCard } from "@/components/site/PlanCard";
@@ -69,7 +69,9 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
               </div>
             </Reveal>
           </div>
-          <HeroOrb label="IDN — REMOTE" />
+          <Parallax distance={18}>
+            <HeroOrb label="IDN — REMOTE" />
+          </Parallax>
         </div>
         <div className="hero-footer">
           <span>{ui.footer.place}</span>

@@ -8,7 +8,7 @@ import { ContactChannels } from "@/components/site/ContactChannels";
 import { ContactForm } from "@/components/site/ContactForm";
 import { HeroOrb } from "@/components/site/HeroOrb";
 import { buildContactLabels } from "@/components/site/labels";
-import { Reveal, RevealText } from "@/components/site/Motion";
+import { Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { Panel } from "@/components/site/Panel";
 import { consultTarget } from "@/lib/contact";
 import { isLocale, locales } from "@/lib/locale";
@@ -44,7 +44,9 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
   return (
     <>
       <Panel kicker="/ CONTACT" tone="hero" className="page-hero page-hero-short" labelledBy="contact-page-title">
-        <HeroOrb className="page-orb" />
+        <Parallax className="page-orb" distance={60}>
+          <HeroOrb className="page-orb-body" />
+        </Parallax>
         <div className="page-hero-body">
           <Reveal y={12}>
             <Link className="back-link" href={home}>

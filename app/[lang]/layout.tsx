@@ -10,6 +10,7 @@ import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import { getContent } from "@/content";
 import { FloatingContact } from "@/components/site/FloatingContact";
 import { Providers } from "@/components/site/Providers";
+import { SiteBackdrop } from "@/components/site/SiteBackdrop";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { consultTarget } from "@/lib/contact";
@@ -41,14 +42,14 @@ const display = Fraunces({
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const viewport: Viewport = {
-  themeColor: "#080b0a",
+  themeColor: "#f3f3f1",
   width: "device-width",
   initialScale: 1,
 };
 
-/* Runs before first paint so a visitor who chose the light theme never sees
-   a dark flash. Dark is the default. */
-const themeScript = `try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");document.documentElement.dataset.theme=t==="light"?"light":"dark"}catch(e){}`;
+/* Runs before first paint so a visitor who chose the dark theme never sees a
+   light flash. Light is the default. */
+const themeScript = `try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");document.documentElement.dataset.theme=t==="dark"?"dark":"light"}catch(e){}`;
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -117,7 +118,7 @@ export default async function RootLayout({
   return (
     <html
       lang={htmlLang[locale]}
-      data-theme="dark"
+      data-theme="light"
       className={`${text.variable} ${display.variable}`}
       suppressHydrationWarning
     >
@@ -129,7 +130,7 @@ export default async function RootLayout({
           {ui.nav.skipToContent}
         </a>
         <Providers>
-          <div className="site-bg" aria-hidden="true" />
+          <SiteBackdrop />
           <SiteHeader locale={locale} nav={copy.nav} action={ui.nav.action} actionTarget={consult} />
           <div className="site-frame">
             <main id="main" className="site-main">
