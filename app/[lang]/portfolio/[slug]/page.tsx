@@ -4,20 +4,25 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getContent } from "@/content";
-import { WORK } from "@/content/catalog";
 import { Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { Panel } from "@/components/site/Panel";
-import { WorkArt } from "@/components/site/WorkCard";
-import { consultTarget, targetProps } from "@/lib/contact";
+import { WorkArt, WorkCover } from "@/components/site/WorkCard";
+import { targetProps } from "@/lib/contact";
 import { isLocale, locales } from "@/lib/locale";
 import { pageMetadata } from "@/lib/metadata";
-import { siteCopy } from "@/lib/site-copy";
-import { composeMessage } from "@/lib/whatsapp";
+import { getSiteCopy } from "@/lib/site-content";
+import { composeMessage, consultTarget } from "@/lib/whatsapp";
 
-export const dynamicParams = false;
+/* Slugs come from the content the site actually serves (the seed plus anything
+   the panel added), so an item created in the panel is prerendered too. A slug
+   that appears after a build still renders on demand. */
+export const dynamicParams = true;
+
+/* Safety net; the panel revalidates every page on save. */
+export const revalidate = 300;
 
 export function generateStaticParams() {
-  return locales.flatMap((lang) => WORK.map((entry) => ({ lang, slug: entry.id })));
+  return locales.flatMap((lang) => getContent(lang).work.map((entry) => ({ lang, slug: entry.id })));
 }
 
 type Params = Promise<{ lang: string; slug: string }>;
@@ -36,7 +41,7 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
 
   const content = getContent(lang);
   const { ui } = content;
-  const copy = siteCopy[lang];
+  const copy = getSiteCopy(lang);
   const home = `/${lang}`;
 
   const index = content.work.findIndex((entry) => entry.id === slug);
@@ -85,11 +90,17 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
         </div>
       </Panel>
 
-      <div className="case-art-frame">
-        <Parallax distance={40}>
-          <WorkArt index={index} className="work-art case-art" />
-        </Parallax>
-      </div>
+      {item.cover ? (
+        <div className="case-art-frame">
+          <WorkCover src={item.cover} className="work-art case-art" alt={item.title} />
+        </div>
+      ) : (
+        <div className="case-art-frame">
+          <Parallax distance={40}>
+            <WorkArt index={index} className="work-art case-art" />
+          </Parallax>
+        </div>
+      )}
 
       <Panel kicker="/ 01 — OVERVIEW" className="panel-auto">
         <div className="case-columns">
@@ -118,6 +129,23 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
             </div>
           </Reveal>
         </div>
+
+        {/* Uploaded from the panel. Pictures and videos share the block, so a
+            work item can show a screen recording next to its screenshots. */}
+        {item.gallery?.length ? (
+          <div className="case-gallery">
+            {item.gallery.map((media, mediaIndex) => (
+              <figure className="case-shot" key={`${media.src}-${mediaIndex}`}>
+                <WorkCover
+                  src={media.src}
+                  className="case-shot-frame"
+                  alt={media.alt || item.title}
+                />
+                {media.caption ? <figcaption>{media.caption}</figcaption> : null}
+              </figure>
+            ))}
+          </div>
+        ) : null}
       </Panel>
 
       <Panel kicker="/ 02 — NEXT" tone="accent" labelledBy="case-cta">

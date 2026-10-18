@@ -4,9 +4,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, Send } from "lucide-react";
 import { useId, useState, type FormEvent } from "react";
 
-import { composeMessage, contactHref } from "@/lib/whatsapp";
+import { composeMessage, contactHref } from "@/lib/contact-target";
 import { cn } from "@/lib/utils";
 import { EASE } from "./Motion";
+import { useContact } from "./Providers";
 
 export interface ContactLabels {
   nameLabel: string;
@@ -67,6 +68,7 @@ export function ContactForm({
   subject: string;
 }) {
   const uid = useId();
+  const contact = useContact();
   const [form, setForm] = useState<FormState>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [sending, setSending] = useState(false);
@@ -111,7 +113,7 @@ export function ContactForm({
       `${labels.waNeed}: ${form.description.trim()}`,
     ]);
 
-    const target = contactHref(message, subject);
+    const target = contactHref(message, subject, contact);
     setSending(false);
     if (target.href.startsWith("#")) {
       setStatus("unconfigured");

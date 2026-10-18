@@ -4,11 +4,36 @@ import Link from "next/link";
 import type { WorkItem } from "@/content";
 
 /**
- * A portfolio card. The artwork is abstract on purpose: the client projects
- * are shown without names, and the concepts have no screenshots to show.
- * `artIndex` is the item's position in the full list, so a project keeps the
- * same artwork on the home page, the portfolio and its case study.
+ * A portfolio card. When the admin panel has uploaded a cover for a work item,
+ * that picture (or GIF, or video) is the card's face. With no cover the artwork
+ * stays abstract on purpose: client projects are shown without names, and the
+ * concepts have no screenshots to show. `artIndex` is the item's position in the
+ * full list, so a project keeps the same artwork on the home page, the
+ * portfolio and its case study.
  */
+
+const VIDEO = /\.(mp4|webm|mov|m4v|ogv)(\?.*)?$/i;
+
+export function WorkCover({
+  src,
+  className,
+  alt,
+}: {
+  src: string;
+  className?: string;
+  alt?: string;
+}) {
+  return (
+    <div className={`${className ?? "work-art"} work-media`}>
+      {VIDEO.test(src) ? (
+        <video src={src} muted loop playsInline autoPlay preload="metadata" />
+      ) : (
+        <img src={src} alt={alt ?? ""} loading="lazy" />
+      )}
+    </div>
+  );
+}
+
 export function WorkCard({
   item,
   artIndex,
@@ -24,7 +49,11 @@ export function WorkCard({
 }) {
   return (
     <Link href={href} className="work-card spot">
-      <WorkArt index={artIndex} kindLabel={kindLabel} />
+      {item.cover ? (
+        <WorkCover src={item.cover} alt={item.title} />
+      ) : (
+        <WorkArt index={artIndex} kindLabel={kindLabel} />
+      )}
       <div className="work-meta">
         <div>
           <p className="work-category">{categoryLabel}</p>

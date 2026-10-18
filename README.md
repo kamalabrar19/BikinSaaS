@@ -37,6 +37,24 @@ Text and data are kept apart on purpose.
 To add a package, add it to `catalog.ts`, then run `npx tsc --noEmit` and let
 it tell you which copy entries are missing.
 
+## Admin panel
+
+`/admin` — a hidden page (nothing links to it, `noindex`, absent from
+`robots.txt`) where the portfolio, price list, statistics, FAQ, policies,
+services, process and the WhatsApp/email/address can be edited without touching
+code. It has four pages — Portofolio, Harga, Isi halaman, Kontak — and one save
+button. Media uploads (photos, GIFs, videos) go to `public/media/uploads`, and the
+document to `data/site.json`; neither is committed, and removing them falls back
+to the seed in `content/*.ts`.
+
+```bash
+npm run admin:password       # prints ADMIN_PASSWORD_HASH + ADMIN_SESSION_SECRET
+# paste into .env.local, restart the server, then open http://localhost:3000/admin
+```
+
+`content/index.ts` is where the two layers meet: `buildBaseContent` is the seed,
+`getContent` lays the admin document over it. See `docs/admin.md`.
+
 ## Money and dates
 
 `lib/format.ts` formats both by hand rather than through `Intl`. Node's ICU and

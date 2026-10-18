@@ -5,7 +5,7 @@ import type { Content } from "@/content";
 import { targetProps } from "@/lib/contact";
 import type { Locale } from "@/lib/locale";
 import type { SiteCopy } from "@/lib/site-copy";
-import { contactEmail, type ContactTarget, whatsappConfigured } from "@/lib/whatsapp";
+import { contactEmail, isWhatsappConfigured, type ContactTarget } from "@/lib/whatsapp";
 import { Magnetic, Reveal, RevealText } from "./Motion";
 import { BackToTop } from "./ScrollLink";
 
@@ -22,6 +22,9 @@ export function SiteFooter({
 }) {
   const { ui } = content;
   const home = `/${locale}`;
+  /* Resolved per render: the admin panel can change these while the server runs. */
+  const email = contactEmail();
+  const hasWhatsapp = isWhatsappConfigured();
   const pages = [
     { href: home, label: copy.common.backHome },
     { href: `${home}/portfolio`, label: copy.nav.work },
@@ -75,14 +78,14 @@ export function SiteFooter({
         <div className="footer-col">
           <h4>{copy.footer.reach}</h4>
           <ul>
-            {whatsappConfigured ? (
+            {hasWhatsapp ? (
               <li>
                 <a {...targetProps(consult)}>{ui.footer.whatsappLabel}</a>
               </li>
             ) : null}
-            {contactEmail ? (
+            {email ? (
               <li>
-                <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                <a href={`mailto:${email}`}>{email}</a>
               </li>
             ) : null}
             <li>

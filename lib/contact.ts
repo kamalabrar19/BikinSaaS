@@ -1,15 +1,13 @@
-import type { Locale } from "./locale";
-import { contactHref, type ContactTarget } from "./whatsapp";
+import type { ContactTarget } from "./contact-target";
 
 /**
- * contactHref falls back to "#contact" when neither WhatsApp nor email is
- * configured. That anchor only exists on the home page, so every other page
- * would get a dead link; the contact page always works instead.
+ * Client-safe helpers around a resolved contact target.
+ *
+ * `consultTarget` deliberately lives in ./whatsapp.ts instead: it reads the
+ * admin document, and this module is imported by client components (the header,
+ * the floating button). Keeping a filesystem read out of here is what stops
+ * node:fs from being pulled into the browser bundle.
  */
-export function consultTarget(locale: Locale, message: string, subject?: string): ContactTarget {
-  const target = contactHref(message, subject);
-  return target.href.startsWith("#") ? { ...target, href: `/${locale}/contact` } : target;
-}
 
 export interface AnchorTargetProps {
   href: string;

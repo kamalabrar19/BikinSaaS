@@ -10,7 +10,7 @@ import { targetProps } from "@/lib/contact";
 import type { Locale } from "@/lib/locale";
 import type { SiteCopy } from "@/lib/site-copy";
 import { cn } from "@/lib/utils";
-import type { ContactTarget } from "@/lib/whatsapp";
+import type { ContactTarget } from "@/lib/contact-target";
 import { EASE } from "./Motion";
 import { useSite } from "./Providers";
 

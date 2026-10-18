@@ -1,0 +1,864 @@
+/*
+ * The admin panel's own stylesheet. Loaded only by app/admin/layout.tsx, so
+ * none of it reaches the public pages and none of the public stylesheet reaches
+ * the panel. Same restraint as the site: hairlines instead of shadows, a paper
+ * background, one accent colour.
+ */
+
+:root {
+  --paper: #f4f4f2;
+  --field: #eaeaE6;
+  --surface: #ffffff;
+  --ink: #17181a;
+  --ink-quiet: #5b5c60;
+  --line: #d9d8d3;
+  --action: #0e6e3f;
+  --action-deep: #0a5530;
+  --danger: #a4312a;
+  --warn: #8a5b00;
+  --radius: 10px;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "Cascadia Mono", Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.admin-body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+}
+
+/* ------------------------------------------------------------- buttons --- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--field);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--action);
+  border-color: var(--action);
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--action-deep);
+}
+
+.btn-danger {
+  border-color: #e3c9c6;
+  color: var(--danger);
+  background: transparent;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #f8eceb;
+}
+
+.btn-ghost {
+  background: transparent;
+}
+
+.btn-small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------- login --- */
+
+.login-page {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.login-card {
+  width: min(100%, 26rem);
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.login-card h1 {
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+}
+
+.login-card h1 span {
+  color: var(--ink-quiet);
+  font-weight: 400;
+}
+
+.login-card .field {
+  margin-top: 1rem;
+}
+
+.login-card .btn {
+  margin-top: 1.25rem;
+}
+
+.login-missing code,
+.login-code {
+  display: block;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--field);
+  font-size: 0.85rem;
+}
+
+.login-missing {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.login-code {
+  margin: 0.5rem 0 1rem;
+  white-space: pre-wrap;
+}
+
+/* ------------------------------------------------------------ the shell --- */
+
+.admin {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(244, 244, 242, 0.92);
+  backdrop-filter: blur(8px);
+}
+
+.admin-brand {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.admin-brand span {
+  margin-left: 0.35rem;
+  color: var(--ink-quiet);
+  font-weight: 400;
+  font-size: 0.85rem;
+}
+
+.admin-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.lang-label {
+  padding: 0 0.6rem 0 0.5rem;
+  color: var(--ink-quiet);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.lang-switch button {
+  padding: 0.3rem 0.7rem;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ink-quiet);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.lang-switch button.is-active {
+  background: var(--ink);
+  color: #fff;
+}
+
+.admin-columns {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  gap: 1.5rem;
+  width: min(100%, 82rem);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 6rem;
+  align-items: start;
+}
+
+.admin-nav {
+  position: sticky;
+  top: 4.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-nav button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-nav button:hover {
+  background: var(--field);
+}
+
+.admin-nav button.is-active {
+  background: var(--ink);
+  color: #fff;
+}
+
+.admin-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.admin-save {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 1.25rem;
+  border-top: 1px solid var(--line);
+  background: rgba(244, 244, 242, 0.95);
+  backdrop-filter: blur(8px);
+}
+
+.save-state {
+  font-size: 0.85rem;
+  color: var(--ink-quiet);
+}
+
+.save-state.is-dirty {
+  color: var(--warn);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------- print --- */
+
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.panel-head h1 {
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.hint {
+  color: var(--ink-quiet);
+  font-size: 0.85rem;
+  margin-top: 0.15rem;
+  font-style: normal;
+  display: block;
+}
+
+.banner {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.87rem;
+}
+
+.banner-ok {
+  border-left-color: var(--action);
+}
+
+.banner-warn {
+  border-left-color: var(--warn);
+}
+
+.banner-error {
+  border-left-color: var(--danger);
+}
+
+/* ------------------------------------------------------ blocks and rows --- */
+
+.page-head h1 {
+  font-size: 1.35rem;
+  letter-spacing: -0.015em;
+}
+
+/* One collection: a heading, an add button, then its items. */
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.block-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.block-head h2 {
+  font-size: 1.02rem;
+  letter-spacing: -0.005em;
+}
+
+.empty {
+  padding: 1.1rem;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+/* One item. Click the header to open it; the only other controls are the three
+   small buttons beside it, so a row reads as one line until you need it. */
+.row {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.row.is-open {
+  border-color: #c6c5bf;
+}
+
+.row-head {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.35rem 0.3rem 0.6rem;
+}
+
+.row-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0.3rem 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.row-toggle:hover .row-title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.row-index {
+  flex: none;
+  min-width: 1.4rem;
+  color: var(--ink-quiet);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.row-thumb {
+  flex: none;
+  width: 3rem;
+  height: 2.1rem;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--field);
+}
+
+.row-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 550;
+}
+
+.row-flag {
+  flex: none;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #fdf3e0;
+  color: var(--warn);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.row-caret {
+  flex: none;
+  margin-left: auto;
+  width: 1.1rem;
+  text-align: center;
+  color: var(--ink-quiet);
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.1rem;
+  flex: none;
+  margin-left: 0.4rem;
+  padding-left: 0.4rem;
+  border-left: 1px solid var(--line);
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-quiet);
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: var(--field);
+  color: var(--ink);
+}
+
+.icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.icon-btn-danger:hover:not(:disabled) {
+  background: #f8eceb;
+  color: var(--danger);
+}
+
+.row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+/* -------------------------------------------------------------- fields --- */
+
+.grid-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.9rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.field-wide {
+  grid-column: 1 / -1;
+}
+
+.field-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.82rem;
+  font-weight: 550;
+  color: var(--ink);
+}
+
+.field-label .hint {
+  font-weight: 400;
+}
+
+.field-toggle {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.55rem;
+  grid-column: 1 / -1;
+}
+
+.field-toggle input {
+  margin-top: 0.22rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--action);
+}
+
+.field-toggle span {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.88rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--action);
+  outline-offset: 1px;
+  border-color: var(--action);
+}
+
+.input-mono {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 4.5rem;
+  line-height: 1.5;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.field-suffix {
+  flex: none;
+  font-size: 0.82rem;
+  color: var(--ink-quiet);
+  font-variant-numeric: tabular-nums;
+}
+
+.list-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.list-row .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.list-row .btn,
+.list-row .icon-btn {
+  flex: none;
+}
+
+.list-add {
+  align-self: flex-start;
+}
+
+.copy-block {
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--line);
+}
+
+.copy-label {
+  margin-bottom: 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-quiet);
+}
+
+.copy-label em {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+/* --------------------------------------------------------------- media --- */
+
+.media-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.media-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.media-upload {
+  display: inline-flex;
+}
+
+.media-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.media-thumb,
+.gallery-thumb,
+.library-thumb {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--field);
+}
+
+.media-thumb {
+  width: 8.5rem;
+  height: 5.5rem;
+}
+
+.gallery-thumb {
+  width: 7rem;
+  height: 5rem;
+  flex: none;
+}
+
+.library-thumb {
+  height: 5.5rem;
+}
+
+.media-path {
+  font-size: 0.75rem;
+  color: var(--ink-quiet);
+  word-break: break-all;
+}
+
+.gallery-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.gallery-item {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+}
+
+.gallery-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.gallery-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.library {
+  padding: 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fbfbfa;
+}
+
+.library-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+  gap: 0.5rem;
+  max-height: 22rem;
+  overflow: auto;
+}
+
+.library-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.library-item:hover {
+  border-color: var(--action);
+}
+
+.library-meta {
+  font-size: 0.7rem;
+  color: var(--ink-quiet);
+  text-align: center;
+}
+
+/* ---------------------------------------------------------- responsive --- */
+
+@media (max-width: 860px) {
+  .admin-columns {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem 0.85rem 6rem;
+  }
+
+  /* The four pages become a scrollable strip of pills: no drawer, no toggle. */
+  .admin-nav {
+    position: static;
+    flex-direction: row;
+    gap: 0.3rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: none;
+  }
+
+  .admin-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-nav button {
+    flex: none;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .admin-top {
+    flex-wrap: wrap;
+  }
+
+  .admin-top-actions {
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .lang-switch {
+    margin-right: auto;
+  }
+
+  .row-body {
+    padding: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lang-label {
+    display: none;
+  }
+
+  .block-head {
+    align-items: flex-start;
+  }
+}

@@ -5,7 +5,7 @@ import { MessageCircle } from "lucide-react";
 import { useState } from "react";
 
 import { targetProps } from "@/lib/contact";
-import type { ContactTarget } from "@/lib/whatsapp";
+import type { ContactTarget } from "@/lib/contact-target";
 import { EASE } from "./Motion";
 
 /** A chat button that slides in once the visitor has left the first screen. */

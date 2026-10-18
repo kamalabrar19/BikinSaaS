@@ -5,10 +5,10 @@ import { Check, Send, X } from "lucide-react";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { createPortal } from "react-dom";
 
-import { composeMessage, contactHref } from "@/lib/whatsapp";
+import { composeMessage, contactHref } from "@/lib/contact-target";
 import { cn } from "@/lib/utils";
 import { EASE } from "./Motion";
-import { useSite } from "./Providers";
+import { useContact, useSite } from "./Providers";
 
 export interface OrderLine {
   name: string;
@@ -64,6 +64,7 @@ export function OrderDialog({
   subject: string;
 }) {
   const { lockScroll } = useSite();
+  const contact = useContact();
   const titleId = useId();
   const [mounted, setMounted] = useState(false);
   const [name, setName] = useState("");
@@ -110,7 +111,7 @@ export function OrderDialog({
       note.trim() ? `${labels.waNote}: ${note.trim()}` : "",
     ]);
 
-    const target = contactHref(message, subject);
+    const target = contactHref(message, subject, contact);
     if (target.href.startsWith("#")) {
       setStatus("unconfigured");
       return;

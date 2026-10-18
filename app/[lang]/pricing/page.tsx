@@ -13,7 +13,7 @@ import { Panel, SectionHeading } from "@/components/site/Panel";
 import { PricingExplorer } from "@/components/site/PricingExplorer";
 import { isLocale, locales } from "@/lib/locale";
 import { pageMetadata } from "@/lib/metadata";
-import { siteCopy } from "@/lib/site-copy";
+import { getSiteCopy } from "@/lib/site-content";
 
 const POLICY_ICONS: Record<Policy["icon"], LucideIcon> = {
   wallet: Wallet,
@@ -21,6 +21,9 @@ const POLICY_ICONS: Record<Policy["icon"], LucideIcon> = {
   refresh: RefreshCw,
   server: Server,
 };
+
+/* Safety net; the panel revalidates every page on save. */
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -44,7 +47,7 @@ export default async function PricingPage({ params }: { params: Promise<{ lang: 
 
   const content = getContent(lang);
   const { ui } = content;
-  const copy = siteCopy[lang];
+  const copy = getSiteCopy(lang);
   const home = `/${lang}`;
 
   return (

@@ -1,47 +1,62 @@
+import { readStore } from "@/lib/admin/store";
+import {
+  contactHref as buildHref,
+  envContactSettings,
+  MIN_DIGITS,
+  type ContactSettings,
+  type ContactTarget,
+} from "@/lib/contact-target";
+
 /**
- * WhatsApp is the main conversion path, so an unconfigured number must never
- * silently become a working-looking link. The previous version fell back to
- * the placeholder 6281234567890, which shipped a link to someone else's
- * number. Here an unconfigured number returns null and the caller offers
- * email instead.
+ * Which contact details are in force, resolved on the server.
+ *
+ * The number can come from the environment (NEXT_PUBLIC_WHATSAPP_NUMBER) or
+ * from the admin panel. The panel wins when it holds a usable number — it is
+ * the place a non-developer can change it without a redeploy.
+ *
+ * Server-only. Everything is a function rather than a module constant, because
+ * the value can change while the server is running. The browser gets the
+ * resolved settings through <Providers contact={...}> so a click builds the
+ * same link the server would have.
+ *
+ * Do not import this from a client component: it reads the filesystem. Use
+ * @/lib/contact-target there and read the resolved values from context.
  */
 
-const rawNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
-const digits = rawNumber.replace(/\D/g, "");
+export type { ContactSettings, ContactTarget } from "@/lib/contact-target";
 
-/** Real international numbers are at least 10 digits. */
-export const whatsappConfigured = digits.length >= 10;
+/** Re-exported for server pages; client code should use @/lib/contact-target. */
+export { composeMessage } from "@/lib/contact-target";
 
-export const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "";
-
-export interface ContactTarget {
-  /** An href that is always safe to render. */
-  href: string;
-  /** False when the href is a mailto fallback rather than WhatsApp. */
-  isWhatsApp: boolean;
-  external: boolean;
+export function contactSettings(): ContactSettings {
+  const saved = readStore()?.settings;
+  const env = envContactSettings();
+  const fromPanel = (saved?.whatsapp ?? "").replace(/\D/g, "");
+  return {
+    whatsapp: fromPanel.length >= MIN_DIGITS ? fromPanel : env.whatsapp,
+    email: (saved?.email ?? "").trim() || env.email,
+  };
 }
 
+export function isWhatsappConfigured(): boolean {
+  return contactSettings().whatsapp.length >= MIN_DIGITS;
+}
+
+export function contactEmail(): string {
+  return contactSettings().email;
+}
+
+/** Server-side link builder: pages render the href, client code rebuilds it. */
 export function contactHref(message: string, subject = "BikinSaaS"): ContactTarget {
-  const body = encodeURIComponent(message.trim());
-
-  if (whatsappConfigured) {
-    return { href: `https://wa.me/${digits}?text=${body}`, isWhatsApp: true, external: true };
-  }
-
-  if (contactEmail) {
-    return {
-      href: `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${body}`,
-      isWhatsApp: false,
-      external: false,
-    };
-  }
-
-  /* Neither configured: point at the contact form, which always works. */
-  return { href: "#contact", isWhatsApp: false, external: false };
+  return buildHref(message, subject, contactSettings());
 }
 
-/** Joins labelled lines into a message, dropping the empty ones. */
-export function composeMessage(intro: string, lines: (string | false | null | undefined)[]): string {
-  return [intro, "", ...lines.filter((line): line is string => Boolean(line))].join("\n");
+/**
+ * contactHref falls back to "#contact" when neither WhatsApp nor email is
+ * configured. That anchor only exists on the home page, so every other page
+ * would get a dead link; the contact page always works instead.
+ */
+export function consultTarget(locale: string, message: string, subject?: string): ContactTarget {
+  const target = contactHref(message, subject);
+  return target.href.startsWith("#") ? { ...target, href: `/${locale}/contact` } : target;
 }

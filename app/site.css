@@ -62,6 +62,12 @@ html.lenis body {
 html {
   position: relative;
   background: var(--paper);
+  /* Parallax layers and not-yet-revealed blocks are meant to sit outside their
+     box for a moment (a reveal slides in from x: 40). On a narrow screen that
+     turned into a real horizontal scrollbar. `clip` rather than `hidden`: it
+     cuts the overflow without creating a scroll container, so the sticky header
+     and Lenis keep working. */
+  overflow-x: clip;
 }
 
 html.scroll-locked,
@@ -508,6 +514,9 @@ body {
 .panel {
   position: relative;
   padding-block: clamp(4.5rem, 10vw, 9rem);
+  /* See the note on html: the decorative orb and the reveal animations are
+     allowed to start outside the band, but never to widen the page. */
+  overflow-x: clip;
 }
 .panel-hero {
   display: flex;
@@ -936,8 +945,11 @@ body {
 }
 .stats-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 2.5vw, 2rem);
+  /* Two by two, at every width. Three columns left the widest number
+     ("Rp399rb", one unbreakable word) wider than its cell, so it printed over
+     the next one — on a 375px phone and on a 1440px monitor alike. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.25rem);
 }
 .stat {
   display: grid;
@@ -946,7 +958,10 @@ body {
 .stat-value {
   display: block;
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(2.75rem, 6vw, 4.5rem);
+  /* Sized so the longest number still fits the narrower cell: 11vw keeps it
+     proportional on a phone, the 4rem cap stops it colliding at 1000px where
+     the two-column band is at its narrowest. */
+  font-size: clamp(2rem, 11vw, 4rem);
   font-weight: 500;
   line-height: 0.9;
   letter-spacing: -0.05em;
@@ -2368,6 +2383,7 @@ a.channel:hover {
   padding-block: clamp(3.5rem, 8vw, 6rem) 2rem;
   background: var(--footer-bg);
   color: var(--footer-ink);
+  overflow-x: clip;
 }
 .footer-top {
   display: grid;
@@ -2654,7 +2670,7 @@ a.channel:hover {
     min-height: 300px;
   }
   .stats-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .work-grid,
   .portfolio-grid {
@@ -2683,8 +2699,8 @@ a.channel:hover {
     gap: 2rem;
   }
   .stats-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1rem;
   }
   .stat p {
     font-size: 0.8125rem;
@@ -2758,4 +2774,58 @@ a.channel:hover {
   a.channel:hover {
     transform: none;
   }
+}
+
+/* ----------------------------------------------- uploaded work media --- */
+/* A picture, GIF or video uploaded from the admin panel takes the place of the
+   drawn artwork. The frame keeps the same aspect ratio, so swapping one for the
+   other never moves the page. */
+
+.work-media {
+  background: var(--surface-2);
+}
+
+.work-media img,
+.work-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.work-card .work-media img,
+.work-card .work-media video {
+  transition: transform 700ms var(--ease);
+}
+
+.work-card:hover .work-media img,
+.work-card:hover .work-media video {
+  transform: scale(1.04);
+}
+
+.case-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: clamp(0.85rem, 1.6vw, 1.35rem);
+  padding-inline: var(--pad);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.case-shot {
+  margin: 0;
+}
+
+.case-shot-frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.case-shot figcaption {
+  margin-top: 0.6rem;
+  color: var(--ink-quiet);
+  font-size: 0.85rem;
+  line-height: 1.5;
 }

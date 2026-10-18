@@ -13,9 +13,9 @@ import { Providers } from "@/components/site/Providers";
 import { SiteBackdrop } from "@/components/site/SiteBackdrop";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
-import { consultTarget } from "@/lib/contact";
+import { consultTarget, contactSettings } from "@/lib/whatsapp";
 import { htmlLang, isLocale, locales, ogLocale, otherLocale, type Locale } from "@/lib/locale";
-import { siteCopy } from "@/lib/site-copy";
+import { getSiteCopy } from "@/lib/site-content";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "../globals.css";
 
@@ -112,8 +112,11 @@ export default async function RootLayout({
   const locale: Locale = lang;
   const content = getContent(locale);
   const { ui } = content;
-  const copy = siteCopy[locale];
+  const copy = getSiteCopy(locale);
   const consult = consultTarget(locale, ui.wa.consult, ui.meta.title);
+  /* Resolved here so the client parts that build a link (the order dialog, the
+     contact form) use the same number the server would. */
+  const contact = contactSettings();
 
   return (
     <html
@@ -129,7 +132,7 @@ export default async function RootLayout({
         <a href="#main" className="skip-link">
           {ui.nav.skipToContent}
         </a>
-        <Providers>
+        <Providers contact={contact}>
           <SiteBackdrop />
           <SiteHeader locale={locale} nav={copy.nav} action={ui.nav.action} actionTarget={consult} />
           <div className="site-frame">
