@@ -13,6 +13,11 @@ tsconfig.tsbuildinfo
 .env.local
 .env*.local
 
+# admin panel: the content document and everything uploaded through it are
+# runtime data, not source. A fresh clone falls back to content/*.ts.
+data/
+public/media/uploads/
+
 # agent skills: vendored content is reinstallable from skills-lock.json
 # with `npx skills add`, so the 13MB of skill files stays out of the repo.
 .agents/

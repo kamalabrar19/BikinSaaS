@@ -24,5 +24,24 @@ export default function nextConfig(phase) {
       // painful to undo if the default ever changes.
       return [{ source: "/", destination: "/id", permanent: false }];
     },
+    async headers() {
+      // The admin panel is not linked from anywhere and is deliberately absent
+      // from robots.txt (a Disallow line would advertise the path). This header
+      // and the page metadata are what keep it out of search results.
+      return [
+        {
+          source: "/admin/:path*",
+          headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+        },
+        {
+          source: "/admin",
+          headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+        },
+        {
+          source: "/api/admin/:path*",
+          headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+        },
+      ];
+    },
   };
 }

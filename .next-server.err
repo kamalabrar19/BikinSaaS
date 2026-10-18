@@ -1,0 +1,21 @@
+Error: Internal: NoFallbackError
+    at n (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\page.js:2:1062)
+    at responseGenerator (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\page.js:2:1919)
+Error: Internal: NoFallbackError
+    at n (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\pricing\page.js:2:1062)
+    at responseGenerator (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\pricing\page.js:2:1919)
+Error: Internal: NoFallbackError
+    at n (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\contact\page.js:2:1062)
+    at responseGenerator (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\contact\page.js:2:1919)
+Error: Internal: NoFallbackError
+    at n (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\contact\page.js:2:1062)
+    at responseGenerator (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\contact\page.js:2:1919)
+Error: Internal: NoFallbackError
+    at n (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\page.js:2:1062)
+    at responseGenerator (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\page.js:2:1919)
+Error: Internal: NoFallbackError
+    at n (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\page.js:2:1062)
+    at responseGenerator (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\page.js:2:1919)
+Error: Internal: NoFallbackError
+    at n (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\page.js:2:1062)
+    at responseGenerator (C:\Users\abdul\Documents\natah\projects\BikinSaaS\.next\server\app\[lang]\page.js:2:1919)

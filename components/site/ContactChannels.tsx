@@ -3,7 +3,7 @@ import type { LucideIcon } from "lucide-react";
 
 import { targetProps, type AnchorTargetProps } from "@/lib/contact";
 import type { SiteCopy } from "@/lib/site-copy";
-import { contactEmail, type ContactTarget, whatsappConfigured } from "@/lib/whatsapp";
+import { contactEmail, isWhatsappConfigured, type ContactTarget } from "@/lib/whatsapp";
 
 interface Channel {
   icon: LucideIcon;
@@ -23,7 +23,9 @@ export function ContactChannels({
   place: string;
 }) {
   const channels: Channel[] = [];
-  if (whatsappConfigured) {
+  /* Read per render: both can change from the admin panel. */
+  const email = contactEmail();
+  if (isWhatsappConfigured()) {
     channels.push({
       icon: MessageCircle,
       title: copy.contact.whatsapp,
@@ -31,12 +33,12 @@ export function ContactChannels({
       link: targetProps(consult),
     });
   }
-  if (contactEmail) {
+  if (email) {
     channels.push({
       icon: Mail,
       title: copy.contact.email,
-      body: contactEmail,
-      link: { href: `mailto:${contactEmail}` },
+      body: email,
+      link: { href: `mailto:${email}` },
     });
   }
   channels.push({ icon: MapPin, title: copy.contact.place, body: place });

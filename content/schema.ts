@@ -159,7 +159,7 @@ export interface UiCopy {
     /** A plain sentence, not a badge: a "DEMO" chip is a banned micro-label. */
     conceptNotice: string;
     takeoverNotice: string;
-    categories: Record<"all" | WorkCategory, string>;
+    categories: Record<string, string>;
     seeCaseStudy: string;
     stackLabel: string;
   };

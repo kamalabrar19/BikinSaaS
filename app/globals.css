@@ -1,6 +1,4 @@
-@import "./spatial.css";
-@import "./scroll-theme.css";
-@import "./next-enhancements.css";
+@import "./site.css";
 
 @tailwind base;
 @tailwind components;
@@ -12,8 +10,12 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /* The palette lives in site.css so both themes share one set of names; the
+     Tailwind colours are only used where a literal is genuinely wanted. */
   body {
-    @apply bg-paper font-sans text-body text-ink antialiased;
+    @apply font-sans text-body antialiased;
+    background: var(--paper);
+    color: var(--ink);
   }
 
   /* Headings carry the display face; a heading never mixes the two families. */
@@ -24,13 +26,13 @@
   }
 
   ::selection {
-    background: #0e6e3f;
-    color: #f3f3f1;
+    background: var(--action);
+    color: var(--action-on);
   }
 
   /* Keyboard focus must stay visible everywhere. */
   :focus-visible {
-    outline: 2px solid #0e6e3f;
+    outline: 2px solid var(--action);
     outline-offset: 3px;
   }
 

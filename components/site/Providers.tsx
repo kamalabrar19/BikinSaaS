@@ -14,6 +14,7 @@ import {
   type ReactNode,
 } from "react";
 
+import type { ContactSettings } from "@/lib/contact-target";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 
 export type Theme = "dark" | "light";
@@ -25,6 +26,12 @@ interface SiteContextValue {
   scrollTo: (target: string | number) => void;
   /** Freezes page scroll while a menu or dialog is open. */
   lockScroll: (locked: boolean) => void;
+  /**
+   * The WhatsApp number and email in force, resolved on the server (admin panel
+   * first, then the environment). Client code builds its link from these so a
+   * visitor gets the number the server would have used.
+   */
+  contact: ContactSettings;
 }
 
 const SiteContext = createContext<SiteContextValue | null>(null);
@@ -33,6 +40,11 @@ export function useSite(): SiteContextValue {
   const value = useContext(SiteContext);
   if (!value) throw new Error("useSite must be used inside <Providers>");
   return value;
+}
+
+/** The contact details in force, for client parts that build a link. */
+export function useContact(): ContactSettings {
+  return useSite().contact;
 }
 
 /** Clears the fixed header when scrolling to an anchor. */
@@ -46,7 +58,7 @@ function findAnchor(selector: string): Element | null {
   }
 }
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({ children, contact }: { children: ReactNode; contact: ContactSettings }) {
   const [theme, setTheme] = useState<Theme>("dark");
   const lenisRef = useRef<Lenis | null>(null);
   const pathname = usePathname();
@@ -140,8 +152,8 @@ export function Providers({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ theme, toggleTheme, scrollTo, lockScroll }),
-    [theme, toggleTheme, scrollTo, lockScroll],
+    () => ({ theme, toggleTheme, scrollTo, lockScroll, contact }),
+    [theme, toggleTheme, scrollTo, lockScroll, contact],
   );
 
   return (

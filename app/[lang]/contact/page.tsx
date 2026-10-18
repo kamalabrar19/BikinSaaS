@@ -8,12 +8,15 @@ import { ContactChannels } from "@/components/site/ContactChannels";
 import { ContactForm } from "@/components/site/ContactForm";
 import { HeroOrb } from "@/components/site/HeroOrb";
 import { buildContactLabels } from "@/components/site/labels";
-import { Reveal, RevealText } from "@/components/site/Motion";
+import { Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { Panel } from "@/components/site/Panel";
-import { consultTarget } from "@/lib/contact";
+import { consultTarget } from "@/lib/whatsapp";
 import { isLocale, locales } from "@/lib/locale";
 import { pageMetadata } from "@/lib/metadata";
-import { siteCopy } from "@/lib/site-copy";
+import { getSiteCopy } from "@/lib/site-content";
+
+/* Safety net; the panel revalidates every page on save. */
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -37,14 +40,16 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
 
   const content = getContent(lang);
   const { ui } = content;
-  const copy = siteCopy[lang];
+  const copy = getSiteCopy(lang);
   const home = `/${lang}`;
   const consult = consultTarget(lang, ui.wa.consult, ui.meta.title);
 
   return (
     <>
       <Panel kicker="/ CONTACT" tone="hero" className="page-hero page-hero-short" labelledBy="contact-page-title">
-        <HeroOrb className="page-orb" />
+        <Parallax className="page-orb" distance={60}>
+          <HeroOrb className="page-orb-body" />
+        </Parallax>
         <div className="page-hero-body">
           <Reveal y={12}>
             <Link className="back-link" href={home}>

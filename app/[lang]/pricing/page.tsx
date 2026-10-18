@@ -8,12 +8,12 @@ import { getContent, type Policy } from "@/content";
 import { Faq } from "@/components/site/Faq";
 import { HeroOrb } from "@/components/site/HeroOrb";
 import { buildOrderLabels } from "@/components/site/labels";
-import { Magnetic, Reveal, RevealText } from "@/components/site/Motion";
+import { Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { Panel, SectionHeading } from "@/components/site/Panel";
 import { PricingExplorer } from "@/components/site/PricingExplorer";
 import { isLocale, locales } from "@/lib/locale";
 import { pageMetadata } from "@/lib/metadata";
-import { siteCopy } from "@/lib/site-copy";
+import { getSiteCopy } from "@/lib/site-content";
 
 const POLICY_ICONS: Record<Policy["icon"], LucideIcon> = {
   wallet: Wallet,
@@ -21,6 +21,9 @@ const POLICY_ICONS: Record<Policy["icon"], LucideIcon> = {
   refresh: RefreshCw,
   server: Server,
 };
+
+/* Safety net; the panel revalidates every page on save. */
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -44,13 +47,15 @@ export default async function PricingPage({ params }: { params: Promise<{ lang: 
 
   const content = getContent(lang);
   const { ui } = content;
-  const copy = siteCopy[lang];
+  const copy = getSiteCopy(lang);
   const home = `/${lang}`;
 
   return (
     <>
       <Panel kicker="/ PRICING" tone="hero" className="page-hero" labelledBy="pricing-title">
-        <HeroOrb className="page-orb" />
+        <Parallax className="page-orb" distance={60}>
+          <HeroOrb className="page-orb-body" />
+        </Parallax>
         <div className="page-hero-body">
           <Reveal y={12}>
             <Link className="back-link" href={home}>
@@ -99,6 +104,7 @@ export default async function PricingPage({ params }: { params: Promise<{ lang: 
             order: copy.pricing.order,
             orderAddOns: copy.pricing.orderAddOns,
             perMonth: ui.pricing.perMonth,
+            perMonthShort: copy.pricing.perMonthShort,
             addOnsLead: ui.pricing.addOnsLead,
             maintenanceLead: ui.pricing.maintenanceLead,
             chosen: ui.pricing.chosen,

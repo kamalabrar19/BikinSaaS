@@ -10,11 +10,12 @@ import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import { getContent } from "@/content";
 import { FloatingContact } from "@/components/site/FloatingContact";
 import { Providers } from "@/components/site/Providers";
+import { SiteBackdrop } from "@/components/site/SiteBackdrop";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
-import { consultTarget } from "@/lib/contact";
+import { consultTarget, contactSettings } from "@/lib/whatsapp";
 import { htmlLang, isLocale, locales, ogLocale, otherLocale, type Locale } from "@/lib/locale";
-import { siteCopy } from "@/lib/site-copy";
+import { getSiteCopy } from "@/lib/site-content";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "../globals.css";
 
@@ -41,14 +42,14 @@ const display = Fraunces({
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const viewport: Viewport = {
-  themeColor: "#080b0a",
+  themeColor: "#f3f3f1",
   width: "device-width",
   initialScale: 1,
 };
 
-/* Runs before first paint so a visitor who chose the light theme never sees
-   a dark flash. Dark is the default. */
-const themeScript = `try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");document.documentElement.dataset.theme=t==="light"?"light":"dark"}catch(e){}`;
+/* Runs before first paint so a visitor who chose the dark theme never sees a
+   light flash. Light is the default. */
+const themeScript = `try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");document.documentElement.dataset.theme=t==="dark"?"dark":"light"}catch(e){}`;
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -111,13 +112,16 @@ export default async function RootLayout({
   const locale: Locale = lang;
   const content = getContent(locale);
   const { ui } = content;
-  const copy = siteCopy[locale];
+  const copy = getSiteCopy(locale);
   const consult = consultTarget(locale, ui.wa.consult, ui.meta.title);
+  /* Resolved here so the client parts that build a link (the order dialog, the
+     contact form) use the same number the server would. */
+  const contact = contactSettings();
 
   return (
     <html
       lang={htmlLang[locale]}
-      data-theme="dark"
+      data-theme="light"
       className={`${text.variable} ${display.variable}`}
       suppressHydrationWarning
     >
@@ -128,8 +132,8 @@ export default async function RootLayout({
         <a href="#main" className="skip-link">
           {ui.nav.skipToContent}
         </a>
-        <Providers>
-          <div className="site-bg" aria-hidden="true" />
+        <Providers contact={contact}>
+          <SiteBackdrop />
           <SiteHeader locale={locale} nav={copy.nav} action={ui.nav.action} actionTarget={consult} />
           <div className="site-frame">
             <main id="main" className="site-main">

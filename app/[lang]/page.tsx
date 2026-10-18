@@ -8,19 +8,26 @@ import { ContactForm } from "@/components/site/ContactForm";
 import { HeroOrb } from "@/components/site/HeroOrb";
 import { buildContactLabels, buildOrderLabels } from "@/components/site/labels";
 import { Marquee } from "@/components/site/Marquee";
-import { CountUp, Magnetic, Reveal, RevealText } from "@/components/site/Motion";
+import { CountUp, Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { OrderButton } from "@/components/site/OrderDialog";
 import { Panel, SectionHeading } from "@/components/site/Panel";
 import { PlanCard } from "@/components/site/PlanCard";
 import { ProcessTimeline } from "@/components/site/ProcessTimeline";
 import { ScrollLink } from "@/components/site/ScrollLink";
 import { WorkCard } from "@/components/site/WorkCard";
-import { consultTarget, targetProps } from "@/lib/contact";
+import { consultTarget } from "@/lib/whatsapp";
+import { targetProps } from "@/lib/contact";
 import { isLocale } from "@/lib/locale";
-import { siteCopy } from "@/lib/site-copy";
+import { getSiteCopy } from "@/lib/site-content";
 
 /** The three plans shown on the home page: cheapest, most chosen website, most chosen app. */
 const TEASER_PLANS = ["lp-starter", "cp-plus", "biz-app"] as const;
+
+/* How long a prerendered page may be served before it rebuilds itself. The
+   admin panel revalidates every page on save, so this is the safety net: if
+   data/site.json is restored from a backup, or a save happens while the server
+   is down, the pages catch up on their own. */
+export const revalidate = 300;
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -28,15 +35,21 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
   const content = getContent(lang);
   const { ui } = content;
-  const copy = siteCopy[lang];
+  const copy = getSiteCopy(lang);
   const home = `/${lang}`;
   const consult = consultTarget(lang, ui.wa.consult, ui.meta.title);
   const orderLabels = buildOrderLabels(ui, copy);
 
   const allPlans = [...content.websitePlans, ...content.webappPlans];
-  const teaserPlans = TEASER_PLANS.map((id) => allPlans.find((plan) => plan.id === id)).filter(
+  const preferred = TEASER_PLANS.map((id) => allPlans.find((plan) => plan.id === id)).filter(
     (plan): plan is Plan => plan !== undefined,
   );
+  /* The panel can rename or drop a package, so the hand-picked trio is topped
+     up from the cheapest website plans rather than left short. */
+  const teaserPlans = [
+    ...preferred,
+    ...content.websitePlans.filter((plan) => !preferred.includes(plan)),
+  ].slice(0, 3);
 
   return (
     <>
@@ -69,7 +82,9 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
               </div>
             </Reveal>
           </div>
-          <HeroOrb label="IDN — REMOTE" />
+          <Parallax distance={18}>
+            <HeroOrb label="IDN — REMOTE" />
+          </Parallax>
         </div>
         <div className="hero-footer">
           <span>{ui.footer.place}</span>

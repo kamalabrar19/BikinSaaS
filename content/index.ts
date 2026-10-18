@@ -1,8 +1,11 @@
 import type { Locale } from "@/lib/locale";
 import { formatMoney, formatMoneyRange } from "@/lib/format";
+import { readStore } from "@/lib/admin/store";
+import type { MediaItem } from "@/lib/admin/types";
 import * as catalog from "./catalog";
 import { copyId } from "./copy.id";
 import { copyEn } from "./copy.en";
+import { applyOverrides } from "./merge";
 import type {
   AddOnId,
   Copy,
@@ -25,10 +28,13 @@ import type {
  * Joins the language-neutral catalog to the copy for one locale and returns
  * view models the components can render directly.
  *
- * This is a pure function with no I/O, so it is safe in a server component and
- * cheap enough to call once per request. Pass slices of the result down to
- * client components rather than the whole object: handing the entire bilingual
- * tree to a client boundary would serialise all of it into the RSC payload.
+ * Two entry points: `buildBaseContent` is the seed — content/*.ts only, a pure
+ * function with no I/O — and `getContent` lays the admin document over it.
+ * Pages call `getContent`.
+ *
+ * Pass slices of the result down to client components rather than the whole
+ * object: handing the entire bilingual tree to a client boundary would
+ * serialise all of it into the RSC payload.
  */
 
 const COPY: Record<Locale, Copy> = {
@@ -37,7 +43,9 @@ const COPY: Record<Locale, Copy> = {
 };
 
 export interface Plan {
-  id: PlanId;
+  /* Ids are plain strings on the way out: the admin panel can add a package,
+     a service or a work item that the TypeScript catalog has never heard of. */
+  id: string;
   name: string;
   tagline: string;
   features: string[];
@@ -49,7 +57,7 @@ export interface Plan {
 }
 
 export interface AddOn {
-  id: AddOnId;
+  id: string;
   name: string;
   body: string;
   price: number;
@@ -60,7 +68,7 @@ export interface AddOn {
 }
 
 export interface MaintenancePlan {
-  id: MaintenanceId;
+  id: string;
   name: string;
   features: string[];
   pricePerMonth: number;
@@ -68,7 +76,7 @@ export interface MaintenancePlan {
 }
 
 export interface Service {
-  id: ServiceId;
+  id: string;
   icon: ServiceIcon;
   title: string;
   summary: string;
@@ -78,7 +86,7 @@ export interface Service {
 }
 
 export interface ProcessStep {
-  id: ProcessStepId;
+  id: string;
   title: string;
   subtitle: string;
   body: string;
@@ -86,15 +94,15 @@ export interface ProcessStep {
 }
 
 export interface Policy {
-  id: PolicyId;
+  id: string;
   icon: PolicyIcon;
   title: string;
   body: string;
 }
 
 export interface WorkItem {
-  id: WorkId;
-  category: WorkCategory;
+  id: string;
+  category: string;
   kind: WorkKind;
   title: string;
   client: string;
@@ -103,16 +111,20 @@ export interface WorkItem {
   result: string;
   detail: string;
   stack: string[];
+  /** Uploaded cover: a picture, a GIF or a video. Empty uses the drawn motif. */
+  cover?: string;
+  /** Extra pictures and videos shown on the case study page. */
+  gallery?: MediaItem[];
 }
 
 export interface SsbFeature {
-  id: SsbFeatureId;
+  id: string;
   title: string;
   body: string;
 }
 
 export interface Faq {
-  id: FaqId;
+  id: string;
   question: string;
   answer: string;
 }
@@ -138,7 +150,7 @@ export interface Content {
   entryPrice: string;
 }
 
-export function getContent(locale: Locale): Content {
+export function buildBaseContent(locale: Locale): Content {
   const copy = COPY[locale];
   const money = (value: number) => formatMoney(value, locale);
 
@@ -228,4 +240,12 @@ export function getContent(locale: Locale): Content {
       Math.min(...catalog.WEBSITE_PLANS.map((entry) => entry.price)),
     ),
   };
+}
+
+/**
+ * What a page renders: the seed above, with whatever the admin panel saved laid
+ * over it. With no data/site.json this returns the seed unchanged.
+ */
+export function getContent(locale: Locale): Content {
+  return applyOverrides(buildBaseContent(locale), readStore());
 }
