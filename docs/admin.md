@@ -29,13 +29,14 @@ ADMIN_SESSION_SECRET=…
 
 ## Isi panel
 
-Panelnya sengaja pendek: **tiga halaman**.
+Panelnya sengaja pendek: **empat halaman**.
 
 | Halaman | Isinya |
 | --- | --- |
 | Ringkasan | Pengunjung, halaman dilihat, yang menghubungi (WhatsApp / email / telepon / formulir), grafik per hari, halaman terpopuler, asal pengunjung, perangkat, bahasa. Rentang 7 / 30 / 90 hari. |
 | Portofolio | Judul, klien, masalah, solusi, hasil, cerita, teknologi, **sampul + galeri (foto/GIF/video)** |
 | Harga | Paket website, paket aplikasi, tambahan, dan biaya perawatan bulanan |
+| Tim | Anggota tim di beranda: foto, nama, peran, cerita singkat, keahlian, dan tautan LinkedIn / Instagram / GitHub |
 
 Cara pakainya di Portofolio dan Harga: klik satu kartu/baris → ubah isinya di
 panel samping → **Simpan**. Tiap simpan langsung menulis ke situs. Tombol ↑ ↓

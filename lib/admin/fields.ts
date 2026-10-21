@@ -120,6 +120,33 @@ export const COLLECTIONS: CollectionDef[] = [
   },
 
   {
+    key: "team",
+    label: "Tim",
+    singular: "anggota",
+    hint: "Orang-orang di balik BikinSaaS. Tampil di beranda sesuai urutan di sini.",
+    neutral: [
+      { kind: "text", key: "id", label: "Alamat", mono: true },
+      {
+        kind: "cover",
+        key: "photo",
+        label: "Foto",
+        hint: "Foto potret, paling bagus berbentuk tegak. Kosongkan untuk memakai huruf inisial.",
+      },
+      { kind: "text", key: "linkedin", label: "LinkedIn", placeholder: "https://linkedin.com/in/…" },
+      { kind: "text", key: "instagram", label: "Instagram", placeholder: "https://instagram.com/…" },
+      { kind: "text", key: "github", label: "GitHub", placeholder: "https://github.com/…" },
+    ],
+    copy: [
+      { kind: "text", key: "name", label: "Nama", hint: NAME_HINT },
+      { kind: "text", key: "role", label: "Peran", placeholder: "mis. Founder & Lead Developer" },
+      { kind: "textarea", key: "bio", label: "Cerita singkat", rows: 3 },
+      { kind: "list", key: "skills", label: "Keahlian", placeholder: "mis. Next.js" },
+    ],
+    titleOf: (row, locale) => rowText(row, locale, "name") || row.id || "(tanpa nama)",
+    newRow: () => ({ id: tmpId("tim"), copy: { id: {}, en: {} } }) as Row,
+  },
+
+  {
     key: "websitePlans",
     label: "Paket website",
     singular: "paket",
@@ -310,6 +337,7 @@ export function suggestId(def: CollectionDef, row: Row): string {
 /** The copy field that acts as a row's name, per collection. */
 const TITLE_KEY: Record<string, string> = {
   work: "title",
+  team: "name",
   websitePlans: "name",
   webappPlans: "name",
   addOns: "name",

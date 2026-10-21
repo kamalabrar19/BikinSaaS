@@ -277,7 +277,7 @@ export function CoverInput({
             type="button"
             className="icon-btn icon-btn-danger"
             onClick={() => onChange("")}
-            aria-label="Hapus sampul"
+            aria-label="Hapus gambar"
           >
             ✕
           </button>
@@ -292,7 +292,7 @@ export function CoverInput({
       ) : (
         <>
           <p className="hint">
-            Belum ada sampul — kartu memakai motif grafis bawaan. Bisa juga menempel tautan gambar di
+            Belum ada gambar — situs memakai tampilan bawaan. Bisa juga menempel tautan gambar di
             bawah.
           </p>
           <input

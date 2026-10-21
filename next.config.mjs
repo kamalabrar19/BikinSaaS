@@ -14,6 +14,8 @@ import { PHASE_DEVELOPMENT_SERVER } from "next/constants.js";
 export default function nextConfig(phase) {
   return {
     reactStrictMode: true,
+    // Lets app/global-not-found.tsx answer addresses that no layout covers.
+    experimental: { globalNotFound: true },
     distDir: phase === PHASE_DEVELOPMENT_SERVER ? ".next-dev" : ".next",
     // A stray package-lock.json in the home directory made Next pick that
     // folder as the workspace root and warn on every start.

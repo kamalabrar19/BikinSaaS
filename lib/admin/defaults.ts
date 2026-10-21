@@ -83,6 +83,16 @@ function seedDocument(): AdminDoc {
     };
   });
 
+  /* ----------------------------------------------------------------- team -- */
+
+  const enTeam = byId(en.team);
+  doc.team = id.team.map((member) => {
+    const other = enTeam.get(member.id);
+    const fields = (m: typeof member) =>
+      block({ name: m.name, role: m.role, bio: m.bio, skills: m.skills });
+    return { id: member.id, copy: { id: fields(member), en: other ? fields(other) : {} } };
+  });
+
   /* --------------------------------------------------------------- prices -- */
 
   const enWebsite = byId(en.websitePlans);

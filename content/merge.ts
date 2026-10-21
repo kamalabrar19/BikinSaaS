@@ -8,6 +8,7 @@ import {
   type MaintenanceRow,
   type PlanRow,
   type Row,
+  type TeamRow,
   type WorkRow,
 } from "@/lib/admin/types";
 import type { ServiceIcon, PolicyIcon } from "./schema";
@@ -20,6 +21,7 @@ import type {
   Policy,
   ProcessStep,
   Service,
+  TeamMember,
   WorkItem,
 } from "./index";
 
@@ -123,6 +125,25 @@ function maintenanceFrom(row: MaintenanceRow, locale: Locale): MaintenancePlan {
   };
 }
 
+/** A social link is shown only if it is a real http(s) address. */
+function link(value: unknown): string | undefined {
+  return typeof value === "string" && /^https?:\/\//i.test(value.trim()) ? value.trim() : undefined;
+}
+
+function teamFrom(row: TeamRow, locale: Locale): TeamMember {
+  return {
+    id: row.id,
+    name: rowText(row, locale, "name"),
+    role: rowText(row, locale, "role"),
+    bio: rowText(row, locale, "bio"),
+    skills: rowList(row, locale, "skills"),
+    photo: row.photo || undefined,
+    linkedin: link(row.linkedin),
+    instagram: link(row.instagram),
+    github: link(row.github),
+  };
+}
+
 function faqFrom(row: Row, locale: Locale): Faq {
   return {
     id: row.id,
@@ -140,6 +161,7 @@ export function applyOverrides(base: Content, doc: AdminDoc | null): Content {
   if (hasRows(doc.process)) next.process = doc.process.map((row) => processFrom(row, locale));
   if (hasRows(doc.policies)) next.policies = doc.policies.map((row) => policyFrom(row, locale));
   if (hasRows(doc.faqs)) next.faqs = doc.faqs.map((row) => faqFrom(row, locale));
+  if (hasRows(doc.team)) next.team = doc.team.map((row) => teamFrom(row, locale));
   if (hasRows(doc.work)) next.work = doc.work.map((row) => workFrom(row, locale));
 
   if (hasRows(doc.websitePlans)) next.websitePlans = doc.websitePlans.map((row) => planFrom(row, locale));

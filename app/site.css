@@ -2829,3 +2829,475 @@ a.channel:hover {
   font-size: 0.85rem;
   line-height: 1.5;
 }
+
+/* -------------------------------------------------------------------- team */
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.6rem);
+  padding-inline: var(--pad);
+  margin: 0;
+  list-style: none;
+}
+/* Every second card sits lower, so the row reads as people rather than a grid. */
+.team-item:nth-child(even) {
+  margin-top: clamp(1.5rem, 4vw, 3.25rem);
+}
+.team-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  height: 100%;
+  padding: 0.7rem 0.7rem 1.4rem;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  transition: transform 420ms var(--ease), box-shadow 420ms var(--ease);
+}
+.team-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lift);
+}
+.team-photo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: calc(var(--radius-lg) - 7px);
+  background:
+    radial-gradient(circle at 28% 24%, color-mix(in srgb, var(--action) 34%, transparent), transparent 62%),
+    var(--surface-2);
+}
+.team-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.35) contrast(1.02);
+  transition: transform 700ms var(--ease), filter 500ms var(--ease);
+}
+.team-card:hover .team-photo img {
+  transform: scale(1.06);
+  filter: grayscale(0) contrast(1.02);
+}
+/* The drawn fallback: a big serif initial inside two thin rings. */
+.team-initial {
+  position: relative;
+  z-index: 1;
+  color: var(--action);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(4.5rem, 8vw, 7rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  transition: transform 600ms var(--ease);
+}
+.team-card:hover .team-initial {
+  transform: scale(1.08);
+}
+.team-photo:not(:has(img))::before,
+.team-photo:not(:has(img))::after {
+  content: "";
+  position: absolute;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  transition: transform 800ms var(--ease);
+}
+.team-photo:not(:has(img))::before {
+  width: 74%;
+  aspect-ratio: 1;
+}
+.team-photo:not(:has(img))::after {
+  width: 108%;
+  aspect-ratio: 1;
+  border-color: var(--line);
+}
+.team-card:hover .team-photo:not(:has(img))::before {
+  transform: rotate(18deg) scale(1.06);
+}
+.team-index {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.95rem;
+  z-index: 2;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  color: var(--ink-quiet);
+  font: 600 0.72rem var(--font-mono, ui-monospace, monospace);
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(6px);
+}
+.team-links {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.4rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 320ms var(--ease), transform 320ms var(--ease);
+}
+.team-card:hover .team-links,
+.team-card:focus-within .team-links {
+  opacity: 1;
+  transform: none;
+}
+.team-links a {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  transition: background 200ms var(--ease), color 200ms var(--ease);
+}
+.team-links a:hover {
+  background: var(--action);
+  color: var(--action-on);
+}
+.team-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding-inline: 0.7rem;
+}
+.team-role {
+  margin: 0;
+  color: var(--action);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.team-body h3 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.team-bio {
+  margin: 0;
+  color: var(--ink-quiet);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.team-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.team-skills li {
+  padding: 0.25rem 0.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--ink-quiet);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+@media (max-width: 1080px) {
+  .team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .team-item:nth-child(even) {
+    margin-top: 0;
+  }
+  .team-item:nth-child(2n) {
+    margin-top: clamp(1.25rem, 4vw, 2.5rem);
+  }
+}
+@media (max-width: 560px) {
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+  .team-item:nth-child(2n) {
+    margin-top: 0;
+  }
+  .team-photo {
+    aspect-ratio: 5 / 4;
+  }
+}
+/* Touch screens have no hover, so the links are simply always there. */
+@media (hover: none) {
+  .team-links {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .team-card,
+  .team-photo img,
+  .team-initial {
+    transition: none;
+  }
+}
+
+/* --------------------------------------------------------------------- 404 */
+
+.nf {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100svh - var(--header-h));
+  padding: clamp(3rem, 8vw, 6rem) var(--gutter);
+  text-align: center;
+  overflow-x: clip;
+}
+.nf-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  color: var(--ink-quiet);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+.nf-code {
+  --px: 0;
+  --py: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.1rem, 1vw, 0.6rem);
+  margin: clamp(1.2rem, 3vw, 2.2rem) 0 clamp(0.5rem, 2vw, 1.2rem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(7.5rem, 27vw, 20rem);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 0.82;
+  user-select: none;
+}
+.nf-digit {
+  color: var(--ink);
+  animation: nf-rise 900ms var(--ease) both;
+}
+.nf-digit:last-child {
+  animation-delay: 120ms;
+}
+.nf-zero {
+  position: relative;
+  display: block;
+  flex: none;
+  width: 0.7em;
+  aspect-ratio: 1;
+  animation: nf-pop 1000ms var(--ease) 60ms both;
+}
+.nf-orb,
+.nf-moon,
+.nf-ring {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+}
+.nf-orb {
+  inset: 6%;
+  background: radial-gradient(
+    circle at 36% 30%,
+    color-mix(in srgb, var(--action) 62%, white) 0%,
+    var(--action) 46%,
+    color-mix(in srgb, var(--action-deep) 80%, black) 100%
+  );
+  box-shadow: 0 1.2rem 3.5rem -1rem color-mix(in srgb, var(--action) 55%, transparent);
+  transform: translate(calc(var(--px) * 7%), calc(var(--py) * 7%));
+  transition: transform 500ms var(--ease);
+  animation: nf-float 7s ease-in-out infinite;
+}
+.nf-ring {
+  border: 1px solid var(--line-strong);
+}
+.nf-ring-a {
+  inset: -14%;
+  transform: rotate(-24deg) scaleY(0.36);
+  animation: nf-spin-a 24s linear infinite;
+}
+.nf-ring-b {
+  inset: -30%;
+  border-color: var(--line);
+  transform: rotate(48deg) scaleY(0.5);
+  animation: nf-spin-b 38s linear infinite;
+}
+.nf-moon {
+  top: 6%;
+  right: 2%;
+  width: 15%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 40% 35%, var(--action-tint), var(--action) 92%);
+  transform: translate(calc(var(--px) * -22%), calc(var(--py) * -22%));
+  transition: transform 700ms var(--ease);
+  animation: nf-bob 5s ease-in-out infinite;
+}
+.nf-title {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+.nf-title em {
+  color: var(--action);
+  font-style: normal;
+}
+.nf-lead {
+  margin: clamp(0.9rem, 2vw, 1.4rem) 0 0;
+  max-width: 52ch;
+  color: var(--ink-quiet);
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  line-height: 1.6;
+}
+.nf-path {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: clamp(1.2rem, 2.4vw, 1.8rem) 0 0;
+  padding: 0.45rem 0.5rem 0.45rem 1rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: 999px;
+  color: var(--ink-quiet);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.nf-path code {
+  max-width: 28ch;
+  padding: 0.2rem 0.7rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--action-tint);
+  color: var(--action);
+  font: 600 0.78rem ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: clamp(1.4rem, 3vw, 2.2rem);
+}
+.nf-jump {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem 1rem;
+  margin-top: clamp(2rem, 5vw, 3.2rem);
+  color: var(--ink-quiet);
+  font-size: 0.875rem;
+}
+.nf-jump ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nf-jump a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--ink);
+  font-weight: 600;
+  transition: background 200ms var(--ease), color 200ms var(--ease), border-color 200ms var(--ease), transform 200ms var(--ease);
+}
+.nf-jump a:hover {
+  border-color: var(--action);
+  background: var(--action);
+  color: var(--action-on);
+  transform: translateY(-2px);
+}
+
+/* The standalone 404 has no site header, so it brings a small one. */
+.nf-standalone {
+  position: relative;
+  z-index: 1;
+}
+.nf-brand {
+  position: absolute;
+  top: 1.4rem;
+  left: var(--gutter);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.nf-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--action);
+  color: var(--action-on);
+  font: 700 1.05rem var(--font-display), Georgia, serif;
+}
+.nf-standalone .nf {
+  min-height: 100svh;
+}
+
+@keyframes nf-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.18em);
+  }
+}
+@keyframes nf-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+@keyframes nf-float {
+  50% {
+    translate: 0 -3%;
+  }
+}
+@keyframes nf-bob {
+  50% {
+    translate: 0 -14%;
+  }
+}
+@keyframes nf-spin-a {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes nf-spin-b {
+  to {
+    rotate: -360deg;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nf-digit,
+  .nf-zero,
+  .nf-orb,
+  .nf-moon,
+  .nf-ring {
+    animation: none;
+  }
+}

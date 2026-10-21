@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, BarChart3, Briefcase, LogOut, Moon, Sun, Tag } from "lucide-react";
+import { ArrowUpRight, BarChart3, Briefcase, LogOut, Moon, Sun, Tag, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
@@ -11,6 +11,7 @@ const NAV = [
   { href: "/admin", label: "Ringkasan", icon: BarChart3 },
   { href: "/admin/portofolio", label: "Portofolio", icon: Briefcase },
   { href: "/admin/harga", label: "Harga", icon: Tag },
+  { href: "/admin/tim", label: "Tim", icon: Users },
 ] as const;
 
 /**

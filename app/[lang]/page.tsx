@@ -14,6 +14,7 @@ import { Panel, SectionHeading } from "@/components/site/Panel";
 import { PlanCard } from "@/components/site/PlanCard";
 import { ProcessTimeline } from "@/components/site/ProcessTimeline";
 import { ScrollLink } from "@/components/site/ScrollLink";
+import { TeamGrid } from "@/components/site/TeamSection";
 import { WorkCard } from "@/components/site/WorkCard";
 import { consultTarget } from "@/lib/whatsapp";
 import { targetProps } from "@/lib/contact";
@@ -201,8 +202,30 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         </div>
       </Panel>
 
-      {/* 06 — Pricing */}
-      <Panel id="pricing" kicker="/ 06 — PRICING" labelledBy="pricing-title">
+      {/* 06 — Team. Hidden when the panel has removed every member. */}
+      {content.team.length ? (
+        <Panel id="team" kicker="/ 06 — TEAM" labelledBy="team-title">
+          <div className="section-head-row">
+            <SectionHeading
+              id="team-title"
+              eyebrow={copy.team.eyebrow}
+              title={copy.team.title}
+              accent={copy.team.titleEm}
+              lead={copy.team.lead}
+            />
+            <Reveal>
+              <Link className="button button-ghost" href={`${home}/contact`}>
+                {copy.team.cta}
+                <ArrowUpRight size={15} />
+              </Link>
+            </Reveal>
+          </div>
+          <TeamGrid members={content.team} />
+        </Panel>
+      ) : null}
+
+      {/* 07 — Pricing */}
+      <Panel id="pricing" kicker="/ 07 — PRICING" labelledBy="pricing-title">
         <div className="section-head-row">
           <SectionHeading
             id="pricing-title"
@@ -259,7 +282,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       </Panel>
 
       {/* 07 — Contact */}
-      <Panel id="contact" kicker="/ 07 — LET'S TALK" labelledBy="contact-title">
+      <Panel id="contact" kicker="/ 08 — LET'S TALK" labelledBy="contact-title">
         <div className="contact-layout">
           <div>
             <SectionHeading

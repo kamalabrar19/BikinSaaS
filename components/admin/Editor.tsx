@@ -22,7 +22,7 @@ import { MediaPreview } from "./Media";
  * kept until the panel's own Save is pressed, and it is pressed once per row.
  */
 
-type Variant = "cards" | "list";
+type Variant = "cards" | "list" | "people";
 
 export interface SectionSpec {
   key: CollectionKey;
@@ -198,6 +198,21 @@ export function Editor({
                   Tambah {def.singular} pertama
                 </button>
               </div>
+            ) : variant === "people" ? (
+              <ul className="price-list">
+                {rows.map((row, index) => (
+                  <PersonRow
+                    key={row.id}
+                    row={row}
+                    index={index}
+                    last={index === rows.length - 1}
+                    busy={busy}
+                    onOpen={() => openRow(key, index)}
+                    onMove={(by) => void move(key, index, by)}
+                    onDelete={() => void remove(key, index)}
+                  />
+                ))}
+              </ul>
             ) : variant === "cards" ? (
               <ul className="work-grid">
                 {rows.map((row, index) => (
@@ -333,6 +348,33 @@ function WorkCard(props: RowProps) {
   );
 }
 
+function PersonRow(props: RowProps) {
+  const { row } = props;
+  const photo = typeof asRecord(row).photo === "string" ? (asRecord(row).photo as string) : "";
+  const name = rowText(row, "id", "name") || "(tanpa nama)";
+  const role = rowText(row, "id", "role");
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
+  return (
+    <li className="price-row person-row">
+      <button type="button" className="person-avatar" onClick={props.onOpen} aria-label={`Ubah ${name}`}>
+        {photo ? <MediaPreview src={photo} className="person-photo" /> : <span aria-hidden="true">{initials}</span>}
+      </button>
+      <button type="button" className="price-main" onClick={props.onOpen}>
+        <strong>{name}</strong>
+        <span className="muted">{role || "Belum ada peran"}</span>
+      </button>
+      <RowActions {...props} />
+    </li>
+  );
+}
+
 function PriceRow(props: RowProps & { def: CollectionDef }) {
   const { row, def, index } = props;
   const r = asRecord(row);
@@ -379,6 +421,8 @@ function Panel({
   const body = useRef<HTMLDivElement>(null);
   const draft = editing.draft;
   const isNew = editing.index === null;
+  /* A person reads photo, name, role, bio — the links come last. */
+  const isPerson = def.key === "team";
 
   /* Held in a ref so a new onClose each render does not re-run the effect below
      and steal focus from whatever is being typed in. */
@@ -442,7 +486,7 @@ function Panel({
         </div>
 
         <div className="drawer-body" ref={body}>
-          {settings.length ? <div className="fields">{settings.map((f) => render(f, asRecord(draft)[f.key], (v) => patch(f.key, v)))}</div> : null}
+          {!isPerson && settings.length ? <div className="fields">{settings.map((f) => render(f, asRecord(draft)[f.key], (v) => patch(f.key, v)))}</div> : null}
 
           {media.length ? <div className="fields">{media.map((f) => render(f, asRecord(draft)[f.key], (v) => patch(f.key, v)))}</div> : null}
 
@@ -463,6 +507,13 @@ function Panel({
               render(field, copyFor(draft, locale)[field.key], (v) => patchCopy(field.key, v), true),
             )}
           </div>
+
+          {isPerson && settings.length ? (
+            <div className="lang">
+              <p className="kicker">Tautan (opsional)</p>
+              <div className="fields">{settings.map((f) => render(f, asRecord(draft)[f.key], (v) => patch(f.key, v)))}</div>
+            </div>
+          ) : null}
         </div>
 
         <div className="drawer-foot">

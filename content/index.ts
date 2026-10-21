@@ -5,6 +5,7 @@ import type { MediaItem } from "@/lib/admin/types";
 import * as catalog from "./catalog";
 import { copyId } from "./copy.id";
 import { copyEn } from "./copy.en";
+import { TEAM_SEED } from "./team";
 import { applyOverrides } from "./merge";
 import type {
   AddOnId,
@@ -129,6 +130,18 @@ export interface Faq {
   answer: string;
 }
 
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  skills: string[];
+  photo?: string;
+  linkedin?: string;
+  instagram?: string;
+  github?: string;
+}
+
 export interface Content {
   locale: Locale;
   ui: Copy["ui"];
@@ -145,6 +158,7 @@ export interface Content {
   workCategories: readonly WorkCategory[];
   ssbFeatures: SsbFeature[];
   faqs: Faq[];
+  team: TeamMember[];
   launchYear: number;
   /** Cheapest website plan, for the supporting line under the statement. */
   entryPrice: string;
@@ -233,6 +247,8 @@ export function buildBaseContent(locale: Locale): Content {
     ssbFeatures: catalog.SSB_FEATURES.map((id) => ({ id, ...copy.ssbFeatures[id] })),
 
     faqs: catalog.FAQS.map((id) => ({ id, ...copy.faqs[id] })),
+
+    team: TEAM_SEED.map((member) => ({ id: member.id, ...member.copy[locale] })),
 
     launchYear: catalog.LAUNCH_YEAR,
 

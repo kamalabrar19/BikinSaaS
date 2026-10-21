@@ -60,6 +60,14 @@ export interface StatRow extends Row {
   prefix?: string;
 }
 
+export interface TeamRow extends Row {
+  /** Portrait. Empty falls back to a drawn initial. */
+  photo?: string;
+  linkedin?: string;
+  instagram?: string;
+  github?: string;
+}
+
 export interface IconRow extends Row {
   icon: string;
 }
@@ -73,6 +81,7 @@ export interface ContactSettings {
 
 export type CollectionKey =
   | "work"
+  | "team"
   | "websitePlans"
   | "webappPlans"
   | "addOns"
@@ -88,6 +97,7 @@ export interface AdminDoc {
   updatedAt: string;
   settings: ContactSettings;
   work: WorkRow[];
+  team: TeamRow[];
   websitePlans: PlanRow[];
   webappPlans: PlanRow[];
   addOns: AddOnRow[];
@@ -111,6 +121,7 @@ export function emptyDoc(): AdminDoc {
     updatedAt: new Date().toISOString(),
     settings: emptySettings(),
     work: [],
+    team: [],
     websitePlans: [],
     webappPlans: [],
     addOns: [],

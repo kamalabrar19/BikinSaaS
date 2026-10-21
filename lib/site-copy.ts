@@ -38,6 +38,7 @@ export interface SiteCopy {
   services: { eyebrow: string; customTitle: string; customBody: string };
   stats: { eyebrow: string; title: string; titleEm: string; items: StatItem[] };
   process: { eyebrow: string };
+  team: { eyebrow: string; title: string; titleEm: string; lead: string; cta: string };
   work: { eyebrow: string; viewAll: string; client: string; concept: string };
   pricing: {
     eyebrow: string;
@@ -119,6 +120,13 @@ const id: SiteCopy = {
     ],
   },
   process: { eyebrow: "Cara kerja kami" },
+  team: {
+    eyebrow: "Orang di balik layar",
+    title: "Tim kecil,",
+    titleEm: "tanggung jawab penuh.",
+    lead: "Anda berbicara langsung dengan orang yang mengerjakan proyeknya, tanpa lapisan perantara.",
+    cta: "Ngobrol dengan tim",
+  },
   work: {
     eyebrow: "Portofolio pilihan",
     viewAll: "Lihat semua portofolio",
@@ -252,6 +260,13 @@ const en: SiteCopy = {
     ],
   },
   process: { eyebrow: "How we work" },
+  team: {
+    eyebrow: "The people behind it",
+    title: "A small team,",
+    titleEm: "fully accountable.",
+    lead: "You talk directly to the people building your project, with no layers in between.",
+    cta: "Talk to the team",
+  },
   work: {
     eyebrow: "Selected work",
     viewAll: "See the full portfolio",
