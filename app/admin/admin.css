@@ -1616,3 +1616,209 @@ select.input {
 [data-theme="dark"] .brand-img-green ~ .brand-img-white {
   display: block;
 }
+
+/* ----------------------------------------------------- phone refinements -- */
+
+.bottomnav {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  /* The header keeps only the logo and the two round buttons; the menu moves to
+     a floating bar at the bottom. */
+  .topnav {
+    display: none;
+  }
+
+  .topbar {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding-block: 0.6rem;
+  }
+
+  .topbar-end {
+    margin-left: 0;
+  }
+
+  .bottomnav {
+    position: fixed;
+    right: 0.6rem;
+    bottom: max(0.6rem, env(safe-area-inset-bottom));
+    left: 0.6rem;
+    z-index: 40;
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.35rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    box-shadow: var(--shadow-lift);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+
+  .bottomnav .navlink {
+    flex: 1;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+    padding: 0.5rem 0.2rem 0.45rem;
+    font-size: 0.7rem;
+    line-height: 1.1;
+  }
+
+  .page {
+    gap: 1rem;
+    padding-bottom: 7rem;
+  }
+
+  .page-head h1 {
+    font-size: clamp(2.1rem, 11vw, 2.8rem);
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  /* Cards: less padding, so nested lists have room to breathe. */
+  .card {
+    padding: 1.1rem;
+  }
+
+  .section .card-head,
+  .card-head {
+    align-items: stretch;
+  }
+
+  .card-head > .btn {
+    width: 100%;
+  }
+
+  .stat-value {
+    font-size: 2.3rem;
+  }
+
+  /* The chart: the three metric buttons share the row instead of overflowing. */
+  .chart-head {
+    align-items: stretch;
+  }
+
+  .chart-head .seg {
+    width: 100%;
+  }
+
+  .chart-head .seg button {
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+    padding: 0.3rem 0.4rem;
+    font-size: 0.78rem;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .page-head .seg {
+    width: 100%;
+  }
+
+  .page-head .seg a {
+    flex: 1;
+    justify-content: center;
+    padding-inline: 0.4rem;
+  }
+
+  .today {
+    font-size: 0.875rem;
+  }
+
+  /* Price and person rows: name, then price, then the buttons on their own line,
+     so a price is never squeezed against the arrows. */
+  .price-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+    padding: 0.85rem 0.85rem 0.6rem;
+  }
+
+  .price-main {
+    grid-column: auto;
+  }
+
+  .price-amount {
+    grid-row: auto;
+    font-size: 1.3rem;
+  }
+
+  .price-row .row-actions {
+    grid-column: auto;
+    grid-row: auto;
+    justify-content: space-between;
+    padding-top: 0.25rem;
+  }
+
+  .person-row {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .person-row .row-actions {
+    grid-column: 1 / -1;
+  }
+
+  .row-actions.is-asking {
+    justify-content: flex-start;
+  }
+
+  .work-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .work-card .row-actions {
+    justify-content: space-between;
+  }
+
+  .drawer-top,
+  .drawer-body,
+  .drawer-foot {
+    padding-inline: 1rem;
+  }
+
+  .drawer-foot .btn {
+    flex: 1;
+  }
+
+  /* Gallery rows: thumbnail on top, fields below, instead of side by side. */
+  .gallery-item {
+    flex-direction: column;
+  }
+
+  .gallery-thumb {
+    width: 100%;
+    height: 9rem;
+  }
+
+  .media-preview {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .media-thumb {
+    width: 100%;
+    height: 10rem;
+  }
+
+  .list-row .icon-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .toast {
+    bottom: 5.5rem;
+  }
+
+  /* Inputs at 16px stop iOS from zooming the page when one is focused. */
+  .input,
+  select.input,
+  .textarea {
+    font-size: 16px;
+  }
+}

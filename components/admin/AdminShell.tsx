@@ -43,6 +43,20 @@ export function AdminShell({ children }: { children: ReactNode }) {
     window.location.href = "/admin/login";
   };
 
+  const renderNav = (className: string) => (
+    <nav className={className} aria-label="Menu utama">
+      {NAV.map(({ href, label, icon: Icon }) => {
+        const active = href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
+        return (
+          <Link key={href} href={href} className={active ? "navlink is-active" : "navlink"} aria-current={active ? "page" : undefined}>
+            <Icon size={className === "bottomnav" ? 20 : 16} aria-hidden="true" />
+            <span>{label}</span>
+          </Link>
+        );
+      })}
+    </nav>
+  );
+
   return (
     <div className="shell">
       <div className="shell-bg" aria-hidden="true" />
@@ -54,17 +68,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <span className="brand-tag">Admin</span>
         </Link>
 
-        <nav className="topnav" aria-label="Menu utama">
-          {NAV.map(({ href, label, icon: Icon }) => {
-            const active = href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
-            return (
-              <Link key={href} href={href} className={active ? "navlink is-active" : "navlink"} aria-current={active ? "page" : undefined}>
-                <Icon size={16} aria-hidden="true" />
-                {label}
-              </Link>
-            );
-          })}
-        </nav>
+        {renderNav("topnav")}
 
         <div className="topbar-end">
           <a className="textlink" href="/id" target="_blank" rel="noreferrer">
@@ -86,6 +90,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
       </header>
 
       <main className="page">{children}</main>
+
+      {/* On a phone the menu is a floating bar at the bottom, where a thumb
+          reaches it. It is outside the header on purpose: the header's backdrop
+          blur would otherwise become the containing block for a fixed child. */}
+      {renderNav("bottomnav")}
     </div>
   );
 }

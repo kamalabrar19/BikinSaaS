@@ -146,7 +146,8 @@ export function VisitorsChart({ points }: { points: Point[] }) {
         ) : null}
       </div>
 
-      <table className="sr-only">
+      <div className="sr-only">
+        <table>
         <caption>Data harian</caption>
         <thead>
           <tr>
@@ -167,6 +168,7 @@ export function VisitorsChart({ points }: { points: Point[] }) {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
