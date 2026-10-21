@@ -14,6 +14,9 @@ import { PHASE_DEVELOPMENT_SERVER } from "next/constants.js";
 export default function nextConfig(phase) {
   return {
     reactStrictMode: true,
+    // A self-contained server (server.js plus only the modules it needs), so the
+    // VPS can run a built release without installing or compiling anything.
+    output: "standalone",
     // Lets app/global-not-found.tsx answer addresses that no layout covers.
     experimental: { globalNotFound: true },
     distDir: phase === PHASE_DEVELOPMENT_SERVER ? ".next-dev" : ".next",
