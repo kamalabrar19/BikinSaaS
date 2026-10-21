@@ -24,7 +24,7 @@ export default async function Image({ params }: { params: Promise<{ lang: string
   const { ui } = getContent(locale);
 
   const display = await readFile(join(process.cwd(), "assets/fonts/Fraunces-SemiBold.ttf"));
-  const logo = await readFile(join(process.cwd(), "public/brand/logo-green.png"));
+  const logo = await readFile(join(process.cwd(), "public/brand/logo.png"));
   const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
 
   return new ImageResponse(
@@ -43,7 +43,7 @@ export default async function Image({ params }: { params: Promise<{ lang: string
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 34 }}>
-          <img src={logoSrc} width={64} height={64} alt="" />
+          <img src={logoSrc} width={34} height={64} alt="" />
           BikinSaaS
         </div>
         <div style={{ display: "flex", fontSize: 104, lineHeight: 1.02, letterSpacing: "-0.03em" }}>

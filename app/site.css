@@ -3401,20 +3401,16 @@ a.channel:hover {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--action) 60%, transparent);
 }
 
-/* The BS monogram: green artwork on the light theme, white on the dark theme.
-   A white mark with no green sibling (the footer) always shows. */
+/* The BS mark: one colour artwork. The footer and the dark theme sit on dark
+   surfaces, so the darkest greens are lifted a little to stay readable. */
 .brand-img {
   display: block;
   width: auto;
-  height: 38px;
+  height: 40px;
   object-fit: contain;
 }
-.brand-img-green ~ .brand-img-white {
-  display: none;
-}
-[data-theme="dark"] .brand-img-green {
-  display: none;
-}
-[data-theme="dark"] .brand-img-green ~ .brand-img-white {
-  display: block;
+[data-theme="dark"] .brand-img,
+.footer .brand-img,
+.site-footer .brand-img {
+  filter: brightness(1.35) saturate(1.1);
 }

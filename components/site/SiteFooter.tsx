@@ -64,7 +64,7 @@ export function SiteFooter({
       <div className="footer-grid">
         <div className="footer-brand">
           <Link href={home} className="site-logo">
-            <BrandMark variant="white" className="site-logo-img" />
+            <BrandMark className="site-logo-img" />
             <span className="site-logo-word">BikinSaaS</span>
           </Link>
           <p>{ui.footer.tagline}</p>
