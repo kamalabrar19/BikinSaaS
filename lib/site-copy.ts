@@ -70,7 +70,7 @@ export interface SiteCopy {
     seePricing: string;
   };
   portfolio: { eyebrow: string; title: string; titleEm: string; count: string; empty: string; filter: string };
-  caseStudy: { back: string; visit: string; similar: string; next: string; eyebrow: string; nextEyebrow: string };
+  caseStudy: { gallery: { open: string; close: string; prev: string; next: string }; back: string; visit: string; similar: string; next: string; eyebrow: string; nextEyebrow: string };
   footer: { eyebrow: string; title: string; titleEm: string; pages: string; reach: string; toTop: string };
   common: { backHome: string; optional: string; close: string; more: string; talk: string; request: string; prices: string };
   floating: string;
@@ -200,6 +200,7 @@ const id: SiteCopy = {
     filter: "Filter kategori",
   },
   caseStudy: {
+    gallery: { open: "Lihat layar penuh", close: "Tutup", prev: "Sebelumnya", next: "Berikutnya" },
     back: "Semua portofolio",
     visit: "Kunjungi website",
     similar: "Saya mau yang mirip",
@@ -352,6 +353,7 @@ const en: SiteCopy = {
     filter: "Filter by category",
   },
   caseStudy: {
+    gallery: { open: "View full screen", close: "Close", prev: "Previous", next: "Next" },
     back: "All work",
     visit: "Visit website",
     similar: "I want something similar",

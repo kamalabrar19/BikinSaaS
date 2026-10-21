@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { categoryLabel, getContent } from "@/content";
 import { Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
+import { CaseGallery } from "@/components/site/CaseGallery";
 import { Panel } from "@/components/site/Panel";
 import { WorkArt, WorkCover } from "@/components/site/WorkCard";
 import { targetProps } from "@/lib/contact";
@@ -133,18 +134,7 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
         {/* Uploaded from the panel. Pictures and videos share the block, so a
             work item can show a screen recording next to its screenshots. */}
         {item.gallery?.length ? (
-          <div className="case-gallery">
-            {item.gallery.map((media, mediaIndex) => (
-              <figure className="case-shot" key={`${media.src}-${mediaIndex}`}>
-                <WorkCover
-                  src={media.src}
-                  className="case-shot-frame"
-                  alt={media.alt || item.title}
-                />
-                {media.caption ? <figcaption>{media.caption}</figcaption> : null}
-              </figure>
-            ))}
-          </div>
+          <CaseGallery items={item.gallery} title={item.title} labels={copy.caseStudy.gallery} />
         ) : null}
       </Panel>
 
