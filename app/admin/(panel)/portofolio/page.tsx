@@ -19,7 +19,10 @@ export default function PortfolioPage() {
           </p>
         </div>
       </header>
-      <Editor initialDoc={getAdminDoc()} sections={[{ key: "work", variant: "cards" }]} />
+      <Editor initialDoc={getAdminDoc()} sections={[
+          { key: "categories", variant: "tags" },
+          { key: "work", variant: "cards" },
+        ]} />
     </>
   );
 }

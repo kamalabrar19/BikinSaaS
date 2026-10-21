@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getContent } from "@/content";
+import { categoryLabel, getContent } from "@/content";
 import { Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { Panel } from "@/components/site/Panel";
 import { WorkArt, WorkCover } from "@/components/site/WorkCard";
@@ -80,7 +80,7 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
           <Reveal y={16}>
             <div className="case-tags">
               <span className="tag tag-accent">{kindLabel}</span>
-              <span className="tag">{ui.work.categories[item.category]}</span>
+              {categoryLabel(content, item.category) ? <span className="tag">{categoryLabel(content, item.category)}</span> : null}
             </div>
           </Reveal>
           <RevealText as="h1" id="case-title" onMount delay={0.1} text={item.title} className="page-title case-title" />

@@ -25,6 +25,7 @@ export type FieldDef =
   | { kind: "list"; key: string; label: string; hint?: string; placeholder?: string }
   | { kind: "select"; key: string; label: string; hint?: string; options: { value: string; label: string }[] }
   | { kind: "toggle"; key: string; label: string; hint?: string }
+  | { kind: "category"; key: string; label: string; hint?: string }
   | { kind: "cover"; key: string; label: string; hint?: string }
   | { kind: "gallery"; key: string; label: string; hint?: string };
 
@@ -39,13 +40,6 @@ export interface CollectionDef {
   titleOf: (row: Row, locale: Locale) => string;
   newRow: () => Row;
 }
-
-const WORK_CATEGORY_OPTIONS = [
-  { value: "takeover", label: "Takeover — website yang sudah jalan" },
-  { value: "company", label: "Company profile" },
-  { value: "saas", label: "SaaS / aplikasi web" },
-  { value: "ssb", label: "Sekolah sepak bola" },
-];
 
 const SERVICE_ICON_OPTIONS = [
   { value: "palette", label: "Palet — desain & branding" },
@@ -71,6 +65,17 @@ const NAME_HINT = "Judul yang tampil di halaman. Kolom Inggris boleh dikosongkan
 
 export const COLLECTIONS: CollectionDef[] = [
   {
+    key: "categories",
+    label: "Kategori",
+    singular: "kategori",
+    hint: "Jenis karya yang jadi tombol filter di halaman portofolio. Urutan di sini = urutan tombol.",
+    neutral: [{ kind: "text", key: "id", label: "Kode", mono: true }],
+    copy: [{ kind: "text", key: "name", label: "Nama kategori", hint: "Kolom Inggris boleh dikosongkan." }],
+    titleOf: (row, locale) => rowText(row, locale, "name") || row.id || "(tanpa nama)",
+    newRow: () => ({ id: tmpId("kategori"), copy: { id: {}, en: {} } }) as Row,
+  },
+
+  {
     key: "work",
     label: "Portofolio",
     singular: "karya",
@@ -83,7 +88,7 @@ export const COLLECTIONS: CollectionDef[] = [
         mono: true,
         hint: "Terisi otomatis. Ubah hanya bila perlu.",
       },
-      { kind: "select", key: "category", label: "Kategori", options: WORK_CATEGORY_OPTIONS },
+      { kind: "category", key: "category", label: "Kategori", hint: "Daftar kategori diatur di bagian Kategori di atas." },
       {
         kind: "select",
         key: "kind",
@@ -345,6 +350,7 @@ export function suggestId(def: CollectionDef, row: Row): string {
 
 /** The copy field that acts as a row's name, per collection. */
 const TITLE_KEY: Record<string, string> = {
+  categories: "name",
   work: "title",
   team: "name",
   websitePlans: "name",

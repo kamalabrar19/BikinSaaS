@@ -157,13 +157,23 @@ export interface Content {
   maintenance: MaintenancePlan[];
   policies: Policy[];
   work: WorkItem[];
-  workCategories: readonly WorkCategory[];
+  workCategories: WorkCategoryEntry[];
   ssbFeatures: SsbFeature[];
   faqs: Faq[];
   team: TeamMember[];
   launchYear: number;
   /** Cheapest website plan, for the supporting line under the statement. */
   entryPrice: string;
+}
+
+export interface WorkCategoryEntry {
+  id: string;
+  label: string;
+}
+
+/** The label of a work category, or "" when the item points at one that was deleted. */
+export function categoryLabel(content: Pick<Content, "workCategories">, id: string): string {
+  return content.workCategories.find((entry) => entry.id === id)?.label ?? "";
 }
 
 export function buildBaseContent(locale: Locale): Content {
@@ -244,7 +254,7 @@ export function buildBaseContent(locale: Locale): Content {
       stack: [...copy.work[entry.id].stack],
     })),
 
-    workCategories: catalog.WORK_CATEGORIES,
+    workCategories: catalog.WORK_CATEGORIES.map((id) => ({ id, label: copy.ui.work.categories[id] })),
 
     ssbFeatures: catalog.SSB_FEATURES.map((id) => ({ id, ...copy.ssbFeatures[id] })),
 

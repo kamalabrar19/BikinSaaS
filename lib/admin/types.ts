@@ -82,6 +82,7 @@ export interface ContactSettings {
 }
 
 export type CollectionKey =
+  | "categories"
   | "work"
   | "team"
   | "websitePlans"
@@ -98,6 +99,7 @@ export interface AdminDoc {
   version: number;
   updatedAt: string;
   settings: ContactSettings;
+  categories: Row[];
   work: WorkRow[];
   team: TeamRow[];
   websitePlans: PlanRow[];
@@ -122,6 +124,7 @@ export function emptyDoc(): AdminDoc {
     version: DOC_VERSION,
     updatedAt: new Date().toISOString(),
     settings: emptySettings(),
+    categories: [],
     work: [],
     team: [],
     websitePlans: [],

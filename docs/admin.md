@@ -34,7 +34,8 @@ Panelnya sengaja pendek: **empat halaman**.
 | Halaman | Isinya |
 | --- | --- |
 | Ringkasan | Pengunjung, halaman dilihat, yang menghubungi (WhatsApp / email / telepon / formulir), grafik per hari, halaman terpopuler, asal pengunjung, perangkat, bahasa. Rentang 7 / 30 / 90 hari. |
-| Portofolio | Judul, klien, masalah, solusi, hasil, cerita, teknologi, **sampul + galeri (foto/GIF/video)** |
+| Kategori | Nama kategori (Indonesia/Inggris). Jadi tombol filter di halaman portofolio; tiap karya memilih satu. Kategori yang masih dipakai karya tidak bisa dihapus. |
+| Portofolio | Judul, link website, klien, masalah, solusi, hasil, cerita, teknologi, **sampul + galeri (foto/GIF/video)** |
 | Harga | Paket website, paket aplikasi, tambahan, dan biaya perawatan bulanan |
 | Tim | Anggota tim di beranda: foto, nama, peran, cerita singkat, keahlian, dan tautan LinkedIn / Instagram / GitHub |
 

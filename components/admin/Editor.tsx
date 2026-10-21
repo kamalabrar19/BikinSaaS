@@ -22,7 +22,7 @@ import { MediaPreview } from "./Media";
  * kept until the panel's own Save is pressed, and it is pressed once per row.
  */
 
-type Variant = "cards" | "list" | "people";
+type Variant = "cards" | "list" | "people" | "tags";
 
 export interface SectionSpec {
   key: CollectionKey;
@@ -42,13 +42,6 @@ interface Editing {
 }
 
 const WIDE: Record<string, boolean> = { textarea: true, list: true, cover: true, gallery: true };
-
-const CATEGORY_LABEL: Record<string, string> = {
-  takeover: "Takeover",
-  company: "Company profile",
-  saas: "SaaS",
-  ssb: "Sekolah sepak bola",
-};
 
 const asRecord = (row: Row) => row as unknown as Record<string, unknown>;
 
@@ -116,7 +109,13 @@ export function Editor({
     }
   }, []);
 
-  const openNew = (def: CollectionDef) => setEditing({ key: def.key, index: null, draft: def.newRow() });
+  const categoryOptions = (doc.categories ?? []).map((row) => ({ value: row.id, label: rowText(row, "id", "name") || row.id }));
+
+  const openNew = (def: CollectionDef) => {
+    const draft = def.newRow();
+    if (def.key === "work" && categoryOptions[0]) (draft as unknown as Record<string, unknown>).category = categoryOptions[0].value;
+    setEditing({ key: def.key, index: null, draft });
+  };
   const openRow = (key: CollectionKey, index: number) =>
     setEditing({ key, index, draft: structuredClone(rowsOf(key)[index]) });
 
@@ -158,6 +157,14 @@ export function Editor({
   };
 
   const remove = async (key: CollectionKey, index: number) => {
+    if (key === "categories") {
+      const id = rowsOf(key)[index]?.id;
+      const used = (doc.work ?? []).filter((one) => one.category === id).length;
+      if (used) {
+        setToast({ kind: "error", text: `Kategori ini masih dipakai ${used} karya. Pindahkan karyanya ke kategori lain dulu.` });
+        return;
+      }
+    }
     await persist({ ...doc, [key]: rowsOf(key).filter((_, at) => at !== index) }, "Sudah dihapus dari situs.");
   };
 
@@ -213,11 +220,28 @@ export function Editor({
                   />
                 ))}
               </ul>
+            ) : variant === "tags" ? (
+              <ul className="price-list">
+                {rows.map((row, index) => (
+                  <TagRow
+                    key={row.id}
+                    row={row}
+                    index={index}
+                    last={index === rows.length - 1}
+                    busy={busy}
+                    used={(doc.work ?? []).filter((one) => one.category === row.id).length}
+                    onOpen={() => openRow(key, index)}
+                    onMove={(by) => void move(key, index, by)}
+                    onDelete={() => void remove(key, index)}
+                  />
+                ))}
+              </ul>
             ) : variant === "cards" ? (
               <ul className="work-grid">
                 {rows.map((row, index) => (
                   <WorkCard
                     key={row.id}
+                    categoryName={categoryOptions.find((option) => option.value === asRecord(row).category)?.label ?? ""}
                     row={row}
                     index={index}
                     last={index === rows.length - 1}
@@ -252,6 +276,7 @@ export function Editor({
       {editing ? (
         <Panel
           editing={editing}
+          categories={categoryOptions}
           busy={busy}
           onChange={(draft) => setEditing({ ...editing, draft })}
           onClose={() => setEditing(null)}
@@ -319,7 +344,7 @@ function RowActions({ index, last, busy, onMove, onDelete, onOpen }: Omit<RowPro
   );
 }
 
-function WorkCard(props: RowProps) {
+function WorkCard(props: RowProps & { categoryName: string }) {
   const { row, index } = props;
   const r = asRecord(row);
   const cover = typeof r.cover === "string" ? r.cover : "";
@@ -339,10 +364,30 @@ function WorkCard(props: RowProps) {
         {client ? <span className="chip chip-solid">Proyek klien</span> : null}
       </button>
       <div className="work-body">
-        <p className="work-meta">{CATEGORY_LABEL[String(r.category)] ?? String(r.category)}</p>
+        <p className="work-meta">{props.categoryName || "Tanpa kategori"}</p>
         <h3>{title}</h3>
         {!cover ? <p className="hint">Belum ada foto sampul — situs memakai motif bawaan.</p> : null}
       </div>
+      <RowActions {...props} />
+    </li>
+  );
+}
+
+function TagRow(props: RowProps & { used: number }) {
+  const { row, index, used } = props;
+  const name = rowText(row, "id", "name") || "(tanpa nama)";
+  const english = copyFor(row, "en").name;
+
+  return (
+    <li className="price-row">
+      <span className="price-index">{String(index + 1).padStart(2, "0")}</span>
+      <button type="button" className="price-main" onClick={props.onOpen}>
+        <strong>{name}</strong>
+        <span className="muted">
+          {typeof english === "string" && english ? `EN: ${english}` : "EN: sama dengan Indonesia"}
+        </span>
+      </button>
+      <p className="price-amount">{used} karya</p>
       <RowActions {...props} />
     </li>
   );
@@ -402,6 +447,7 @@ function PriceRow(props: RowProps & { def: CollectionDef }) {
 
 function Panel({
   editing,
+  categories,
   busy,
   onChange,
   onClose,
@@ -409,6 +455,7 @@ function Panel({
   onError,
 }: {
   editing: Editing;
+  categories: { value: string; label: string }[];
   busy: boolean;
   onChange: (row: Row) => void;
   onClose: () => void;
@@ -462,6 +509,7 @@ function Panel({
       key={field.key}
       def={field}
       locale="id"
+      categories={categories}
       value={value}
       className={wide || WIDE[field.kind] ? "field-wide" : undefined}
       onChange={set}

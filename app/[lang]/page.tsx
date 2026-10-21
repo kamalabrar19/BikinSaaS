@@ -2,7 +2,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getContent, type Plan } from "@/content";
+import { categoryLabel, getContent, type Plan } from "@/content";
 import { ContactChannels } from "@/components/site/ContactChannels";
 import { ShortLabel } from "@/components/site/ShortLabel";
 import { ContactForm } from "@/components/site/ContactForm";
@@ -196,7 +196,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
                 artIndex={index}
                 href={`${home}/portfolio/${item.id}`}
                 kindLabel={item.kind === "takeover" ? copy.work.client : copy.work.concept}
-                categoryLabel={ui.work.categories[item.category]}
+                categoryLabel={categoryLabel(content, item.category)}
               />
             </Reveal>
           ))}

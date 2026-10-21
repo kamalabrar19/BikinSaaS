@@ -104,6 +104,8 @@ function neutralValue(field: FieldDef, raw: Record<string, unknown>): unknown {
     }
     case "toggle":
       return bool(raw[field.key]);
+    case "category":
+      return safeId(raw[field.key], "");
     case "cover":
       return safeSrc(raw[field.key]);
     case "gallery": {

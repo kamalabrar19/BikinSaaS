@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getContent } from "@/content";
+import { categoryLabel, getContent } from "@/content";
 import { HeroOrb } from "@/components/site/HeroOrb";
 import { ShortLabel } from "@/components/site/ShortLabel";
 import { Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
@@ -46,10 +46,10 @@ export default async function PortfolioPage({ params }: { params: Promise<{ lang
     artIndex: index,
     href: `${home}/portfolio/${item.id}`,
     kindLabel: item.kind === "takeover" ? copy.work.client : copy.work.concept,
-    categoryLabel: ui.work.categories[item.category],
+    categoryLabel: categoryLabel(content, item.category),
   }));
 
-  const categories = content.workCategories.map((id) => ({ id, label: ui.work.categories[id] }));
+  const categories = content.workCategories;
 
   return (
     <>

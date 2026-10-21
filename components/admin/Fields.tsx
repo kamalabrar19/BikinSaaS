@@ -21,6 +21,8 @@ interface FieldProps {
   locale: Locale;
   onChange: (value: unknown) => void;
   onError: (message: string) => void;
+  /** The categories a work item can be filed under (admin "Kategori" list). */
+  categories?: { value: string; label: string }[];
   /** Extra class on the wrapper — media and long text span the full width. */
   className?: string;
 }
@@ -99,7 +101,7 @@ function StringList({
   );
 }
 
-export function Field({ def, value, locale, onChange, onError, className }: FieldProps) {
+export function Field({ def, value, locale, onChange, onError, categories = [], className }: FieldProps) {
   const wrapper = className ? `field ${className}` : "field";
 
   if (def.kind === "toggle") {
@@ -188,6 +190,21 @@ export function Field({ def, value, locale, onChange, onError, className }: Fiel
             ))}
           </select>
         );
+
+      case "category": {
+        const current = typeof value === "string" ? value : "";
+        const known = categories.some((option) => option.value === current);
+        return (
+          <select className="input" value={current} onChange={(event) => onChange(event.target.value)}>
+            {!known ? <option value={current}>{current ? `${current} (sudah dihapus)` : "Pilih kategori…"}</option> : null}
+            {categories.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        );
+      }
 
       case "cover":
         return (

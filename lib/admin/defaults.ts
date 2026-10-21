@@ -49,6 +49,11 @@ function seedDocument(): AdminDoc {
 
   /* ------------------------------------------------------------ portfolio -- */
 
+  doc.categories = id.workCategories.map((category, index) => ({
+    id: category.id,
+    copy: { id: { name: category.label }, en: { name: en.workCategories[index]?.label ?? category.label } },
+  }));
+
   const enWork = byId(en.work);
   doc.work = id.work.map((item) => {
     const other = enWork.get(item.id);

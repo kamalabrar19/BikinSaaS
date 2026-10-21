@@ -163,6 +163,12 @@ export function applyOverrides(base: Content, doc: AdminDoc | null): Content {
   if (hasRows(doc.policies)) next.policies = doc.policies.map((row) => policyFrom(row, locale));
   if (hasRows(doc.faqs)) next.faqs = doc.faqs.map((row) => faqFrom(row, locale));
   if (hasRows(doc.team)) next.team = doc.team.map((row) => teamFrom(row, locale));
+  if (hasRows(doc.categories)) {
+    next.workCategories = doc.categories.map((row) => ({
+      id: row.id,
+      label: rowText(row, locale, "name") || row.id,
+    }));
+  }
   if (hasRows(doc.work)) next.work = doc.work.map((row) => workFrom(row, locale));
 
   if (hasRows(doc.websitePlans)) next.websitePlans = doc.websitePlans.map((row) => planFrom(row, locale));
