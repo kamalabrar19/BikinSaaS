@@ -20,8 +20,8 @@ export function instagramProfile(): { url: string; handle: string } {
   return { url, handle: `@${handle}` };
 }
 
-/** 0819-5343-683 in international form. */
-export const DEFAULT_WHATSAPP = "628195343683";
+/** 0819-5934-3683 in international form. */
+export const DEFAULT_WHATSAPP = "6281959343683";
 
 /**
  * Digits only, in international form for Indonesia: "0819 5343 683", "+62 819…"
