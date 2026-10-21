@@ -3,10 +3,37 @@
  * browser can share them: the server resolves which number is in force, the
  * browser builds the link when a visitor clicks.
  *
- * An unconfigured number must never become a working-looking link — the
- * previous version fell back to the placeholder 6281234567890, which shipped a
- * link to someone else's phone.
+ * The business's own WhatsApp number is the default, so a fresh deploy already
+ * reaches the right phone. NEXT_PUBLIC_WHATSAPP_NUMBER (or the admin panel)
+ * overrides it. A made-up placeholder number must never come back: an earlier
+ * version fell back to 6281234567890, which was a link to someone else's phone.
  */
+
+/** The business's Instagram. NEXT_PUBLIC_INSTAGRAM_URL overrides it. */
+export const DEFAULT_INSTAGRAM = "https://instagram.com/bikinsaas.id";
+
+/** The profile link and its "@handle", for footers and contact cards. */
+export function instagramProfile(): { url: string; handle: string } {
+  const raw = (process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "").trim();
+  const url = /^https?:\/\//i.test(raw) ? raw : DEFAULT_INSTAGRAM;
+  const handle = url.replace(/\/+$/, "").split("/").pop()?.replace(/^@/, "") || "bikinsaas.id";
+  return { url, handle: `@${handle}` };
+}
+
+/** 0819-5343-683 in international form. */
+export const DEFAULT_WHATSAPP = "628195343683";
+
+/**
+ * Digits only, in international form for Indonesia: "0819 5343 683", "+62 819…"
+ * and "819…" all become "62819…". Anything shorter than a real number is "".
+ */
+export function normalizeWhatsapp(raw: string): string {
+  let digits = raw.replace(/\D/g, "");
+  if (digits.startsWith("0")) digits = `62${digits.slice(1)}`;
+  else if (digits.startsWith("8")) digits = `62${digits}`;
+  return digits.length >= MIN_DIGITS ? digits : "";
+}
+
 
 export interface ContactSettings {
   /** Digits only, or "" when not configured. */
@@ -56,7 +83,7 @@ export function composeMessage(intro: string, lines: (string | false | null | un
 /** The build-time environment. Next inlines these two into the client bundle. */
 export function envContactSettings(): ContactSettings {
   return {
-    whatsapp: (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, ""),
+    whatsapp: normalizeWhatsapp(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "") || DEFAULT_WHATSAPP,
     email: (process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "").trim(),
   };
 }

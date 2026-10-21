@@ -1,3 +1,4 @@
+import { normalizeWhatsapp } from "@/lib/contact-target";
 import { COLLECTIONS, type CollectionDef, type FieldDef } from "./fields";
 import {
   DOC_VERSION,
@@ -140,7 +141,7 @@ function sanitizeRow(def: CollectionDef, input: unknown, index: number): Row | n
 
 function sanitizeSettings(input: unknown): ContactSettings {
   const raw = input && typeof input === "object" ? (input as Record<string, unknown>) : {};
-  const whatsapp = str(raw.whatsapp, 24).replace(/[^\d]/g, "").slice(0, 20);
+  const whatsapp = normalizeWhatsapp(str(raw.whatsapp, 24)).slice(0, 20);
   return {
     whatsapp,
     email: str(raw.email, 200).trim(),

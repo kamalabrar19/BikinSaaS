@@ -26,6 +26,25 @@
   --line-strong: rgba(23, 24, 26, 0.26);
   --glow: rgba(14, 110, 63, 0.07);
 
+  /* Surfaces that flip against the page (the popular plan, the marquee, the
+     custom-request card). In the light theme they are dark with pale text; in the
+     dark theme they stay dark with pale text, rather than turning pale with
+     dark text. */
+  --inv-bg: var(--ink);
+  --inv-fg: var(--paper);
+
+  /* The floating header. */
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.3));
+  --glass-bg-strong: linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.5));
+  --glass-edge: rgba(255, 255, 255, 0.75);
+  --glass-shine: rgba(255, 255, 255, 0.85);
+  --glass-sheen: rgba(255, 255, 255, 0.5);
+  --glass-hover: rgba(255, 255, 255, 0.55);
+  --glass-active: rgba(255, 255, 255, 0.85);
+  --glass-shadow: 0 14px 34px -14px rgba(23, 24, 26, 0.3), 0 2px 6px rgba(23, 24, 26, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(23, 24, 26, 0.06);
+  --glass-pill-shadow: 0 4px 12px -6px rgba(23, 24, 26, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
   --footer-bg: #17181a;
   --footer-ink: #f3f3f1;
   --footer-quiet: rgba(243, 243, 241, 0.6);
@@ -163,23 +182,65 @@ body {
 .site-header {
   position: fixed;
   z-index: 60;
-  inset: 0 0 auto;
+  top: max(0.75rem, env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  /* Centred with auto margins rather than a transform: framer-motion drives the
+     header's own transform when it hides on scroll. */
+  margin-inline: auto;
+  width: min(calc(100% - 1.5rem), var(--frame));
+  height: 60px;
   display: flex;
   align-items: center;
-  gap: clamp(0.75rem, 2vw, 2rem);
-  height: var(--header-h);
-  padding-inline: var(--pad);
-  background: color-mix(in srgb, var(--paper) 78%, transparent);
-  border-bottom: 1px solid transparent;
-  transition: background 260ms var(--ease), border-color 260ms var(--ease);
+  gap: clamp(0.5rem, 1.6vw, 1.25rem);
+  padding: 0 0.55rem 0 1.1rem;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+  transition: background 320ms var(--ease), box-shadow 320ms var(--ease);
+}
+/* Liquid glass: a soft specular highlight along the top edge and a slow sheen
+   that drifts across the pill, both underneath the content. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 200% at 14% -70%, var(--glass-shine), transparent 56%),
+    linear-gradient(112deg, transparent 34%, var(--glass-sheen) 50%, transparent 66%);
+  background-size: 100% 100%, 260% 100%;
+  background-position: 0 0, 140% 0;
+  animation: glass-sweep 10s var(--ease) infinite;
+  pointer-events: none;
+}
+@keyframes glass-sweep {
+  0%,
+  55% {
+    background-position: 0 0, 140% 0;
+  }
+  100% {
+    background-position: 0 0, -40% 0;
+  }
 }
 .site-header.is-scrolled {
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
-  border-bottom-color: var(--line);
+  --glass-bg: var(--glass-bg-strong);
 }
-@supports (backdrop-filter: blur(12px)) {
+/* Without backdrop-filter the glass would be see-through type over type, so the
+   fallback is simply more opaque. */
+@supports not (backdrop-filter: blur(1px)) {
   .site-header {
-    backdrop-filter: blur(14px) saturate(140%);
+    --glass-bg: var(--glass-bg-strong);
+  }
+}
+@supports (backdrop-filter: blur(1px)) {
+  .site-header {
+    backdrop-filter: blur(18px) saturate(190%);
+    -webkit-backdrop-filter: blur(18px) saturate(190%);
   }
 }
 
@@ -198,19 +259,6 @@ body {
   flex: none;
   color: var(--ink);
 }
-.site-logo-mark {
-  display: grid;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  border-radius: 9px;
-  background: var(--action);
-  color: var(--action-on);
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  line-height: 1;
-}
 .site-logo-word {
   font-size: 1.0625rem;
   font-weight: 700;
@@ -220,34 +268,27 @@ body {
 .site-nav {
   display: flex;
   align-items: center;
-  gap: clamp(0.85rem, 2vw, 1.75rem);
+  gap: 0.15rem;
   margin-left: auto;
 }
 .site-nav a {
   position: relative;
-  padding-block: 0.35rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
   color: var(--ink-quiet);
   font-size: 0.9375rem;
-  transition: color 200ms var(--ease);
-}
-.site-nav a::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 1.5px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  transition: transform 260ms var(--ease);
+  font-weight: 500;
+  transition: color 200ms var(--ease), background 200ms var(--ease), box-shadow 200ms var(--ease);
 }
 .site-nav a:hover,
-.site-nav a:focus-visible,
-.site-nav a.is-active {
+.site-nav a:focus-visible {
+  background: var(--glass-hover);
   color: var(--ink);
 }
-.site-nav a:hover::after,
-.site-nav a.is-active::after {
-  transform: scaleX(1);
+.site-nav a.is-active {
+  background: var(--glass-active);
+  box-shadow: var(--glass-pill-shadow);
+  color: var(--ink);
 }
 
 .site-actions {
@@ -293,11 +334,12 @@ body {
   width: 38px;
   height: 38px;
   place-items: center;
+  align-content: center;
   gap: 5px;
   padding: 0;
-  border: 0;
+  border: 1px solid var(--glass-edge);
   border-radius: 999px;
-  background: transparent;
+  background: var(--glass-hover);
 }
 .menu-toggle span {
   display: block;
@@ -322,7 +364,9 @@ body {
   justify-content: space-between;
   gap: 2rem;
   padding: calc(var(--header-h) + 2rem) var(--pad) 3rem;
-  background: var(--paper);
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  backdrop-filter: blur(26px) saturate(160%);
+  -webkit-backdrop-filter: blur(26px) saturate(160%);
   overflow-y: auto;
 }
 .mobile-menu nav {
@@ -396,6 +440,9 @@ body {
 .button[disabled] {
   opacity: 0.6;
   cursor: progress;
+}
+.lbl-short {
+  display: none;
 }
 .header-cta {
   display: inline-flex;
@@ -791,8 +838,8 @@ body {
 .marquee {
   overflow: hidden;
   padding-block: clamp(1.5rem, 3vw, 2.25rem);
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--inv-bg);
+  color: var(--inv-fg);
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
@@ -909,18 +956,18 @@ body {
   background: var(--action);
 }
 .service-card-cta {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--inv-bg);
+  color: var(--inv-fg);
 }
 .service-card-cta h3 {
-  color: var(--paper);
+  color: var(--inv-fg);
 }
 .service-card-cta p {
-  color: color-mix(in srgb, var(--paper) 70%, transparent);
+  color: color-mix(in srgb, var(--inv-fg) 70%, transparent);
 }
 .service-card-cta .service-number,
 .service-card-cta .service-arrow {
-  color: color-mix(in srgb, var(--paper) 55%, transparent);
+  color: color-mix(in srgb, var(--inv-fg) 55%, transparent);
 }
 .service-card-cta:hover .service-arrow {
   color: var(--action);
@@ -1244,8 +1291,8 @@ body {
   box-shadow: var(--shadow-lift);
 }
 .plan-card.is-popular {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--inv-bg);
+  color: var(--inv-fg);
 }
 .plan-top {
   display: flex;
@@ -1260,7 +1307,7 @@ body {
   letter-spacing: 0.1em;
 }
 .plan-card.is-popular .plan-top > span:first-child {
-  color: color-mix(in srgb, var(--paper) 55%, transparent);
+  color: color-mix(in srgb, var(--inv-fg) 55%, transparent);
 }
 .plan-badge {
   padding: 0.25rem 0.6rem;
@@ -1285,7 +1332,7 @@ body {
   line-height: 1.5;
 }
 .plan-card.is-popular .plan-tagline {
-  color: color-mix(in srgb, var(--paper) 72%, transparent);
+  color: color-mix(in srgb, var(--inv-fg) 72%, transparent);
 }
 .plan-price {
   display: grid;
@@ -1300,7 +1347,7 @@ body {
   text-transform: uppercase;
 }
 .plan-card.is-popular .plan-price > span {
-  color: color-mix(in srgb, var(--paper) 55%, transparent);
+  color: color-mix(in srgb, var(--inv-fg) 55%, transparent);
 }
 .plan-price strong {
   font-family: var(--font-display), Georgia, serif;
@@ -1337,7 +1384,7 @@ body {
   color: var(--action);
 }
 .plan-card.is-popular .plan-features li {
-  color: color-mix(in srgb, var(--paper) 78%, transparent);
+  color: color-mix(in srgb, var(--inv-fg) 78%, transparent);
 }
 .plan-card.is-popular .plan-features svg {
   color: color-mix(in srgb, var(--action) 60%, white);
@@ -1352,11 +1399,11 @@ body {
 }
 .plan-card.is-popular .button-ghost {
   border-color: rgba(243, 243, 241, 0.3);
-  color: var(--paper);
+  color: var(--inv-fg);
 }
 .plan-card.is-popular .button-ghost:hover {
   background: rgba(243, 243, 241, 0.1);
-  border-color: var(--paper);
+  border-color: var(--inv-fg);
 }
 
 .custom-strip {
@@ -1519,11 +1566,11 @@ body {
   margin-top: 1.25rem;
   padding: 1.25rem;
   border-radius: var(--radius);
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--inv-bg);
+  color: var(--inv-fg);
 }
 .addon-summary span {
-  color: color-mix(in srgb, var(--paper) 62%, transparent);
+  color: color-mix(in srgb, var(--inv-fg) 62%, transparent);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -1546,11 +1593,11 @@ body {
 }
 .addon-summary .button-ghost {
   border-color: rgba(243, 243, 241, 0.28);
-  color: var(--paper);
+  color: var(--inv-fg);
 }
 .addon-summary .button-ghost:hover {
   background: rgba(243, 243, 241, 0.12);
-  border-color: var(--paper);
+  border-color: var(--inv-fg);
 }
 
 /* -------------------------------------------------------------- good to know */
@@ -2068,8 +2115,8 @@ a.channel:hover {
   color: var(--ink-quiet);
 }
 .dialog-close:hover {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--inv-bg);
+  color: var(--inv-fg);
 }
 .order-summary {
   display: grid;
@@ -2164,14 +2211,14 @@ a.channel:hover {
   z-index: 1;
 }
 .filter.is-active {
-  color: var(--paper);
+  color: var(--inv-fg);
 }
 .filter-pill {
   position: absolute;
   inset: 0;
   z-index: 0;
   border-radius: 999px;
-  background: var(--ink);
+  background: var(--inv-bg);
 }
 .filter sup {
   font-size: 0.7rem;
@@ -2560,6 +2607,20 @@ a.channel:hover {
   --line-strong: rgba(242, 244, 242, 0.3);
   --glow: rgba(52, 193, 114, 0.1);
 
+  --inv-bg: #222a26;
+  --inv-fg: #f2f4f2;
+
+  --glass-bg: linear-gradient(135deg, rgba(48, 58, 53, 0.58), rgba(18, 22, 20, 0.4));
+  --glass-bg-strong: linear-gradient(135deg, rgba(40, 48, 44, 0.8), rgba(14, 18, 16, 0.66));
+  --glass-edge: rgba(255, 255, 255, 0.16);
+  --glass-shine: rgba(255, 255, 255, 0.2);
+  --glass-sheen: rgba(255, 255, 255, 0.1);
+  --glass-hover: rgba(255, 255, 255, 0.1);
+  --glass-active: rgba(255, 255, 255, 0.16);
+  --glass-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  --glass-pill-shadow: 0 4px 12px -6px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
   --footer-bg: #060807;
   --footer-ink: #f2f4f2;
   --footer-quiet: rgba(242, 244, 242, 0.6);
@@ -2657,17 +2718,48 @@ a.channel:hover {
   .menu-toggle {
     display: grid;
   }
-  .site-actions {
+  /* The desktop rule `.site-nav + .site-actions` is more specific than a bare
+     `.site-actions`, which left the buttons stranded mid-bar on a phone. */
+  .site-header .site-actions {
     margin-left: auto;
+  }
+  .site-header {
+    top: max(0.5rem, env(safe-area-inset-top));
+    width: calc(100% - 1rem);
+    height: 56px;
+    padding: 0 0.4rem 0 0.8rem;
+  }
+  /* Phones: the planet becomes a backdrop on the right edge, allowed to run off
+     the screen, instead of a block stacked under the buttons. */
+  /* The wrapper carries a transform (the scroll parallax), which would make it
+     the containing block for anything absolute inside it, so the wrapper itself
+     is what gets pinned to the hero. */
+  .hero .hero-orb-wrap {
+    position: absolute;
+    top: calc(var(--header-h) - 2.25rem);
+    right: -52vw;
+    z-index: 0;
+    width: min(100vw, 520px);
+    opacity: 0.75;
+    pointer-events: none;
+  }
+  .hero .hero-visual {
+    min-height: 0;
+    aspect-ratio: 1;
+  }
+  .hero .hero-visual .hero-coordinate {
+    display: none;
+  }
+  .hero .hero-copy,
+  .hero .hero-footer {
+    position: relative;
+    z-index: 1;
   }
   .hero-grid,
   .stats-band,
   .footer-top,
   .footer-grid {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .hero-visual {
-    min-height: 300px;
   }
   .stats-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2687,6 +2779,17 @@ a.channel:hover {
 }
 
 @media (max-width: 640px) {
+  .lbl-full {
+    display: none;
+  }
+  .lbl-short {
+    display: inline;
+  }
+  .section-head-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
   .service-grid,
   .plan-grid,
   .steps,
@@ -3246,16 +3349,6 @@ a.channel:hover {
   font-weight: 700;
   letter-spacing: -0.02em;
 }
-.nf-brand-mark {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: var(--action);
-  color: var(--action-on);
-  font: 700 1.05rem var(--font-display), Georgia, serif;
-}
 .nf-standalone .nf {
   min-height: 100svh;
 }
@@ -3300,4 +3393,28 @@ a.channel:hover {
   .nf-ring {
     animation: none;
   }
+}
+
+/* In the dark theme the popular plan keeps a dark card (see --inv-bg) and a
+   thin accent ring, so it still stands out from its neighbours. */
+[data-theme="dark"] .plan-card.is-popular {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--action) 60%, transparent);
+}
+
+/* The BS monogram: green artwork on the light theme, white on the dark theme.
+   A white mark with no green sibling (the footer) always shows. */
+.brand-img {
+  display: block;
+  width: auto;
+  height: 38px;
+  object-fit: contain;
+}
+.brand-img-green ~ .brand-img-white {
+  display: none;
+}
+[data-theme="dark"] .brand-img-green {
+  display: none;
+}
+[data-theme="dark"] .brand-img-green ~ .brand-img-white {
+  display: block;
 }

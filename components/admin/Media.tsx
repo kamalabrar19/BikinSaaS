@@ -82,9 +82,12 @@ async function uploadLocal(file: File): Promise<MediaItem> {
   return { src: data.src, kind: mediaKindOf(data.src) };
 }
 
-async function uploadFile(file: File, onProgress: (percent: number) => void): Promise<MediaItem> {
+/** Which Cloudinary subfolder an upload goes to. */
+export type MediaFolder = "portfolio" | "tim";
+
+async function uploadFile(file: File, folder: MediaFolder, onProgress: (percent: number) => void): Promise<MediaItem> {
   /* A fresh signature per file: each one is only valid for a short while. */
-  const response = await fetch("/api/admin/upload-sign");
+  const response = await fetch(`/api/admin/upload-sign?folder=${folder}`);
   if (response.status === 401) {
     window.location.href = "/admin/login";
     throw new Error("Sesi berakhir. Masuk lagi.");
@@ -134,9 +137,11 @@ function UploadButton({
   label,
   onDone,
   onError,
+  folder,
   compact = false,
 }: {
   label: string;
+  folder: MediaFolder;
   /** Called once with everything that uploaded, so a batch is never overwritten by its own last file. */
   onDone: (items: MediaItem[]) => void;
   onError: (message: string) => void;
@@ -154,7 +159,7 @@ function UploadButton({
         for (const [index, file] of list.entries()) {
           const prefix = list.length > 1 ? `${index + 1}/${list.length} · ` : "";
           setStatus(`${prefix}0%`);
-          done.push(await uploadFile(file, (percent) => setStatus(`${prefix}${percent}%`)));
+          done.push(await uploadFile(file, folder, (percent) => setStatus(`${prefix}${percent}%`)));
         }
       } catch (error) {
         onError(error instanceof Error ? error.message : "Gagal mengunggah berkas.");
@@ -164,7 +169,7 @@ function UploadButton({
         if (input.current) input.current.value = "";
       }
     },
-    [onDone, onError],
+    [onDone, onError, folder],
   );
 
   const busy = status !== "";
@@ -257,18 +262,20 @@ export function CoverInput({
   onChange,
   alt = "",
   onError,
+  folder = "portfolio",
 }: {
   value: string;
   onChange: (src: string) => void;
   alt?: string;
   onError: (message: string) => void;
+  folder?: MediaFolder;
 }) {
   const [showLibrary, setShowLibrary] = useState(false);
 
   return (
     <div className="media-field">
       <div className="media-row">
-        <UploadButton label="Unggah foto / video" onDone={(items) => onChange(items[0].src)} onError={onError} />
+        <UploadButton folder={folder} label="Unggah foto / video" onDone={(items) => onChange(items[0].src)} onError={onError} />
         <button type="button" className="btn btn-ghost" onClick={() => setShowLibrary((open) => !open)}>
           Pustaka
         </button>
@@ -315,10 +322,12 @@ export function GalleryInput({
   value,
   onChange,
   onError,
+  folder = "portfolio",
 }: {
   value: MediaItem[];
   onChange: (items: MediaItem[]) => void;
   onError: (message: string) => void;
+  folder?: MediaFolder;
 }) {
   const [showLibrary, setShowLibrary] = useState(false);
 
@@ -331,6 +340,7 @@ export function GalleryInput({
       <div className="media-row">
         <UploadButton
           compact
+          folder={folder}
           label="Unggah"
           onDone={(items) => onChange([...value, ...items])}
           onError={onError}

@@ -207,6 +207,7 @@ export const copyId = {
     },
 
     wa: {
+      chat: "Halo BikinSaaS, saya melihat website Anda dan ingin bertanya. Boleh dibantu?",
       consult: "Halo BikinSaaS, saya ingin konsultasi kebutuhan website atau sistem untuk bisnis saya.",
       scheduleCall: "Halo BikinSaaS, saya ingin mengatur jadwal telepon untuk membahas kebutuhan saya.",
       planIntro: "Halo BikinSaaS, saya tertarik dengan paket berikut:",
@@ -218,7 +219,7 @@ export const copyId = {
       labelBusiness: "Bisnis",
       labelService: "Kebutuhan",
       labelBudget: "Anggaran",
-      labelNeed: "Kebutuhan",
+      labelNeed: "Detail",
       labelNote: "Catatan",
       labelEstimate: "Perkiraan",
     },

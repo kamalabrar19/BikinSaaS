@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { isAuthed } from "@/lib/admin/auth";
-import { cloudinaryConfig, uploadSignature } from "@/lib/cloudinary";
+import { cloudinaryConfig, isUploadFolder, uploadSignature } from "@/lib/cloudinary";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,5 +17,6 @@ export async function GET(request: Request) {
   }
   const config = cloudinaryConfig();
   if (!config) return NextResponse.json({ configured: false });
-  return NextResponse.json({ configured: true, ...uploadSignature(config) });
+  const asked = new URL(request.url).searchParams.get("folder");
+  return NextResponse.json({ configured: true, ...uploadSignature(config, isUploadFolder(asked) ? asked : "portfolio") });
 }

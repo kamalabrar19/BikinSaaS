@@ -115,6 +115,7 @@ export default async function RootLayout({
   const { ui } = content;
   const copy = getSiteCopy(locale);
   const consult = consultTarget(locale, ui.wa.consult, ui.meta.title);
+  const chat = consultTarget(locale, ui.wa.chat, ui.meta.title);
   /* Resolved here so the client parts that build a link (the order dialog, the
      contact form) use the same number the server would. */
   const contact = contactSettings();
@@ -143,7 +144,7 @@ export default async function RootLayout({
             </main>
             <SiteFooter locale={locale} content={content} copy={copy} consult={consult} />
           </div>
-          <FloatingContact label={copy.floating} target={consult} />
+          <FloatingContact label={copy.floating} target={chat} />
         </Providers>
       </body>
     </html>

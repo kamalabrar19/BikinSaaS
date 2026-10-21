@@ -18,8 +18,20 @@ export interface CloudinaryConfig {
   apiSecret: string;
 }
 
-/** Everything the panel uploads lands in this folder. */
-export const CLOUDINARY_FOLDER = "bikinsaas/portfolio";
+/** Everything the panel uploads lives under this folder. */
+export const CLOUDINARY_ROOT = "BikinSaaS";
+
+/** One subfolder per kind of upload, so the media library stays tidy. */
+export const CLOUDINARY_FOLDERS = {
+  portfolio: `${CLOUDINARY_ROOT}/portfolio`,
+  tim: `${CLOUDINARY_ROOT}/tim`,
+} as const;
+
+export type UploadFolder = keyof typeof CLOUDINARY_FOLDERS;
+
+export function isUploadFolder(value: unknown): value is UploadFolder {
+  return typeof value === "string" && value in CLOUDINARY_FOLDERS;
+}
 
 export function cloudinaryConfig(): CloudinaryConfig | null {
   const url = process.env.CLOUDINARY_URL?.trim();
@@ -46,13 +58,14 @@ export function signParams(params: Record<string, string | number>, secret: stri
   return createHash("sha1").update(base + secret).digest("hex");
 }
 
-export function uploadSignature(config: CloudinaryConfig) {
+export function uploadSignature(config: CloudinaryConfig, kind: UploadFolder = "portfolio") {
   const timestamp = Math.floor(Date.now() / 1000);
-  const params = { folder: CLOUDINARY_FOLDER, timestamp };
+  const folder = CLOUDINARY_FOLDERS[kind];
+  const params = { folder, timestamp };
   return {
     cloudName: config.cloudName,
     apiKey: config.apiKey,
-    folder: CLOUDINARY_FOLDER,
+    folder,
     timestamp,
     signature: signParams(params, config.apiSecret),
   };
@@ -66,14 +79,14 @@ export interface CloudinaryAsset {
   createdAt: string;
 }
 
-/** Newest first, from the panel's folder only. */
+/** Newest first, from every folder under the BikinSaaS root. */
 export async function listAssets(config: CloudinaryConfig): Promise<CloudinaryAsset[]> {
   const auth = Buffer.from(`${config.apiKey}:${config.apiSecret}`).toString("base64");
   const response = await fetch(`https://api.cloudinary.com/v1_1/${config.cloudName}/resources/search`, {
     method: "POST",
     headers: { Authorization: `Basic ${auth}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      expression: `folder:${CLOUDINARY_FOLDER}`,
+      expression: `folder:${CLOUDINARY_ROOT}/*`,
       sort_by: [{ created_at: "desc" }],
       max_results: 100,
     }),

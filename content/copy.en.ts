@@ -214,6 +214,7 @@ export const copyEn = {
     },
 
     wa: {
+      chat: "Hello BikinSaaS, I saw your website and have a question. Could you help?",
       consult: "Hello BikinSaaS, I would like to talk about a website or system for my business.",
       scheduleCall: "Hello BikinSaaS, I would like to arrange a call to discuss what I need.",
       planIntro: "Hello BikinSaaS, I am interested in this package:",

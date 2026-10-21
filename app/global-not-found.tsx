@@ -4,6 +4,7 @@ import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import { NotFoundView } from "@/components/site/NotFoundView";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "./globals.css";
+import { BrandMark } from "@/components/site/BrandMark";
 
 /**
  * The 404 for addresses outside any locale (/nope, /admin/nope). It owns its
@@ -42,7 +43,7 @@ export default function GlobalNotFound() {
         <div className="site-bg" aria-hidden="true" />
         <div className="nf-standalone">
           <a className="nf-brand" href="/id" aria-label="BikinSaaS">
-            <span className="nf-brand-mark">B</span>
+            <BrandMark className="site-logo-img" />
             BikinSaaS
           </a>
           <NotFoundView />

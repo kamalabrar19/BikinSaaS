@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 
 import { THEME_STORAGE_KEY } from "@/lib/theme";
+import { BrandMark } from "@/components/site/BrandMark";
 
 const NAV = [
   { href: "/admin", label: "Ringkasan", icon: BarChart3 },
@@ -48,7 +49,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
       <header className="topbar">
         <Link href="/admin" className="brand" aria-label="BikinSaaS — ringkasan">
-          <span className="brand-mark">B</span>
+          <BrandMark className="brand-logo" />
           <span className="brand-name">BikinSaaS</span>
           <span className="brand-tag">Admin</span>
         </Link>

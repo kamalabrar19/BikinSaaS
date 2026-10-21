@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import type { ContactTarget } from "@/lib/contact-target";
 import { EASE } from "./Motion";
 import { useSite } from "./Providers";
+import { BrandMark } from "@/components/site/BrandMark";
 
 interface NavLink {
   href: string;
@@ -75,22 +76,28 @@ export function SiteHeader({
   const isActive = (link: NavLink) => !link.hash && pathname.startsWith(link.href);
 
   const onNavigate = (event: MouseEvent<HTMLAnchorElement>, link: NavLink) => {
-    if (link.hash && pathname === home) {
-      event.preventDefault();
-      scrollTo(link.hash);
-    }
+    const onThisPage = link.hash !== undefined && pathname === home;
+    if (onThisPage) event.preventDefault();
     setOpen(false);
+
+    if (onThisPage && link.hash) {
+      /* The open menu freezes the page (and Lenis with it), so scrolling at once
+         did nothing. Release it first, then glide once it has taken effect. */
+      lockScroll(false);
+      const target = link.hash;
+      window.setTimeout(() => scrollTo(target), 80);
+    }
   };
 
   return (
     <>
       <motion.header
         className={cn("site-header", scrolled && "is-scrolled")}
-        animate={{ y: hidden && !open ? "-110%" : "0%" }}
+        animate={{ y: hidden && !open ? "-160%" : "0%" }}
         transition={{ duration: 0.45, ease: EASE }}
       >
         <Link href={home} className="site-logo" aria-label="BikinSaaS">
-          <span className="site-logo-mark">B</span>
+          <BrandMark className="site-logo-img" />
           <span className="site-logo-word">BikinSaaS</span>
         </Link>
 

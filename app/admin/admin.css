@@ -196,17 +196,6 @@ pre {
   flex: none;
 }
 
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: var(--action);
-  color: var(--action-on);
-  font: 700 1.05rem var(--font-serif);
-}
-
 .brand-name {
   font-size: 1.05rem;
   font-weight: 700;
@@ -1608,4 +1597,22 @@ select.input {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* The BS monogram: green artwork on the light theme, white on the dark theme.
+   A white mark with no green sibling (the footer) always shows. */
+.brand-img {
+  display: block;
+  width: auto;
+  height: 40px;
+  object-fit: contain;
+}
+.brand-img-green ~ .brand-img-white {
+  display: none;
+}
+[data-theme="dark"] .brand-img-green {
+  display: none;
+}
+[data-theme="dark"] .brand-img-green ~ .brand-img-white {
+  display: block;
 }

@@ -2,7 +2,7 @@ import { readStore } from "@/lib/admin/store";
 import {
   contactHref as buildHref,
   envContactSettings,
-  MIN_DIGITS,
+  normalizeWhatsapp,
   type ContactSettings,
   type ContactTarget,
 } from "@/lib/contact-target";
@@ -31,15 +31,15 @@ export { composeMessage } from "@/lib/contact-target";
 export function contactSettings(): ContactSettings {
   const saved = readStore()?.settings;
   const env = envContactSettings();
-  const fromPanel = (saved?.whatsapp ?? "").replace(/\D/g, "");
+  const fromPanel = normalizeWhatsapp(saved?.whatsapp ?? "");
   return {
-    whatsapp: fromPanel.length >= MIN_DIGITS ? fromPanel : env.whatsapp,
+    whatsapp: fromPanel || env.whatsapp,
     email: (saved?.email ?? "").trim() || env.email,
   };
 }
 
 export function isWhatsappConfigured(): boolean {
-  return contactSettings().whatsapp.length >= MIN_DIGITS;
+  return contactSettings().whatsapp !== "";
 }
 
 export function contactEmail(): string {

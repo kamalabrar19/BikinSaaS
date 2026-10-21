@@ -1,7 +1,8 @@
-import { ArrowUpRight, Mail, MapPin, MessageCircle } from "lucide-react";
+import { ArrowUpRight, Instagram, Mail, MapPin, MessageCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 import { targetProps, type AnchorTargetProps } from "@/lib/contact";
+import { instagramProfile } from "@/lib/contact-target";
 import type { SiteCopy } from "@/lib/site-copy";
 import { contactEmail, isWhatsappConfigured, type ContactTarget } from "@/lib/whatsapp";
 
@@ -41,6 +42,13 @@ export function ContactChannels({
       link: { href: `mailto:${email}` },
     });
   }
+  const instagram = instagramProfile();
+  channels.push({
+    icon: Instagram,
+    title: "Instagram",
+    body: instagram.handle,
+    link: { href: instagram.url, target: "_blank", rel: "noopener noreferrer" },
+  });
   channels.push({ icon: MapPin, title: copy.contact.place, body: place });
 
   return (

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { getContent, type Plan } from "@/content";
 import { ContactChannels } from "@/components/site/ContactChannels";
+import { ShortLabel } from "@/components/site/ShortLabel";
 import { ContactForm } from "@/components/site/ContactForm";
 import { HeroOrb } from "@/components/site/HeroOrb";
 import { buildContactLabels, buildOrderLabels } from "@/components/site/labels";
@@ -83,7 +84,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
               </div>
             </Reveal>
           </div>
-          <Parallax distance={18}>
+          <Parallax distance={18} className="hero-orb-wrap">
             <HeroOrb label="IDN — REMOTE" />
           </Parallax>
         </div>
@@ -182,7 +183,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
           />
           <Reveal>
             <Link className="button button-ghost" href={`${home}/portfolio`}>
-              {copy.work.viewAll}
+              <ShortLabel full={copy.work.viewAll} short={copy.common.more} />
               <ArrowUpRight size={15} />
             </Link>
           </Reveal>
@@ -215,7 +216,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             />
             <Reveal>
               <Link className="button button-ghost" href={`${home}/contact`}>
-                {copy.team.cta}
+                <ShortLabel full={copy.team.cta} short={copy.common.talk} />
                 <ArrowUpRight size={15} />
               </Link>
             </Reveal>
@@ -235,7 +236,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
           />
           <Reveal>
             <Link className="button button-ghost" href={`${home}/pricing`}>
-              {copy.pricing.viewAll}
+              <ShortLabel full={copy.pricing.viewAll} short={copy.common.more} />
               <ArrowUpRight size={15} />
             </Link>
           </Reveal>
@@ -273,7 +274,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             </div>
             <Magnetic>
               <Link className="button button-primary button-lg" href={`${home}/contact`}>
-                {copy.pricing.custom.action}
+                <ShortLabel full={copy.pricing.custom.action} short={copy.common.request} />
                 <ArrowRight size={16} />
               </Link>
             </Magnetic>

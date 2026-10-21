@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { BrandMark } from "@/components/site/BrandMark";
 
 /**
  * The only way in. One username and one password, checked against
@@ -74,7 +75,7 @@ export function LoginForm({ configured, missing }: { configured: boolean; missin
       <div className="shell-bg" aria-hidden="true" />
       <form className="card login-card" onSubmit={submit}>
         <p className="brand login-brand">
-          <span className="brand-mark">B</span>
+          <BrandMark className="brand-logo" />
           <span className="brand-name">BikinSaaS</span>
           <span className="brand-tag">Admin</span>
         </p>

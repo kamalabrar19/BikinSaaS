@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 
 import { getContent, type Policy } from "@/content";
 import { Faq } from "@/components/site/Faq";
+import { ShortLabel } from "@/components/site/ShortLabel";
 import { HeroOrb } from "@/components/site/HeroOrb";
 import { buildOrderLabels } from "@/components/site/labels";
 import { Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
@@ -150,7 +151,7 @@ export default async function PricingPage({ params }: { params: Promise<{ lang: 
             <div className="cta-actions">
               <Magnetic>
                 <Link className="button button-primary button-lg" href={`${home}/contact`}>
-                  {copy.pricing.custom.action}
+                  <ShortLabel full={copy.pricing.custom.action} short={copy.common.request} />
                   <ArrowRight size={16} />
                 </Link>
               </Magnetic>

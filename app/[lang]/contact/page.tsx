@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { getContent } from "@/content";
 import { ContactChannels } from "@/components/site/ContactChannels";
+import { ShortLabel } from "@/components/site/ShortLabel";
 import { ContactForm } from "@/components/site/ContactForm";
 import { HeroOrb } from "@/components/site/HeroOrb";
 import { buildContactLabels } from "@/components/site/labels";
@@ -105,7 +106,7 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
                   ))}
                 </ol>
                 <Link className="button button-ghost" href={`${home}/pricing`}>
-                  {copy.contact.seePricing}
+                  <ShortLabel full={copy.contact.seePricing} short={copy.common.prices} />
                   <ArrowUpRight size={15} />
                 </Link>
               </div>

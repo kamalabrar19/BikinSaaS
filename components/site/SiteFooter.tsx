@@ -3,11 +3,14 @@ import Link from "next/link";
 
 import type { Content } from "@/content";
 import { targetProps } from "@/lib/contact";
+import { instagramProfile } from "@/lib/contact-target";
 import type { Locale } from "@/lib/locale";
 import type { SiteCopy } from "@/lib/site-copy";
 import { contactEmail, isWhatsappConfigured, type ContactTarget } from "@/lib/whatsapp";
 import { Magnetic, Reveal, RevealText } from "./Motion";
+import { ShortLabel } from "./ShortLabel";
 import { BackToTop } from "./ScrollLink";
+import { BrandMark } from "@/components/site/BrandMark";
 
 export function SiteFooter({
   locale,
@@ -25,6 +28,7 @@ export function SiteFooter({
   /* Resolved per render: the admin panel can change these while the server runs. */
   const email = contactEmail();
   const hasWhatsapp = isWhatsappConfigured();
+  const instagram = instagramProfile();
   const pages = [
     { href: home, label: copy.common.backHome },
     { href: `${home}/portfolio`, label: copy.nav.work },
@@ -51,7 +55,7 @@ export function SiteFooter({
               </a>
             </Magnetic>
             <Link className="button button-ghost button-lg" href={`${home}/pricing`}>
-              {copy.pricing.viewAll}
+              <ShortLabel full={copy.pricing.viewAll} short={copy.common.prices} />
             </Link>
           </div>
         </Reveal>
@@ -60,7 +64,7 @@ export function SiteFooter({
       <div className="footer-grid">
         <div className="footer-brand">
           <Link href={home} className="site-logo">
-            <span className="site-logo-mark">B</span>
+            <BrandMark variant="white" className="site-logo-img" />
             <span className="site-logo-word">BikinSaaS</span>
           </Link>
           <p>{ui.footer.tagline}</p>
@@ -88,6 +92,11 @@ export function SiteFooter({
                 <a href={`mailto:${email}`}>{email}</a>
               </li>
             ) : null}
+            <li>
+              <a href={instagram.url} target="_blank" rel="noopener noreferrer">
+                Instagram {instagram.handle}
+              </a>
+            </li>
             <li>
               <Link href={`${home}/contact`}>{copy.contact.formTitle}</Link>
             </li>

@@ -141,7 +141,7 @@ export function PricingExplorer({
                   transition={{ type: "spring", stiffness: 380, damping: 32 }}
                 />
               ) : null}
-              {labels.tabs[id]}
+              <span className="tab-label">{labels.tabs[id]}</span>
               {id === "addOns" && selected.length > 0 ? <sup>{selected.length}</sup> : null}
             </button>
           );

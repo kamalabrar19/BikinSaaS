@@ -237,6 +237,8 @@ export interface UiCopy {
     maintenanceIntro: string;
     ssb: string;
     workSimilar: string;
+    /** The floating "Chat kami" button. */
+    chat: string;
     labelName: string;
     labelBusiness: string;
     labelService: string;

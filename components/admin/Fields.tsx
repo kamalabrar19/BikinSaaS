@@ -195,6 +195,7 @@ export function Field({ def, value, locale, onChange, onError, className }: Fiel
             value={typeof value === "string" ? value : ""}
             onChange={onChange}
             onError={onError}
+            folder={def.key === "photo" ? "tim" : "portfolio"}
           />
         );
 

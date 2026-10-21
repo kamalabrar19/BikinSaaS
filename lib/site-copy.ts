@@ -71,7 +71,7 @@ export interface SiteCopy {
   portfolio: { eyebrow: string; title: string; titleEm: string; count: string; empty: string; filter: string };
   caseStudy: { back: string; similar: string; next: string; eyebrow: string; nextEyebrow: string };
   footer: { eyebrow: string; title: string; titleEm: string; pages: string; reach: string; toTop: string };
-  common: { backHome: string; optional: string; close: string };
+  common: { backHome: string; optional: string; close: string; more: string; talk: string; request: string; prices: string };
   floating: string;
 }
 
@@ -211,7 +211,16 @@ const id: SiteCopy = {
     reach: "Kontak",
     toTop: "Kembali ke atas",
   },
-  common: { backHome: "Beranda", optional: "opsional", close: "Tutup" },
+  common: {
+    backHome: "Beranda",
+    optional: "opsional",
+    close: "Tutup",
+    /* Short twins of long button labels, shown on narrow screens only. */
+    more: "Selengkapnya",
+    talk: "Hubungi",
+    request: "Ajukan proyek",
+    prices: "Lihat harga",
+  },
   floating: "Chat kami",
 };
 
@@ -351,7 +360,15 @@ const en: SiteCopy = {
     reach: "Contact",
     toTop: "Back to top",
   },
-  common: { backHome: "Home", optional: "optional", close: "Close" },
+  common: {
+    backHome: "Home",
+    optional: "optional",
+    close: "Close",
+    more: "More",
+    talk: "Contact",
+    request: "Request project",
+    prices: "See prices",
+  },
   floating: "Chat with us",
 };
 

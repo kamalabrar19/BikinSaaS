@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { getContent } from "@/content";
 import { HeroOrb } from "@/components/site/HeroOrb";
+import { ShortLabel } from "@/components/site/ShortLabel";
 import { Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { Panel } from "@/components/site/Panel";
 import { PortfolioExplorer, type ExplorerEntry } from "@/components/site/PortfolioExplorer";
@@ -107,12 +108,12 @@ export default async function PortfolioPage({ params }: { params: Promise<{ lang
             <div className="cta-actions">
               <Magnetic>
                 <Link className="button button-primary button-lg" href={`${home}/contact`}>
-                  {copy.pricing.custom.action}
+                  <ShortLabel full={copy.pricing.custom.action} short={copy.common.request} />
                   <ArrowRight size={16} />
                 </Link>
               </Magnetic>
               <Link className="button button-ghost button-lg" href={`${home}/pricing`}>
-                {copy.pricing.viewAll}
+                <ShortLabel full={copy.pricing.viewAll} short={copy.common.prices} />
               </Link>
             </div>
           </Reveal>
