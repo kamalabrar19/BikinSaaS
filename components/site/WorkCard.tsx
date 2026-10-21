@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 import type { WorkItem } from "@/content";
+import { mediaKindOf } from "@/lib/admin/types";
 
 /**
  * A portfolio card. When the admin panel has uploaded a cover for a work item,
@@ -11,8 +12,6 @@ import type { WorkItem } from "@/content";
  * full list, so a project keeps the same artwork on the home page, the
  * portfolio and its case study.
  */
-
-const VIDEO = /\.(mp4|webm|mov|m4v|ogv)(\?.*)?$/i;
 
 export function WorkCover({
   src,
@@ -25,7 +24,7 @@ export function WorkCover({
 }) {
   return (
     <div className={`${className ?? "work-art"} work-media`}>
-      {VIDEO.test(src) ? (
+      {mediaKindOf(src) === "video" ? (
         <video src={src} muted loop playsInline autoPlay preload="metadata" />
       ) : (
         <img src={src} alt={alt ?? ""} loading="lazy" />

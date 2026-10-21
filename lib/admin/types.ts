@@ -166,7 +166,8 @@ export function rowField(row: Record<string, unknown>, key: string): string {
   return typeof value === "string" ? value : "";
 }
 
-const VIDEO = /\.(mp4|webm|mov|m4v|ogv|ogg)(\?.*)?$/i;
+/* A Cloudinary video URL carries /video/upload/ whatever its extension. */
+const VIDEO = /(\.(mp4|webm|mov|m4v|ogv|ogg)(\?.*)?$)|\/video\/upload\//i;
 
 export function mediaKindOf(src: string): MediaKind {
   return VIDEO.test(src.trim()) ? "video" : "image";

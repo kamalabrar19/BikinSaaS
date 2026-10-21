@@ -27,20 +27,32 @@ ADMIN_SESSION_SECRET=…
   ditandai `secure` kalau situsnya sudah https, jadi login tetap jalan di
   server http biasa.
 
-## Yang bisa diubah
+## Isi panel
 
-Panelnya sengaja pendek: **empat halaman**, bukan satu halaman per bagian.
+Panelnya sengaja pendek: **tiga halaman**.
 
 | Halaman | Isinya |
 | --- | --- |
+| Ringkasan | Pengunjung, halaman dilihat, yang menghubungi (WhatsApp / email / telepon / formulir), grafik per hari, halaman terpopuler, asal pengunjung, perangkat, bahasa. Rentang 7 / 30 / 90 hari. |
 | Portofolio | Judul, klien, masalah, solusi, hasil, cerita, teknologi, **sampul + galeri (foto/GIF/video)** |
 | Harga | Paket website, paket aplikasi, tambahan, dan biaya perawatan bulanan |
-| Isi halaman | Angka statistik, kartu layanan, langkah kerja, FAQ, kebijakan |
-| Kontak | Nomor WhatsApp, email, kota/alamat |
 
-Cara pakainya: pilih halaman → klik satu baris untuk membukanya → ubah isinya →
-tekan **Simpan** (atau Ctrl/Cmd+S). Tombol ↑ ↓ di samping tiap baris mengatur
-urutan, ✕ menghapus.
+Cara pakainya di Portofolio dan Harga: klik satu kartu/baris → ubah isinya di
+panel samping → **Simpan**. Tiap simpan langsung menulis ke situs. Tombol ↑ ↓
+mengatur urutan, ikon tempat sampah menghapus (ditanya sekali).
+
+## Statistik pengunjung
+
+Dihitung sendiri oleh situs, tanpa cookie dan tanpa layanan pihak ketiga:
+
+- Setiap halaman publik yang dibuka mengirim satu hitungan ke `/api/track`.
+- Klik pada tautan WhatsApp / `mailto:` / `tel:` dan pengiriman formulir
+  dihitung sebagai "menghubungi".
+- Pengunjung = sidik singkat dari IP + browser + tanggal + rahasia, dan berganti
+  tiap hari. IP tidak disimpan, jadi orang yang sama di hari berbeda terhitung
+  dua kali.
+- Bot yang jelas (crawler, curl, dsb.) diabaikan; tanggal berganti pukul 00.00 WIB.
+- Data ada di `data/analytics.json` (400 hari terakhir), tidak masuk git.
 
 Dua hal yang mengatur semuanya:
 

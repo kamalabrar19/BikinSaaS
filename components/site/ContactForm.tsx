@@ -8,6 +8,7 @@ import { composeMessage, contactHref } from "@/lib/contact-target";
 import { cn } from "@/lib/utils";
 import { EASE } from "./Motion";
 import { useContact } from "./Providers";
+import { trackContact } from "./Tracker";
 
 export interface ContactLabels {
   nameLabel: string;
@@ -119,6 +120,7 @@ export function ContactForm({
       setStatus("unconfigured");
       return;
     }
+    trackContact("form");
     window.open(target.href, target.external ? "_blank" : "_self", "noopener,noreferrer");
     setStatus("sent");
     setForm(EMPTY);

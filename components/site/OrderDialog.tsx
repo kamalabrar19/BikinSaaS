@@ -9,6 +9,7 @@ import { composeMessage, contactHref } from "@/lib/contact-target";
 import { cn } from "@/lib/utils";
 import { EASE } from "./Motion";
 import { useContact, useSite } from "./Providers";
+import { trackContact } from "./Tracker";
 
 export interface OrderLine {
   name: string;
@@ -116,6 +117,7 @@ export function OrderDialog({
       setStatus("unconfigured");
       return;
     }
+    trackContact("form");
     window.open(target.href, target.external ? "_blank" : "_self", "noopener,noreferrer");
     setStatus("sent");
   };

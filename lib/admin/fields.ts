@@ -4,7 +4,6 @@ import {
   slugify,
   type AdminDoc,
   type CollectionKey,
-  type ContactSettings,
   type Row,
 } from "./types";
 
@@ -289,81 +288,6 @@ export function collectionDef(key: CollectionKey): CollectionDef {
 
 /** Every collection key, in the order the tabs are shown. */
 export const COLLECTION_KEYS: CollectionKey[] = COLLECTIONS.map((one) => one.key);
-
-/**
- * The panel has four pages, not one page per collection. A page groups the
- * collections that answer one question the owner actually arrives with ("what
- * does a package cost?"), which keeps the navigation short enough to take in at
- * a glance — and short enough to fit a phone.
- */
-export type PageKey = "portfolio" | "pricing" | "site" | "contact";
-
-export interface PageDef {
-  key: PageKey;
-  label: string;
-  blurb: string;
-  /** Contact has no collection: its page is the settings form. */
-  collections: CollectionKey[];
-}
-
-export const PAGES: PageDef[] = [
-  {
-    key: "portfolio",
-    label: "Portofolio",
-    blurb: "Karya yang tampil di halaman portofolio.",
-    collections: ["work"],
-  },
-  {
-    key: "pricing",
-    label: "Harga",
-    blurb: "Paket website, paket aplikasi, tambahan, dan biaya perawatan.",
-    collections: ["websitePlans", "webappPlans", "addOns", "maintenance"],
-  },
-  {
-    key: "site",
-    label: "Isi halaman",
-    blurb: "Angka, layanan, langkah kerja, FAQ, dan kebijakan.",
-    collections: ["stats", "services", "process", "faqs", "policies"],
-  },
-  {
-    key: "contact",
-    label: "Kontak",
-    blurb: "Nomor WhatsApp, email, dan alamat yang dipakai di seluruh situs.",
-    collections: [],
-  },
-];
-
-export type SettingsFieldDef = {
-  kind: "text" | "textarea";
-  key: keyof ContactSettings;
-  label: string;
-  hint?: string;
-  placeholder?: string;
-};
-
-export const SETTINGS_FIELDS: SettingsFieldDef[] = [
-  {
-    kind: "text",
-    key: "whatsapp",
-    label: "Nomor WhatsApp",
-    placeholder: "628123456789",
-    hint: "Tanpa tanda plus dan tanpa spasi. Semua tombol pesan memakai nomor ini; kalau kosong, tombol beralih ke email.",
-  },
-  {
-    kind: "text",
-    key: "email",
-    label: "Email",
-    placeholder: "halo@bikinsaas.com",
-    hint: "Dipakai kalau nomor WhatsApp belum diisi.",
-  },
-  {
-    kind: "text",
-    key: "address",
-    label: "Kota / alamat",
-    placeholder: "Jakarta, Indonesia",
-    hint: "Baris alamat di bagian kontak.",
-  },
-];
 
 /** Only the keys a collection is allowed to carry, so nothing else is stored. */
 export function neutralKeys(def: CollectionDef): string[] {

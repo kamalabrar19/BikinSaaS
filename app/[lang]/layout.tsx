@@ -13,6 +13,7 @@ import { Providers } from "@/components/site/Providers";
 import { SiteBackdrop } from "@/components/site/SiteBackdrop";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { Tracker } from "@/components/site/Tracker";
 import { consultTarget, contactSettings } from "@/lib/whatsapp";
 import { htmlLang, isLocale, locales, ogLocale, otherLocale, type Locale } from "@/lib/locale";
 import { getSiteCopy } from "@/lib/site-content";
@@ -133,6 +134,7 @@ export default async function RootLayout({
           {ui.nav.skipToContent}
         </a>
         <Providers contact={contact}>
+          <Tracker />
           <SiteBackdrop />
           <SiteHeader locale={locale} nav={copy.nav} action={ui.nav.action} actionTarget={consult} />
           <div className="site-frame">

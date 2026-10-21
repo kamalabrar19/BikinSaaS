@@ -7,10 +7,11 @@ import { mediaKindOf, type MediaItem, type MediaKind } from "@/lib/admin/types";
 /**
  * Uploading and picking pictures, GIFs and videos.
  *
- * Everything goes through /api/admin/upload, which stores the file under
- * public/media/uploads with a generated name and returns its public path. The
- * same panel can pick something that was uploaded earlier, so a cover used by
- * two portfolio entries is uploaded once.
+ * Files go straight from the browser to Cloudinary, signed by
+ * /api/admin/upload-sign, and the panel keeps the https URL Cloudinary returns.
+ * When Cloudinary is not configured the same button falls back to
+ * /api/admin/upload, which saves under public/media/uploads. The library lists
+ * whichever store is in use, so a cover used by two entries is uploaded once.
  */
 
 interface UploadInfo {
@@ -21,13 +22,76 @@ interface UploadInfo {
   modified: string;
 }
 
-async function uploadFile(file: File): Promise<MediaItem> {
+interface Signature {
+  configured: boolean;
+  cloudName?: string;
+  apiKey?: string;
+  folder?: string;
+  timestamp?: number;
+  signature?: string;
+  error?: string;
+}
+
+/** f_auto,q_auto: Cloudinary picks the best format and size for each visitor. */
+function optimise(url: string): string {
+  return url.includes("/upload/f_auto") ? url : url.replace("/upload/", "/upload/f_auto,q_auto/");
+}
+
+/** XHR rather than fetch: it is the one that reports upload progress. */
+function postToCloudinary(sign: Signature, file: File, onProgress: (percent: number) => void): Promise<MediaItem> {
+  return new Promise((resolve, reject) => {
+    const body = new FormData();
+    body.append("file", file);
+    body.append("api_key", sign.apiKey ?? "");
+    body.append("timestamp", String(sign.timestamp));
+    body.append("signature", sign.signature ?? "");
+    body.append("folder", sign.folder ?? "");
+
+    const request = new XMLHttpRequest();
+    request.open("POST", `https://api.cloudinary.com/v1_1/${sign.cloudName}/auto/upload`);
+    request.upload.onprogress = (event) => {
+      if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));
+    };
+    request.onerror = () => reject(new Error("Tidak bisa menghubungi Cloudinary. Periksa koneksi."));
+    request.onload = () => {
+      let data: { secure_url?: string; resource_type?: string; error?: { message?: string } } = {};
+      try {
+        data = JSON.parse(request.responseText);
+      } catch {
+        /* handled below */
+      }
+      if (request.status >= 200 && request.status < 300 && data.secure_url) {
+        resolve({
+          src: optimise(data.secure_url),
+          kind: data.resource_type === "video" ? "video" : "image",
+        });
+      } else {
+        reject(new Error(data.error?.message ?? "Cloudinary menolak berkas ini."));
+      }
+    };
+    request.send(body);
+  });
+}
+
+async function uploadLocal(file: File): Promise<MediaItem> {
   const body = new FormData();
   body.append("file", file);
   const response = await fetch("/api/admin/upload", { method: "POST", body });
   const data = (await response.json().catch(() => ({}))) as { src?: string; error?: string };
   if (!response.ok || !data.src) throw new Error(data.error ?? "Gagal mengunggah berkas.");
   return { src: data.src, kind: mediaKindOf(data.src) };
+}
+
+async function uploadFile(file: File, onProgress: (percent: number) => void): Promise<MediaItem> {
+  /* A fresh signature per file: each one is only valid for a short while. */
+  const response = await fetch("/api/admin/upload-sign");
+  if (response.status === 401) {
+    window.location.href = "/admin/login";
+    throw new Error("Sesi berakhir. Masuk lagi.");
+  }
+  const sign = (await response.json().catch(() => ({ configured: false }))) as Signature;
+  if (!sign.configured) return uploadLocal(file);
+  return postToCloudinary(sign, file, onProgress);
 }
 
 function readableSize(bytes: number): string {
@@ -73,35 +137,42 @@ function UploadButton({
   compact = false,
 }: {
   label: string;
-  onDone: (item: MediaItem) => void;
+  /** Called once with everything that uploaded, so a batch is never overwritten by its own last file. */
+  onDone: (items: MediaItem[]) => void;
   onError: (message: string) => void;
   compact?: boolean;
 }) {
   const input = useRef<HTMLInputElement>(null);
-  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState("");
 
   const pick = useCallback(
     async (files: FileList | null) => {
       if (!files?.length) return;
-      setBusy(true);
+      const list = Array.from(files);
+      const done: MediaItem[] = [];
       try {
-        for (const file of Array.from(files)) {
-          onDone(await uploadFile(file));
+        for (const [index, file] of list.entries()) {
+          const prefix = list.length > 1 ? `${index + 1}/${list.length} · ` : "";
+          setStatus(`${prefix}0%`);
+          done.push(await uploadFile(file, (percent) => setStatus(`${prefix}${percent}%`)));
         }
       } catch (error) {
         onError(error instanceof Error ? error.message : "Gagal mengunggah berkas.");
       } finally {
-        setBusy(false);
+        if (done.length) onDone(done);
+        setStatus("");
         if (input.current) input.current.value = "";
       }
     },
     [onDone, onError],
   );
 
+  const busy = status !== "";
+
   return (
     <span className={compact ? "media-upload is-compact" : "media-upload"}>
       <button type="button" className="btn btn-ghost" onClick={() => input.current?.click()} disabled={busy}>
-        {busy ? "Mengunggah…" : label}
+        {busy ? `Mengunggah ${status}` : label}
       </button>
       <input
         ref={input}
@@ -124,13 +195,17 @@ function Library({
 }) {
   const [items, setItems] = useState<UploadInfo[] | null>(null);
   const [error, setError] = useState("");
+  const [local, setLocal] = useState(false);
 
   useEffect(() => {
     let alive = true;
     fetch("/api/admin/media")
       .then((response) => response.json())
-      .then((data: { items?: UploadInfo[] }) => {
-        if (alive) setItems(data.items ?? []);
+      .then((data: { items?: UploadInfo[]; source?: string; error?: string }) => {
+        if (!alive) return;
+        if (data.error) setError(data.error);
+        setLocal(data.source === "local");
+        setItems(data.items ?? []);
       })
       .catch(() => {
         if (alive) setError("Pustaka tidak bisa dimuat.");
@@ -148,6 +223,11 @@ function Library({
           Tutup
         </button>
       </div>
+      {local ? (
+        <p className="hint hint-warn">
+          Cloudinary belum diatur, jadi berkas disimpan di server ini. Isi CLOUDINARY_URL di .env.local.
+        </p>
+      ) : null}
       {error ? <p className="hint hint-warn">{error}</p> : null}
       {items === null && !error ? <p className="hint">Memuat…</p> : null}
       {items && items.length === 0 ? (
@@ -188,7 +268,7 @@ export function CoverInput({
   return (
     <div className="media-field">
       <div className="media-row">
-        <UploadButton label="Unggah foto / video" onDone={(item) => onChange(item.src)} onError={onError} />
+        <UploadButton label="Unggah foto / video" onDone={(items) => onChange(items[0].src)} onError={onError} />
         <button type="button" className="btn btn-ghost" onClick={() => setShowLibrary((open) => !open)}>
           Pustaka
         </button>
@@ -252,7 +332,7 @@ export function GalleryInput({
         <UploadButton
           compact
           label="Unggah"
-          onDone={(item) => onChange([...value, item])}
+          onDone={(items) => onChange([...value, ...items])}
           onError={onError}
         />
         <button type="button" className="btn btn-ghost" onClick={() => setShowLibrary((open) => !open)}>

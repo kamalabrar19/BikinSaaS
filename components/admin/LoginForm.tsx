@@ -14,6 +14,7 @@ export function LoginForm({ configured, missing }: { configured: boolean; missin
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [show, setShow] = useState(false);
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -42,11 +43,14 @@ export function LoginForm({ configured, missing }: { configured: boolean; missin
   if (!configured) {
     return (
       <div className="login-page">
-        <div className="login-card">
-          <h1>Panel belum dikonfigurasi</h1>
-          <p className="hint">
-            Isi dulu variabel berikut di <code>.env.local</code>, lalu jalankan ulang server:
+        <div className="card login-card">
+          <p className="kicker">
+            <span className="dot" />/ Pengaturan
           </p>
+          <h1>
+            Panel belum <em>siap</em>
+          </h1>
+          <p className="muted">Isi dulu variabel berikut di <code>.env.local</code>, lalu jalankan ulang server:</p>
           <ul className="login-missing">
             {missing.map((name) => (
               <li key={name}>
@@ -54,14 +58,11 @@ export function LoginForm({ configured, missing }: { configured: boolean; missin
               </li>
             ))}
           </ul>
-          <p className="hint">
-            Untuk membuat password, jalankan di terminal:
-          </p>
+          <p className="muted">Untuk membuat password, jalankan di terminal:</p>
           <pre className="login-code">npm run admin:password</pre>
-          <p className="hint">
-            Perintah itu mencetak <code>ADMIN_PASSWORD_HASH</code> yang bisa langsung ditempel, dan
-            menampilkan password yang dipakai. Simpan password di tempat aman — yang tersimpan di
-            server hanya sidik jarinya.
+          <p className="muted">
+            Perintah itu mencetak <code>ADMIN_PASSWORD_HASH</code> yang bisa langsung ditempel, dan menampilkan
+            password yang dipakai. Simpan password di tempat aman — yang tersimpan di server hanya sidik jarinya.
           </p>
         </div>
       </div>
@@ -70,11 +71,17 @@ export function LoginForm({ configured, missing }: { configured: boolean; missin
 
   return (
     <div className="login-page">
-      <form className="login-card" onSubmit={submit}>
+      <div className="shell-bg" aria-hidden="true" />
+      <form className="card login-card" onSubmit={submit}>
+        <p className="brand login-brand">
+          <span className="brand-mark">B</span>
+          <span className="brand-name">BikinSaaS</span>
+          <span className="brand-tag">Admin</span>
+        </p>
         <h1>
-          BikinSaaS <span>panel</span>
+          Selamat <em>datang</em>
         </h1>
-        <p className="hint">Masuk untuk mengubah portfolio, harga, dan isi situs.</p>
+        <p className="muted">Masuk untuk melihat statistik situs dan mengatur portofolio serta harga.</p>
 
         <label className="field">
           <span className="field-label">Username</span>
@@ -91,17 +98,32 @@ export function LoginForm({ configured, missing }: { configured: boolean; missin
 
         <label className="field">
           <span className="field-label">Password</span>
-          <input
-            className="input"
-            type="password"
-            name="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
+          <div className="input-eye">
+            <input
+              className="input"
+              type={show ? "text" : "password"}
+              name="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+            <button
+              type="button"
+              className="eye"
+              onClick={() => setShow((on) => !on)}
+              aria-label={show ? "Sembunyikan password" : "Tampilkan password"}
+              aria-pressed={show}
+            >
+              {show ? "Sembunyikan" : "Tampilkan"}
+            </button>
+          </div>
         </label>
 
-        {error ? <p className="banner banner-error">{error}</p> : null}
+        {error ? (
+          <p className="form-error" role="alert">
+            {error}
+          </p>
+        ) : null}
 
         <button type="submit" className="btn btn-primary btn-block" disabled={busy || !username || !password}>
           {busy ? "Memeriksa…" : "Masuk"}

@@ -156,7 +156,7 @@ export function Field({ def, value, locale, onChange, onError, className }: Fiel
               value={typeof value === "number" ? value : 0}
               onChange={(event) => onChange(Number(event.target.value))}
             />
-            <span className="field-suffix">{formatMoney(Number(value) || 0, locale)}</span>
+            {Number(value) > 0 ? <span className="field-suffix">{formatMoney(Number(value), locale)}</span> : null}
           </div>
         );
 
