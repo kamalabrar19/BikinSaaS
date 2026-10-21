@@ -69,6 +69,7 @@ function workFrom(row: WorkRow, locale: Locale): WorkItem {
     stack: rowList(row, locale, "stack"),
     cover: row.cover || undefined,
     gallery: hasRows(row.gallery) ? row.gallery : undefined,
+    website: link(row.website),
   };
 }
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import type { WorkItem } from "@/content";
 import { mediaKindOf } from "@/lib/admin/types";
+import { optimiseMedia } from "@/lib/media-url";
 
 /**
  * A portfolio card. When the admin panel has uploaded a cover for a work item,
@@ -22,12 +23,13 @@ export function WorkCover({
   className?: string;
   alt?: string;
 }) {
+  const shown = optimiseMedia(src);
   return (
     <div className={`${className ?? "work-art"} work-media`}>
       {mediaKindOf(src) === "video" ? (
-        <video src={src} muted loop playsInline autoPlay preload="metadata" />
+        <video src={shown} muted loop playsInline autoPlay preload="metadata" />
       ) : (
-        <img src={src} alt={alt ?? ""} loading="lazy" />
+        <img src={shown} alt={alt ?? ""} loading="lazy" />
       )}
     </div>
   );

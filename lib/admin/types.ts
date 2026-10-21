@@ -38,6 +38,8 @@ export interface WorkRow extends Row {
   /** Cover image or video for the card. Empty falls back to the drawn motif. */
   cover?: string;
   gallery?: MediaItem[];
+  /** A live website for this work; the case study shows a visit button when set. */
+  website?: string;
 }
 
 export interface PlanRow extends Row {

@@ -18,7 +18,7 @@ import {
  */
 
 export type FieldDef =
-  | { kind: "text"; key: string; label: string; hint?: string; placeholder?: string; mono?: boolean }
+  | { kind: "text"; key: string; label: string; hint?: string; placeholder?: string; mono?: boolean; url?: boolean }
   | { kind: "textarea"; key: string; label: string; rows?: number; hint?: string; placeholder?: string }
   | { kind: "money"; key: string; label: string; hint?: string }
   | { kind: "number"; key: string; label: string; hint?: string }
@@ -92,6 +92,15 @@ export const COLLECTIONS: CollectionDef[] = [
           { value: "takeover", label: "Proyek klien" },
           { value: "concept", label: "Konsep / demo" },
         ],
+      },
+      {
+        kind: "text",
+        key: "website",
+        label: "Link website",
+        url: true,
+        mono: true,
+        placeholder: "https://contoh.com",
+        hint: "Bila diisi, halaman karya ini menampilkan tombol untuk mengunjungi websitenya.",
       },
       {
         kind: "cover",

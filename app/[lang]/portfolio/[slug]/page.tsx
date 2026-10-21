@@ -87,6 +87,14 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
           <Reveal delay={0.3}>
             <p className="page-lead">{item.client}</p>
           </Reveal>
+          {item.website ? (
+            <Reveal delay={0.4}>
+              <a className="button button-primary" href={item.website} target="_blank" rel="noopener noreferrer">
+                {copy.caseStudy.visit}
+                <ArrowUpRight size={16} />
+              </a>
+            </Reveal>
+          ) : null}
         </div>
       </Panel>
 

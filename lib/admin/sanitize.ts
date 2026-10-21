@@ -62,6 +62,19 @@ function safeSrc(value: unknown): string {
   return "";
 }
 
+/** A website address a visitor can safely open: http(s) only. A bare domain gets https://. */
+function webAddress(value: unknown): string {
+  const raw = str(value, 300).trim();
+  if (!raw) return "";
+  const full = /^[a-z][a-z0-9+.-]*:\/\//i.test(raw) ? raw : `https://${raw}`;
+  if (!/^https?:\/\//i.test(full)) return "";
+  try {
+    return new URL(full).toString();
+  } catch {
+    return "";
+  }
+}
+
 function safeId(value: unknown, fallback: string): string {
   const raw = str(value, MAX_ID).trim().toLowerCase();
   const cleaned = raw.replace(/[^a-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "");
@@ -81,7 +94,7 @@ function mediaItem(value: unknown): MediaItem | null {
 function neutralValue(field: FieldDef, raw: Record<string, unknown>): unknown {
   switch (field.kind) {
     case "text":
-      return str(raw[field.key], MAX_ITEM);
+      return field.url ? webAddress(raw[field.key]) : str(raw[field.key], MAX_ITEM);
     case "money":
     case "number":
       return num(raw[field.key]);

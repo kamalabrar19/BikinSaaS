@@ -1,5 +1,7 @@
 import { createHash } from "node:crypto";
 
+import { VIDEO_TRANSFORM, optimiseMedia } from "@/lib/media-url";
+
 /**
  * Cloudinary, without the SDK: three small calls are all the panel needs.
  *
@@ -58,16 +60,24 @@ export function signParams(params: Record<string, string | number>, secret: stri
   return createHash("sha1").update(base + secret).digest("hex");
 }
 
-export function uploadSignature(config: CloudinaryConfig, kind: UploadFolder = "portfolio") {
+export function uploadSignature(
+  config: CloudinaryConfig,
+  kind: UploadFolder = "portfolio",
+  /** A video also asks Cloudinary to build the compressed variant right away, in the background. */
+  video = false,
+) {
   const timestamp = Math.floor(Date.now() / 1000);
   const folder = CLOUDINARY_FOLDERS[kind];
-  const params = { folder, timestamp };
+  const params: Record<string, string | number> = video
+    ? { eager: VIDEO_TRANSFORM, eager_async: "true", folder, timestamp }
+    : { folder, timestamp };
   return {
     cloudName: config.cloudName,
     apiKey: config.apiKey,
     folder,
     timestamp,
     signature: signParams(params, config.apiSecret),
+    ...(video ? { eager: VIDEO_TRANSFORM, eagerAsync: "true" } : {}),
   };
 }
 
@@ -106,17 +116,9 @@ export async function listAssets(config: CloudinaryConfig): Promise<CloudinaryAs
 
   return (data.resources ?? []).map((item) => ({
     publicId: item.public_id,
-    src: optimise(item.secure_url),
+    src: optimiseMedia(item.secure_url),
     kind: item.resource_type === "video" ? "video" : "image",
     bytes: item.bytes,
     createdAt: item.created_at,
   }));
-}
-
-/**
- * Asks Cloudinary for the best format and quality for each visitor's browser
- * (f_auto, q_auto), so a phone gets a small file without anyone resizing by hand.
- */
-export function optimise(url: string): string {
-  return url.includes("/upload/f_auto") ? url : url.replace("/upload/", "/upload/f_auto,q_auto/");
 }

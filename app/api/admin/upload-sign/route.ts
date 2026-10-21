@@ -17,6 +17,11 @@ export async function GET(request: Request) {
   }
   const config = cloudinaryConfig();
   if (!config) return NextResponse.json({ configured: false });
-  const asked = new URL(request.url).searchParams.get("folder");
-  return NextResponse.json({ configured: true, ...uploadSignature(config, isUploadFolder(asked) ? asked : "portfolio") });
+  const query = new URL(request.url).searchParams;
+  const asked = query.get("folder");
+  const video = query.get("type") === "video";
+  return NextResponse.json({
+    configured: true,
+    ...uploadSignature(config, isUploadFolder(asked) ? asked : "portfolio", video),
+  });
 }

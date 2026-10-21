@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
+import { optimiseMedia } from "@/lib/media-url";
 import { mediaKindOf, type MediaItem, type MediaKind } from "@/lib/admin/types";
 
 /**
@@ -29,12 +31,10 @@ interface Signature {
   folder?: string;
   timestamp?: number;
   signature?: string;
+  /** Set for videos: Cloudinary builds the compressed copy while the upload finishes. */
+  eager?: string;
+  eagerAsync?: string;
   error?: string;
-}
-
-/** f_auto,q_auto: Cloudinary picks the best format and size for each visitor. */
-function optimise(url: string): string {
-  return url.includes("/upload/f_auto") ? url : url.replace("/upload/", "/upload/f_auto,q_auto/");
 }
 
 /** XHR rather than fetch: it is the one that reports upload progress. */
@@ -46,6 +46,10 @@ function postToCloudinary(sign: Signature, file: File, onProgress: (percent: num
     body.append("timestamp", String(sign.timestamp));
     body.append("signature", sign.signature ?? "");
     body.append("folder", sign.folder ?? "");
+    if (sign.eager) {
+      body.append("eager", sign.eager);
+      body.append("eager_async", sign.eagerAsync ?? "true");
+    }
 
     const request = new XMLHttpRequest();
     request.open("POST", `https://api.cloudinary.com/v1_1/${sign.cloudName}/auto/upload`);
@@ -62,7 +66,7 @@ function postToCloudinary(sign: Signature, file: File, onProgress: (percent: num
       }
       if (request.status >= 200 && request.status < 300 && data.secure_url) {
         resolve({
-          src: optimise(data.secure_url),
+          src: optimiseMedia(data.secure_url),
           kind: data.resource_type === "video" ? "video" : "image",
         });
       } else {
@@ -87,7 +91,7 @@ export type MediaFolder = "portfolio" | "tim";
 
 async function uploadFile(file: File, folder: MediaFolder, onProgress: (percent: number) => void): Promise<MediaItem> {
   /* A fresh signature per file: each one is only valid for a short while. */
-  const response = await fetch(`/api/admin/upload-sign?folder=${folder}`);
+  const response = await fetch(`/api/admin/upload-sign?folder=${folder}&type=${file.type.startsWith("video/") ? "video" : "image"}`);
   if (response.status === 401) {
     window.location.href = "/admin/login";
     throw new Error("Sesi berakhir. Masuk lagi.");
@@ -103,34 +107,83 @@ function readableSize(bytes: number): string {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
+/** A full-size look at one picture or video, so the panel shows what visitors will see. */
+function Lightbox({ src, alt, onClose }: { src: string; alt?: string; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return createPortal(
+    <div className="adm">
+      <div className="lightbox" role="dialog" aria-modal="true" aria-label="Pratinjau media" onClick={onClose}>
+        <button type="button" className="lightbox-close" onClick={onClose} aria-label="Tutup pratinjau">
+          ✕
+        </button>
+        <div className="lightbox-body" onClick={(event) => event.stopPropagation()}>
+          {mediaKindOf(src) === "video" ? (
+            <video src={optimiseMedia(src)} controls autoPlay playsInline />
+          ) : (
+            <img src={optimiseMedia(src)} alt={alt ?? ""} />
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 export function MediaPreview({
   src,
   alt,
   className,
   animated = false,
+  zoom = false,
 }: {
   src: string;
   alt?: string;
   className?: string;
   /** Videos play silently on loop. Off in the library, where there are many. */
   animated?: boolean;
+  /** Click to open it large. */
+  zoom?: boolean;
 }) {
+  const [open, setOpen] = useState(false);
+  const close = useCallback(() => setOpen(false), []);
   if (!src) return null;
-  if (mediaKindOf(src) === "video") {
-    return (
+
+  const shown = optimiseMedia(src);
+  const media =
+    mediaKindOf(src) === "video" ? (
       <video
         className={className}
-        src={src}
-        muted={animated}
+        src={shown}
+        muted={animated || zoom}
         loop={animated}
         autoPlay={animated}
-        controls={!animated}
+        controls={!animated && !zoom}
         playsInline
         preload="metadata"
       />
+    ) : (
+      <img className={className} src={shown} alt={alt ?? ""} />
     );
-  }
-  return <img className={className} src={src} alt={alt ?? ""} />;
+
+  if (!zoom) return media;
+  return (
+    <>
+      <button type="button" className="zoomable" onClick={() => setOpen(true)} aria-label="Lihat ukuran besar">
+        {media}
+        <span className="zoomable-hint" aria-hidden="true">
+          Perbesar
+        </span>
+      </button>
+      {open ? <Lightbox src={src} alt={alt} onClose={close} /> : null}
+    </>
+  );
 }
 
 function UploadButton({
@@ -293,7 +346,7 @@ export function CoverInput({
 
       {value ? (
         <div className="media-preview">
-          <MediaPreview src={value} alt={alt} className="media-thumb" animated />
+          <MediaPreview src={value} alt={alt} className="media-thumb" animated zoom />
           <code className="media-path">{value}</code>
         </div>
       ) : (
@@ -362,7 +415,7 @@ export function GalleryInput({
       <div className="gallery-list">
         {value.map((item, index) => (
           <div className="gallery-item" key={`${item.src}-${index}`}>
-            <MediaPreview src={item.src} alt={item.alt} className="gallery-thumb" />
+            <MediaPreview src={item.src} alt={item.alt} className="gallery-thumb" zoom />
             <div className="gallery-fields">
               <input
                 className="input"

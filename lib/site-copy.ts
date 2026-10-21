@@ -69,7 +69,7 @@ export interface SiteCopy {
     seePricing: string;
   };
   portfolio: { eyebrow: string; title: string; titleEm: string; count: string; empty: string; filter: string };
-  caseStudy: { back: string; similar: string; next: string; eyebrow: string; nextEyebrow: string };
+  caseStudy: { back: string; visit: string; similar: string; next: string; eyebrow: string; nextEyebrow: string };
   footer: { eyebrow: string; title: string; titleEm: string; pages: string; reach: string; toTop: string };
   common: { backHome: string; optional: string; close: string; more: string; talk: string; request: string; prices: string };
   floating: string;
@@ -198,6 +198,7 @@ const id: SiteCopy = {
   },
   caseStudy: {
     back: "Semua portofolio",
+    visit: "Kunjungi website",
     similar: "Saya mau yang mirip",
     next: "Proyek berikutnya",
     eyebrow: "Studi kasus",
@@ -347,6 +348,7 @@ const en: SiteCopy = {
   },
   caseStudy: {
     back: "All work",
+    visit: "Visit website",
     similar: "I want something similar",
     next: "Next project",
     eyebrow: "Case study",

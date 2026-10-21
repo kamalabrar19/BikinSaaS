@@ -1818,3 +1818,72 @@ select.input {
     font-size: 16px;
   }
 }
+
+/* ------------------------------------------------------- media zoom view -- */
+.zoomable {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  color: inherit;
+  font: inherit;
+}
+.zoomable-hint {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 72%, transparent);
+  color: var(--paper);
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.zoomable:hover .zoomable-hint,
+.zoomable:focus-visible .zoomable-hint {
+  opacity: 1;
+}
+@media (hover: none) {
+  .zoomable-hint {
+    opacity: 1;
+  }
+}
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 56px 16px 16px;
+  background: color-mix(in srgb, #000 82%, transparent);
+  backdrop-filter: blur(6px);
+}
+.lightbox-body {
+  max-width: min(1100px, 100%);
+  max-height: 100%;
+  display: grid;
+}
+.lightbox-body img,
+.lightbox-body video {
+  max-width: 100%;
+  max-height: calc(100vh - 88px);
+  border-radius: 12px;
+  object-fit: contain;
+}
+.lightbox-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  background: rgb(255 255 255 / 0.12);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}

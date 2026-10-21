@@ -116,6 +116,8 @@ export interface WorkItem {
   cover?: string;
   /** Extra pictures and videos shown on the case study page. */
   gallery?: MediaItem[];
+  /** Live website of the project. Empty hides the visit button. */
+  website?: string;
 }
 
 export interface SsbFeature {
