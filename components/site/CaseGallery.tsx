@@ -1,18 +1,19 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import type { MediaItem } from "@/lib/admin/types";
 import { mediaKindOf } from "@/lib/admin/types";
 import { optimiseMedia } from "@/lib/media-url";
 import { useSite } from "./Providers";
-import { WorkCover } from "./WorkCard";
 
 /**
- * The case study gallery. The tiles are cropped to a tidy grid; a click opens
- * the picture (or video) whole, on a dark full-screen layer with arrows, so
+ * The case study gallery. Videos come first, each at its own ratio with
+ * controls. Pictures follow as one swipeable slider (CSS scroll-snap, so it is
+ * smooth by default on touch and trackpad) that takes a single row of space. A
+ * click on a picture opens it whole on a dark full-screen layer with arrows, so
  * nothing is cut off. Esc, the ✕ button or a click outside closes it.
  */
 export function CaseGallery({
@@ -25,8 +26,13 @@ export function CaseGallery({
   labels: { open: string; close: string; prev: string; next: string };
 }) {
   const { lockScroll } = useSite();
+  const videos = items.filter((item) => mediaKindOf(item.src) === "video");
+  const images = items.filter((item) => mediaKindOf(item.src) !== "video");
+  const count = images.length;
+
   const [current, setCurrent] = useState<number | null>(null);
-  const count = items.length;
+  const [slide, setSlide] = useState(0);
+  const track = useRef<HTMLDivElement>(null);
 
   const close = useCallback(() => setCurrent(null), []);
   const step = useCallback(
@@ -49,28 +55,86 @@ export function CaseGallery({
     };
   }, [current, close, step, lockScroll]);
 
-  const shown = current === null ? null : items[current];
+  /* Which slide is at the left edge, for the counter. */
+  const onScroll = () => {
+    const el = track.current;
+    if (!el) return;
+    const slides = Array.from(el.children) as HTMLElement[];
+    let best = 0;
+    let distance = Infinity;
+    slides.forEach((one, index) => {
+      const gap = Math.abs(one.offsetLeft - el.offsetLeft - el.scrollLeft);
+      if (gap < distance) {
+        distance = gap;
+        best = index;
+      }
+    });
+    setSlide(best);
+  };
+
+  const slideBy = (by: number) => {
+    const el = track.current;
+    if (!el) return;
+    const slides = Array.from(el.children) as HTMLElement[];
+    const target = slides[Math.min(count - 1, Math.max(0, slide + by))];
+    if (target) el.scrollTo({ left: target.offsetLeft - el.offsetLeft, behavior: "smooth" });
+  };
+
+  const shown = current === null ? null : images[current];
 
   return (
-    <>
-      <div className="case-gallery">
-        {items.map((media, index) => (
-          <figure className="case-shot" key={`${media.src}-${index}`}>
-            <button
-              type="button"
-              className="case-shot-button"
-              onClick={() => setCurrent(index)}
-              aria-label={`${labels.open}${media.alt || media.caption ? `: ${media.alt || media.caption}` : ""}`}
-            >
-              <WorkCover src={media.src} className="case-shot-frame" alt={media.alt || title} />
-              <span className="case-shot-zoom" aria-hidden="true">
-                <Expand size={16} />
-              </span>
-            </button>
-            {media.caption ? <figcaption>{media.caption}</figcaption> : null}
-          </figure>
-        ))}
-      </div>
+    <div className="case-media">
+      {videos.length ? (
+        <div className="case-videos">
+          {videos.map((media, index) => (
+            <figure className="case-video" key={`${media.src}-${index}`}>
+              <video src={optimiseMedia(media.src)} controls playsInline preload="metadata" />
+              {media.caption ? <figcaption>{media.caption}</figcaption> : null}
+            </figure>
+          ))}
+        </div>
+      ) : null}
+
+      {count ? (
+        <div className="case-slider">
+          <div className="case-track" ref={track} onScroll={onScroll}>
+            {images.map((media, index) => (
+              <figure className="case-slide" key={`${media.src}-${index}`}>
+                <button
+                  type="button"
+                  className="case-slide-button"
+                  onClick={() => setCurrent(index)}
+                  aria-label={`${labels.open}${media.alt || media.caption ? `: ${media.alt || media.caption}` : ""}`}
+                >
+                  <img
+                    src={optimiseMedia(media.src)}
+                    alt={media.alt || title}
+                    loading={index < 2 ? "eager" : "lazy"}
+                    draggable={false}
+                  />
+                  <span className="case-shot-zoom" aria-hidden="true">
+                    <Expand size={16} />
+                  </span>
+                </button>
+                {media.caption ? <figcaption>{media.caption}</figcaption> : null}
+              </figure>
+            ))}
+          </div>
+          {count > 1 ? (
+            <div className="case-slider-bar">
+              <button type="button" className="slider-arrow" onClick={() => slideBy(-1)} disabled={slide <= 0} aria-label={labels.prev}>
+                <ChevronLeft size={20} />
+              </button>
+              <p aria-live="polite">
+                {slide + 1} / {count}
+              </p>
+              <button type="button" className="slider-arrow" onClick={() => slideBy(1)} disabled={slide >= count - 1} aria-label={labels.next}>
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
 
       {shown
         ? createPortal(
@@ -92,11 +156,7 @@ export function CaseGallery({
                 </button>
               ) : null}
               <figure className="lightbox-stage" onClick={(event) => event.stopPropagation()}>
-                {mediaKindOf(shown.src) === "video" ? (
-                  <video key={shown.src} src={optimiseMedia(shown.src)} controls autoPlay playsInline />
-                ) : (
-                  <img key={shown.src} src={optimiseMedia(shown.src)} alt={shown.alt || title} />
-                )}
+                <img key={shown.src} src={optimiseMedia(shown.src)} alt={shown.alt || title} />
                 {shown.caption ? <figcaption>{shown.caption}</figcaption> : null}
               </figure>
               {count > 1 ? (
@@ -121,6 +181,6 @@ export function CaseGallery({
             document.body,
           )
         : null}
-    </>
+    </div>
   );
 }
