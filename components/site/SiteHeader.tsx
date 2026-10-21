@@ -66,6 +66,7 @@ export function SiteHeader({
     { href: `${home}#services`, label: nav.services, hash: "#services" },
     { href: `${home}#process`, label: nav.process, hash: "#process" },
     { href: `${home}/portfolio`, label: nav.work },
+    { href: `${home}/team`, label: nav.team },
     { href: `${home}/pricing`, label: nav.pricing },
     { href: `${home}/contact`, label: nav.contact },
   ];

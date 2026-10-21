@@ -8,22 +8,14 @@ import { Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion
 import { Panel } from "@/components/site/Panel";
 import { WorkArt, WorkCover } from "@/components/site/WorkCard";
 import { targetProps } from "@/lib/contact";
-import { isLocale, locales } from "@/lib/locale";
+import { isLocale } from "@/lib/locale";
 import { pageMetadata } from "@/lib/metadata";
 import { getSiteCopy } from "@/lib/site-content";
 import { composeMessage, consultTarget } from "@/lib/whatsapp";
 
-/* Slugs come from the content the site actually serves (the seed plus anything
-   the panel added), so an item created in the panel is prerendered too. A slug
-   that appears after a build still renders on demand. */
-export const dynamicParams = true;
-
-/* Safety net; the panel revalidates every page on save. */
-export const revalidate = 300;
-
-export function generateStaticParams() {
-  return locales.flatMap((lang) => getContent(lang).work.map((entry) => ({ lang, slug: entry.id })));
-}
+/* Rendered on every request, so a case study the panel just added (or edited,
+   or removed) is live at once; there is no build-time list of slugs to go stale. */
+export const dynamic = "force-dynamic";
 
 type Params = Promise<{ lang: string; slug: string }>;
 

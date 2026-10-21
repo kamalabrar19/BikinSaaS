@@ -3414,3 +3414,46 @@ a.channel:hover {
 .site-footer .brand-img {
   filter: brightness(1.35) saturate(1.1);
 }
+
+/* ------------------------------------------------------------ team page -- */
+.team-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* ---------------------------------------- phone hero: tight and side by side -- */
+@media (max-width: 640px) {
+  .hero-actions {
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+  }
+  .hero-actions .button {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    padding-inline: 0.75rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    justify-content: center;
+  }
+  .hero-actions .button svg {
+    display: none;
+  }
+  .hero-footer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+    padding-top: 0.75rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+  .hero-footer .scroll-cue {
+    gap: 0.4rem;
+  }
+  .hero-footer .scroll-cue-line {
+    width: 22px;
+  }
+}

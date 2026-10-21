@@ -30,40 +30,40 @@ export const copyId = {
     },
 
     hero: {
-      statement: "Website bisnis. Harga tertulis.",
+      statement: "Website yang bikin pelanggan percaya.",
       support:
-        "Mulai Rp399.000. Untuk UMKM, bisnis lokal, dan sekolah sepak bola, dijelaskan tanpa istilah teknis.",
+        "Harga tertulis, mulai Rp399.000. Tanpa istilah ribet, tanpa biaya kejutan.",
       action: "Konsultasi gratis",
       secondaryAction: "Lihat harga",
     },
 
     sections: {
       services: {
-        title: "Yang bisa kami kerjakan",
-        lead: "Dari satu halaman promosi sampai sistem yang mengurus operasional harian Anda.",
+        title: "Dari tampil meyakinkan sampai jualan lancar",
+        lead: "Satu halaman promosi sampai sistem operasional. Semua dikerjakan rapi.",
       },
       pricing: {
-        title: "Harga tertulis di sini",
-        lead: "Sembilan paket, angkanya bisa Anda baca sekarang. Domain, hosting, dan layanan pihak ketiga dibayar terpisah.",
+        title: "Harga tertulis. Tanpa kejutan.",
+        lead: "Sembilan paket dengan angka jelas. Domain dan hosting dibayar terpisah.",
       },
       process: {
-        title: "Empat langkah dari ide sampai online",
-        lead: "Anda tahu apa yang terjadi di tiap langkah, dan apa yang perlu Anda siapkan.",
+        title: "Online dalam 4 langkah",
+        lead: "Tiap langkah jelas. Anda selalu tahu apa yang terjadi.",
       },
       work: {
-        title: "Pekerjaan dan konsep",
-        lead: "Dua sistem klien yang kami ambil alih, dan lima konsep buatan kami sendiri.",
+        title: "Hasil kerja kami",
+        lead: "Proyek klien dan konsep buatan kami sendiri.",
       },
       ssb: {
         title: "Khusus sekolah sepak bola",
-        lead: "Satu-satunya bidang yang kami tangani secara khusus, karena kebutuhannya berbeda dari bisnis lain.",
+        lead: "Bidang yang kami tangani khusus, karena kebutuhannya berbeda.",
       },
       faq: {
         title: "Pertanyaan yang sering masuk",
       },
       contact: {
         title: "Ceritakan kebutuhan Anda",
-        lead: "Isi singkat saja. Pesan akan terbuka di WhatsApp dengan format yang sudah rapi, tinggal Anda kirim.",
+        lead: "Isi singkat. WhatsApp langsung terbuka dengan pesan siap kirim.",
       },
     },
 
@@ -99,7 +99,7 @@ export const copyId = {
       labelSolution: "Yang kami kerjakan",
       labelResult: "Hasilnya",
       conceptNotice:
-        "Lima dari tujuh di bawah ini adalah konsep yang kami susun sendiri, bukan proyek klien. Keduanya ditandai di tiap kartu.",
+        "Ada proyek klien, ada konsep buatan kami sendiri. Tiap kartu menandainya.",
       takeoverNotice: "Proyek klien, ditampilkan tanpa nama atas permintaan mereka.",
       categories: {
         all: "Semua",
@@ -186,10 +186,10 @@ export const copyId = {
 
     footer: {
       ctaTitle: "Siap mulai?",
-      ctaBody: "Ceritakan kebutuhan Anda dan kami bantu memetakan lingkup yang masuk akal, sebelum Anda memutuskan apa pun.",
+      ctaBody: "Ceritakan kebutuhan Anda. Kami bantu cari yang paling pas, sebelum Anda keluar biaya.",
       actionChat: "Chat lewat WhatsApp",
       actionCall: "Atur jadwal telepon",
-      tagline: "Kami mengerjakan website dan sistem digital untuk UMKM, bisnis lokal, dan sekolah sepak bola di Indonesia.",
+      tagline: "Website dan sistem digital untuk UMKM, bisnis lokal, dan sekolah sepak bola.",
       place: "Indonesia, bekerja jarak jauh",
       rights: "Semua hak dilindungi.",
       creditsLabel: "Kredit foto",
@@ -227,7 +227,7 @@ export const copyId = {
     meta: {
       title: "BikinSaaS. Website bisnis dengan harga tertulis",
       description:
-        "Kami mengerjakan website dan sistem digital untuk UMKM, bisnis lokal, dan sekolah sepak bola. Sembilan paket dengan harga tertulis mulai Rp399.000, dijelaskan tanpa istilah teknis.",
+        "Website dan sistem digital untuk UMKM dan bisnis lokal. Sembilan paket dengan harga tertulis mulai Rp399.000, dijelaskan tanpa istilah teknis.",
       ogImageAlt: "BikinSaaS, website dan sistem digital dengan harga yang tertulis terbuka",
     },
   },
@@ -235,8 +235,8 @@ export const copyId = {
   services: {
     "branding-web-design": {
       title: "Branding dan desain website",
-      summary: "Identitas visual dan desain website yang konsisten, supaya bisnis Anda terlihat kredibel sejak kesan pertama.",
-      points: ["Logo, warna, dan tipografi", "Desain antarmuka responsif", "Profil perusahaan"],
+      summary: "Tampilan yang konsisten, supaya bisnis Anda terlihat profesional sejak kesan pertama.",
+      points: ["Logo, warna, tipografi", "Desain responsif", "Profil perusahaan"],
       detail:
         "Kami merapikan identitas visual bisnis Anda lalu menerapkannya ke website: dari palet warna dan tipografi, komponen antarmuka, hingga halaman profil perusahaan yang siap dipakai membangun kepercayaan calon klien.",
       deliverables: [
@@ -248,17 +248,16 @@ export const copyId = {
     },
     "landing-page": {
       title: "Landing page",
-      summary: "Satu halaman yang fokus membuat pengunjung mengambil tindakan, untuk promosi, produk, atau pendaftaran.",
-      points: ["Cepat dimuat", "Form lead dan WhatsApp", "Siap dipakai beriklan"],
+      summary: "Satu halaman, satu tujuan: pengunjung menghubungi, mendaftar, atau membeli.",
+      points: ["Cepat dibuka", "Form dan WhatsApp", "Siap untuk iklan"],
       detail:
         "Landing page dirancang dengan satu tujuan: membuat pengunjung mengambil tindakan, entah menghubungi Anda, mendaftar, atau membeli. Struktur, teks, dan tombolnya ditata agar alurnya jelas.",
       deliverables: ["Satu halaman dengan section lengkap", "Form kontak atau lead", "Tombol WhatsApp", "SEO dasar"],
     },
     "custom-system": {
       title: "Aplikasi web dan sistem khusus",
-      summary:
-        "Sistem yang mengikuti alur kerja Anda: CRM, stok, transaksi, laporan, sampai hak akses per peran. Tidak lagi bergantung pada spreadsheet yang berantakan.",
-      points: ["Dashboard dan kelola data", "Stok, invoice, dan laporan", "Hak akses per peran", "Ambil alih sistem lama"],
+      summary: "Sistem yang mengikuti cara kerja Anda. Stok, transaksi, laporan, tanpa spreadsheet berantakan.",
+      points: ["Dashboard dan data", "Stok, invoice, laporan", "Hak akses per peran", "Ambil alih sistem lama"],
       detail:
         "Kami memetakan proses bisnis Anda terlebih dahulu, lalu membangun sistem yang pas, bukan sebaliknya. Kalau Anda sudah punya sistem yang bermasalah, kami bisa mengauditnya dan menawarkan pilihan: perbaikan bertahap, desain ulang, atau bangun ulang.",
       deliverables: [
@@ -270,8 +269,8 @@ export const copyId = {
     },
     "saas-mvp": {
       title: "Produk SaaS versi pertama",
-      summary: "Ide produk digital Anda jadi versi pertama yang bisa langsung dicoba pengguna: multi-pengguna, dashboard, dan alur langganan dasar.",
-      points: ["Autentikasi dan multi-tenant", "Dashboard admin", "Siap diiterasi cepat"],
+      summary: "Ide Anda jadi versi pertama yang bisa langsung dicoba pengguna.",
+      points: ["Login dan multi-pengguna", "Dashboard admin", "Siap berkembang"],
       detail:
         "Versi pertama berfokus pada fitur inti yang paling perlu divalidasi. Kami membantu menentukan lingkup yang realistis, membangun fondasi yang bisa tumbuh, lalu menyerahkannya agar Anda bisa mulai menguji ke pengguna nyata.",
       deliverables: [
@@ -283,8 +282,8 @@ export const copyId = {
     },
     "ai-wa-automation": {
       title: "Otomasi WhatsApp",
-      summary: "Balas pertanyaan pelanggan, kirim notifikasi, dan rapikan pekerjaan yang berulang secara otomatis.",
-      points: ["Chatbot dan balasan otomatis", "Broadcast terjadwal", "Tersambung ke sistem Anda"],
+      summary: "Balas pelanggan, kirim notifikasi, dan rapikan kerjaan berulang secara otomatis.",
+      points: ["Balasan otomatis", "Broadcast terjadwal", "Terhubung ke sistem Anda"],
       detail:
         "Otomasi percakapan dan proses berulang: dari balasan otomatis, notifikasi pesanan, hingga chatbot yang menjawab pertanyaan umum pelanggan. Biaya layanan pihak ketiga seperti WhatsApp API dibayar terpisah sesuai penyedia.",
       deliverables: [
@@ -300,25 +299,25 @@ export const copyId = {
     discovery: {
       title: "Dengar dulu",
       subtitle: "Pahami kebutuhan",
-      body: "Anda ceritakan bisnis, target, dan masalah yang ingin diselesaikan. Konsultasi awal gratis.",
+      body: "Ceritakan bisnis dan masalah Anda. Kami dengarkan dulu. Konsultasi awal gratis.",
       points: ["Diskusi kebutuhan", "Pemetaan masalah", "Contoh dan referensi"],
     },
     strategy: {
       title: "Susun lingkup",
       subtitle: "Solusi dan penawaran",
-      body: "Kami susun rekomendasi solusi, lingkup kerja, perkiraan waktu, dan biaya yang jelas sebelum Anda memutuskan.",
+      body: "Rekomendasi, lingkup, waktu, dan biaya tertulis. Anda putuskan setelah semuanya jelas.",
       points: ["Rekomendasi paket", "Lingkup dan tenggat", "Penawaran tertulis"],
     },
     build: {
       title: "Kerjakan",
       subtitle: "Desain dan pengembangan",
-      body: "Desain dan pengembangan dikerjakan bertahap, dengan kabar perkembangan yang rutin.",
+      body: "Dikerjakan bertahap, dengan kabar perkembangan rutin.",
       points: ["Desain dan pengembangan", "Kabar perkembangan", "Uji di berbagai perangkat"],
     },
     launch: {
       title: "Serahkan",
       subtitle: "Revisi dan go live",
-      body: "Anda review hasilnya, kami revisi, lalu website dinaikkan. Setelah itu ada garansi bug 14 hari.",
+      body: "Anda cek, kami revisi, lalu online. Plus garansi bug 14 hari.",
       points: ["Satu putaran revisi", "Go live", "Garansi bug 14 hari"],
     },
   },

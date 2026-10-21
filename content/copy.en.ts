@@ -34,40 +34,40 @@ export const copyEn = {
     },
 
     hero: {
-      statement: "Business websites. Prices published.",
+      statement: "Websites that make customers trust you.",
       support:
-        "From Rp399,000. For small businesses, local shops and football schools, explained without the jargon.",
+        "Published prices from Rp399,000. No jargon, no surprise fees.",
       action: "Free consultation",
       secondaryAction: "See pricing",
     },
 
     sections: {
       services: {
-        title: "What we build",
-        lead: "From a single promotional page to a system that runs your daily operations.",
+        title: "From a sharp first impression to smooth sales",
+        lead: "One promo page or a full operations system. Built cleanly.",
       },
       pricing: {
-        title: "The prices are right here",
-        lead: "Nine packages, with figures you can read now. Domain, hosting and third-party services are paid separately.",
+        title: "Published prices. No surprises.",
+        lead: "Nine packages with clear figures. Domain and hosting are paid separately.",
       },
       process: {
-        title: "Four steps from idea to live",
-        lead: "You know what happens at each step, and what we need from you.",
+        title: "Live in 4 steps",
+        lead: "Every step is clear. You always know what happens next.",
       },
       work: {
-        title: "Work and concepts",
-        lead: "Two client systems we took over, and five concepts we built ourselves.",
+        title: "Our work",
+        lead: "Client projects and concepts we built ourselves.",
       },
       ssb: {
         title: "Built for football schools",
-        lead: "The one field we handle specifically, because what it needs differs from any other business.",
+        lead: "A field we handle on its own, because its needs are different.",
       },
       faq: {
         title: "Questions we get often",
       },
       contact: {
         title: "Tell us what you need",
-        lead: "A short form. It opens WhatsApp with the message already laid out, ready for you to send.",
+        lead: "A short form. WhatsApp opens with your message ready to send.",
       },
     },
 
@@ -103,7 +103,7 @@ export const copyEn = {
       labelSolution: "What we did",
       labelResult: "The result",
       conceptNotice:
-        "Five of the seven below are concepts we built ourselves, not client projects. Each card says which it is.",
+        "Some are client projects, some are concepts we built ourselves. Each card says which.",
       takeoverNotice: "A client project, shown without the name at their request.",
       categories: {
         all: "All",
@@ -191,11 +191,11 @@ export const copyEn = {
     footer: {
       ctaTitle: "Ready to start?",
       ctaBody:
-        "Tell us what you need and we will help map out a scope that makes sense, before you commit to anything.",
+        "Tell us what you need. We help you find what fits, before you spend anything.",
       actionChat: "Chat on WhatsApp",
       actionCall: "Arrange a call",
       tagline:
-        "We build websites and digital systems for small businesses, local shops and football schools across Indonesia.",
+        "Websites and digital systems for small businesses, local shops and football schools.",
       place: "Indonesia, working remotely",
       rights: "All rights reserved.",
       creditsLabel: "Photo credits",
@@ -234,7 +234,7 @@ export const copyEn = {
     meta: {
       title: "BikinSaaS. Business websites with the prices published",
       description:
-        "We build websites and digital systems for small businesses, local shops and football schools in Indonesia. Nine packages with published prices from Rp399,000, explained without the jargon.",
+        "Websites and digital systems for small and local businesses. Nine packages with published prices from Rp399,000, explained without the jargon.",
       ogImageAlt: "BikinSaaS, websites and digital systems with the prices published openly",
     },
   },
@@ -242,9 +242,8 @@ export const copyEn = {
   services: {
     "branding-web-design": {
       title: "Branding and web design",
-      summary:
-        "A consistent visual identity and website, so your business looks credible from the first impression.",
-      points: ["Logo, colour and type", "Responsive interface design", "Company profile"],
+      summary: "A consistent look, so your business seems professional from the first impression.",
+      points: ["Logo, colour, type", "Responsive design", "Company profile"],
       detail:
         "We tidy up your visual identity and then apply it to the website: colour palette and type, interface components, and a company profile page ready to build a prospect's trust.",
       deliverables: [
@@ -256,18 +255,16 @@ export const copyEn = {
     },
     "landing-page": {
       title: "Landing page",
-      summary:
-        "One page with a single job: getting the visitor to act, whether that is a promotion, a product or a sign-up.",
-      points: ["Loads quickly", "Lead form and WhatsApp", "Ready to advertise against"],
+      summary: "One page, one goal: visitors contact you, sign up or buy.",
+      points: ["Loads fast", "Form and WhatsApp", "Ready for ads"],
       detail:
         "A landing page is built around one goal: getting the visitor to do something, whether that is contacting you, signing up or buying. The structure, the words and the buttons are arranged so the path is obvious.",
       deliverables: ["One page with full sections", "Contact or lead form", "WhatsApp button", "Basic SEO"],
     },
     "custom-system": {
       title: "Web apps and custom systems",
-      summary:
-        "A system that follows how you already work: CRM, stock, transactions, reports, and permissions per role. No more depending on a messy spreadsheet.",
-      points: ["Dashboard and data management", "Stock, invoices and reports", "Permissions per role", "Take over an old system"],
+      summary: "A system that follows how you work. Stock, sales, reports, no messy spreadsheets.",
+      points: ["Dashboard and data", "Stock, invoices, reports", "Permissions per role", "Take over an old system"],
       detail:
         "We map your business process first, then build a system to fit it, rather than the other way round. If you already have a system that is causing trouble, we can audit it and lay out the options: fix it in stages, redesign it, or rebuild it.",
       deliverables: [
@@ -279,9 +276,8 @@ export const copyEn = {
     },
     "saas-mvp": {
       title: "First version of a SaaS product",
-      summary:
-        "Your product idea as a first version real users can try: multi-user, a dashboard, and a basic subscription flow.",
-      points: ["Authentication and multi-tenant", "Admin dashboard", "Ready to iterate quickly"],
+      summary: "Your idea as a first version real users can try right away.",
+      points: ["Login and multi-user", "Admin dashboard", "Ready to grow"],
       detail:
         "A first version focuses on the core features that most need testing. We help set a realistic scope, build a foundation that can grow, and hand it over so you can start putting it in front of real users.",
       deliverables: [
@@ -293,8 +289,8 @@ export const copyEn = {
     },
     "ai-wa-automation": {
       title: "WhatsApp automation",
-      summary: "Answer customer questions, send notifications, and tidy up repeated work automatically.",
-      points: ["Chatbot and auto-replies", "Scheduled broadcasts", "Connected to your system"],
+      summary: "Reply to customers, send updates and automate repeat work.",
+      points: ["Auto-replies", "Scheduled broadcasts", "Connected to your system"],
       detail:
         "Automating conversations and repeated steps: auto-replies, order notifications, and a chatbot that answers the questions customers always ask. Third-party costs such as the WhatsApp API are paid separately to the provider.",
       deliverables: [
@@ -310,25 +306,25 @@ export const copyEn = {
     discovery: {
       title: "Listen first",
       subtitle: "Understand the need",
-      body: "You tell us about the business, the target, and the problem you want solved. The first consultation is free.",
+      body: "Tell us about your business and the problem. We listen first. The first consultation is free.",
       points: ["Talk through the need", "Map the problem", "Examples and references"],
     },
     strategy: {
       title: "Set the scope",
       subtitle: "Proposal and quote",
-      body: "We put together a recommendation, a scope of work, a time estimate and a clear cost, before you decide.",
+      body: "A recommendation, scope, timeline and written price. You decide once it is all clear.",
       points: ["Recommended package", "Scope and timing", "A written quote"],
     },
     build: {
       title: "Build it",
       subtitle: "Design and development",
-      body: "Design and development happen in stages, with regular progress updates.",
+      body: "Built in stages, with regular progress updates.",
       points: ["Design and development", "Progress updates", "Tested across devices"],
     },
     launch: {
       title: "Hand it over",
       subtitle: "Review and go live",
-      body: "You review the result, we revise, then it goes live. After that there is a 14-day bug warranty.",
+      body: "You review, we revise, then it goes live. Plus a 14-day bug warranty.",
       points: ["One round of revisions", "Go live", "14-day bug warranty"],
     },
   },

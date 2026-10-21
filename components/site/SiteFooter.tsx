@@ -32,6 +32,7 @@ export function SiteFooter({
   const pages = [
     { href: home, label: copy.common.backHome },
     { href: `${home}/portfolio`, label: copy.nav.work },
+    { href: `${home}/team`, label: copy.nav.team },
     { href: `${home}/pricing`, label: copy.nav.pricing },
     { href: `${home}/contact`, label: copy.nav.contact },
   ];

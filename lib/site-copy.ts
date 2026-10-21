@@ -24,6 +24,7 @@ export interface SiteCopy {
     services: string;
     process: string;
     work: string;
+    team: string;
     pricing: string;
     contact: string;
     menu: string;
@@ -33,12 +34,12 @@ export interface SiteCopy {
     switchLang: string;
     primary: string;
   };
-  hero: { overline: string; scroll: string };
+  hero: { scroll: string; scrollShort: string };
   marquee: string[];
   services: { eyebrow: string; customTitle: string; customBody: string };
   stats: { eyebrow: string; title: string; titleEm: string; items: StatItem[] };
   process: { eyebrow: string };
-  team: { eyebrow: string; title: string; titleEm: string; lead: string; cta: string };
+  team: { eyebrow: string; title: string; titleEm: string; lead: string; cta: string; empty: string };
   work: { eyebrow: string; viewAll: string; client: string; concept: string };
   pricing: {
     eyebrow: string;
@@ -80,6 +81,7 @@ const id: SiteCopy = {
     services: "Layanan",
     process: "Proses",
     work: "Portofolio",
+    team: "Tim",
     pricing: "Harga",
     contact: "Kontak",
     menu: "Buka menu",
@@ -90,8 +92,8 @@ const id: SiteCopy = {
     primary: "Navigasi utama",
   },
   hero: {
-    overline: "Konsultasi awal gratis",
     scroll: "Gulir untuk menjelajah",
+    scrollShort: "Gulir",
   },
   marquee: [
     "Landing page",
@@ -106,10 +108,10 @@ const id: SiteCopy = {
   services: {
     eyebrow: "Yang kami kerjakan",
     customTitle: "Tidak ada di daftar?",
-    customBody: "Ceritakan kebutuhannya. Kami bantu petakan solusi yang paling masuk akal.",
+    customBody: "Ceritakan saja. Kami bantu cari solusi yang paling pas.",
   },
   stats: {
-    eyebrow: "Tanpa basa-basi",
+    eyebrow: "Janji kami",
     title: "Harga jelas.",
     titleEm: "Proses jelas.",
     items: [
@@ -121,14 +123,15 @@ const id: SiteCopy = {
   },
   process: { eyebrow: "Cara kerja kami" },
   team: {
-    eyebrow: "Orang di balik layar",
-    title: "Tim kecil,",
-    titleEm: "tanggung jawab penuh.",
-    lead: "Anda berbicara langsung dengan orang yang mengerjakan proyeknya, tanpa lapisan perantara.",
+    eyebrow: "Tim kami",
+    title: "Orang di balik",
+    titleEm: "setiap proyek.",
+    lead: "Anda bicara langsung dengan yang mengerjakan. Tanpa perantara.",
     cta: "Ngobrol dengan tim",
+    empty: "Profil tim segera hadir.",
   },
   work: {
-    eyebrow: "Portofolio pilihan",
+    eyebrow: "Hasil kerja",
     viewAll: "Lihat semua portofolio",
     client: "Proyek klien",
     concept: "Konsep",
@@ -146,7 +149,7 @@ const id: SiteCopy = {
       eyebrow: "Butuh yang lain?",
       title: "Kebutuhan khusus?",
       titleEm: "Kita rancang bareng.",
-      body: "Kalau paket di atas belum pas, ceritakan alur kerja dan targetnya. Kami petakan lingkup, perkiraan waktu, dan biaya tertulis sebelum Anda memutuskan apa pun.",
+      body: "Paket belum pas? Ceritakan targetnya. Kami siapkan lingkup, waktu, dan biaya tertulis. Tanpa kewajiban.",
       action: "Ajukan proyek custom",
     },
     how: {
@@ -155,15 +158,15 @@ const id: SiteCopy = {
       steps: [
         {
           title: "Pilih paket atau ceritakan kebutuhan",
-          body: "Klik pesan di salah satu paket, atau isi form custom. Pesan WhatsApp-nya tersusun otomatis.",
+          body: "Klik pesan, atau isi form. Pesan WhatsApp tersusun otomatis.",
         },
         {
           title: "Terima penawaran tertulis",
-          body: "Kami balas dalam 1x24 jam kerja dengan lingkup, waktu, dan biaya yang jelas.",
+          body: "Balasan dalam 1x24 jam kerja, lengkap dengan lingkup, waktu, dan biaya.",
         },
         {
           title: "Bayar DP 50%, kami mulai",
-          body: "Pengerjaan dimulai setelah DP. Pelunasan dilakukan sebelum website online.",
+          body: "Kerja dimulai setelah DP. Pelunasan sebelum online.",
         },
       ],
     },
@@ -182,9 +185,9 @@ const id: SiteCopy = {
     formTitle: "Form singkat",
     stepsTitle: "Setelah Anda kirim",
     steps: [
-      { title: "Kami baca brief Anda", body: "Pesan masuk ke WhatsApp kami lengkap dengan kebutuhan dan anggaran." },
-      { title: "Kami balas dengan pertanyaan atau penawaran", body: "Dalam 1x24 jam kerja, tanpa istilah teknis yang membingungkan." },
-      { title: "Anda putuskan", body: "Tidak ada kewajiban apa pun sebelum Anda setuju dengan lingkup dan harganya." },
+      { title: "Kami baca brief Anda", body: "Kebutuhan dan anggaran Anda langsung terbaca di WhatsApp kami." },
+      { title: "Kami balas", body: "Dalam 1x24 jam kerja, dengan bahasa yang mudah dipahami." },
+      { title: "Anda putuskan", body: "Tidak ada kewajiban sebelum Anda setuju dengan lingkup dan harganya." },
     ],
     seePricing: "Lihat daftar harga",
   },
@@ -230,6 +233,7 @@ const en: SiteCopy = {
     services: "Services",
     process: "Process",
     work: "Portfolio",
+    team: "Team",
     pricing: "Pricing",
     contact: "Contact",
     menu: "Open menu",
@@ -240,8 +244,8 @@ const en: SiteCopy = {
     primary: "Main navigation",
   },
   hero: {
-    overline: "Free first consultation",
     scroll: "Scroll to explore",
+    scrollShort: "Scroll",
   },
   marquee: [
     "Landing pages",
@@ -256,10 +260,10 @@ const en: SiteCopy = {
   services: {
     eyebrow: "What we build",
     customTitle: "Not on the list?",
-    customBody: "Tell us what you need. We'll help you map out the solution that makes the most sense.",
+    customBody: "Just tell us. We'll help find the solution that fits.",
   },
   stats: {
-    eyebrow: "No fine print",
+    eyebrow: "Our promise",
     title: "Clear prices.",
     titleEm: "Clear process.",
     items: [
@@ -271,14 +275,15 @@ const en: SiteCopy = {
   },
   process: { eyebrow: "How we work" },
   team: {
-    eyebrow: "The people behind it",
-    title: "A small team,",
-    titleEm: "fully accountable.",
-    lead: "You talk directly to the people building your project, with no layers in between.",
+    eyebrow: "Our team",
+    title: "The people behind",
+    titleEm: "every project.",
+    lead: "You talk directly to the people doing the work. No middlemen.",
     cta: "Talk to the team",
+    empty: "Team profiles are coming soon.",
   },
   work: {
-    eyebrow: "Selected work",
+    eyebrow: "Our work",
     viewAll: "See the full portfolio",
     client: "Client project",
     concept: "Concept",
@@ -296,7 +301,7 @@ const en: SiteCopy = {
       eyebrow: "Need something else?",
       title: "Something custom?",
       titleEm: "Let's design it together.",
-      body: "If none of the packages fit, tell us about your workflow and goals. We map out the scope, timeline and a written price before you decide anything.",
+      body: "No package fits? Tell us your goal. We prepare the scope, timeline and a written price. No obligation.",
       action: "Request a custom project",
     },
     how: {
@@ -305,15 +310,15 @@ const en: SiteCopy = {
       steps: [
         {
           title: "Pick a package or describe your need",
-          body: "Hit order on a package, or fill in the custom form. The WhatsApp message writes itself.",
+          body: "Hit order, or fill in the form. The WhatsApp message writes itself.",
         },
         {
           title: "Get a written quote",
-          body: "We reply within one working day with a clear scope, timeline and price.",
+          body: "We reply within one working day with scope, timeline and price.",
         },
         {
           title: "Pay a 50% deposit, we start",
-          body: "Work begins after the deposit. The balance is due before the site goes live.",
+          body: "Work starts after the deposit. The balance is due before launch.",
         },
       ],
     },
@@ -332,9 +337,9 @@ const en: SiteCopy = {
     formTitle: "Quick brief",
     stepsTitle: "After you send it",
     steps: [
-      { title: "We read your brief", body: "It lands in our WhatsApp with your needs and budget already laid out." },
-      { title: "We reply with questions or a quote", body: "Within one working day, without confusing jargon." },
-      { title: "You decide", body: "Nothing is binding until you agree with the scope and the price." },
+      { title: "We read your brief", body: "Your needs and budget land straight in our WhatsApp." },
+      { title: "We reply", body: "Within one working day, in plain language." },
+      { title: "You decide", body: "Nothing is binding until you agree to the scope and price." },
     ],
     seePricing: "See the price list",
   },

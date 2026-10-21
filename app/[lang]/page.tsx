@@ -15,7 +15,6 @@ import { Panel, SectionHeading } from "@/components/site/Panel";
 import { PlanCard } from "@/components/site/PlanCard";
 import { ProcessTimeline } from "@/components/site/ProcessTimeline";
 import { ScrollLink } from "@/components/site/ScrollLink";
-import { TeamGrid } from "@/components/site/TeamSection";
 import { WorkCard } from "@/components/site/WorkCard";
 import { consultTarget } from "@/lib/whatsapp";
 import { targetProps } from "@/lib/contact";
@@ -25,11 +24,7 @@ import { getSiteCopy } from "@/lib/site-content";
 /** The three plans shown on the home page: cheapest, most chosen website, most chosen app. */
 const TEASER_PLANS = ["lp-starter", "cp-plus", "biz-app"] as const;
 
-/* How long a prerendered page may be served before it rebuilds itself. The
-   admin panel revalidates every page on save, so this is the safety net: if
-   data/site.json is restored from a backup, or a save happens while the server
-   is down, the pages catch up on their own. */
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -59,12 +54,6 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       <Panel kicker="/ 01 — INTRO" tone="hero" className="hero" labelledBy="hero-title">
         <div className="hero-grid">
           <div className="hero-copy">
-            <Reveal y={16}>
-              <p className="hero-overline">
-                <span className="pulse-dot" />
-                {copy.hero.overline}
-              </p>
-            </Reveal>
             <RevealText as="h1" id="hero-title" onMount delay={0.1} text={ui.hero.statement} className="hero-title" />
             <Reveal delay={0.35}>
               <p className="hero-description">{ui.hero.support}</p>
@@ -91,7 +80,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         <div className="hero-footer">
           <span>{ui.footer.place}</span>
           <ScrollLink href="#services" className="scroll-cue">
-            {copy.hero.scroll}
+            <ShortLabel full={copy.hero.scroll} short={copy.hero.scrollShort} />
             <span className="scroll-cue-line" />
           </ScrollLink>
           <span>© {content.launchYear}</span>
@@ -203,30 +192,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         </div>
       </Panel>
 
-      {/* 06 — Team. Hidden when the panel has removed every member. */}
-      {content.team.length ? (
-        <Panel id="team" kicker="/ 06 — TEAM" labelledBy="team-title">
-          <div className="section-head-row">
-            <SectionHeading
-              id="team-title"
-              eyebrow={copy.team.eyebrow}
-              title={copy.team.title}
-              accent={copy.team.titleEm}
-              lead={copy.team.lead}
-            />
-            <Reveal>
-              <Link className="button button-ghost" href={`${home}/contact`}>
-                <ShortLabel full={copy.team.cta} short={copy.common.talk} />
-                <ArrowUpRight size={15} />
-              </Link>
-            </Reveal>
-          </div>
-          <TeamGrid members={content.team} />
-        </Panel>
-      ) : null}
-
-      {/* 07 — Pricing */}
-      <Panel id="pricing" kicker="/ 07 — PRICING" labelledBy="pricing-title">
+      {/* 06 — Pricing */}
+      <Panel id="pricing" kicker="/ 06 — PRICING" labelledBy="pricing-title">
         <div className="section-head-row">
           <SectionHeading
             id="pricing-title"
@@ -283,7 +250,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       </Panel>
 
       {/* 07 — Contact */}
-      <Panel id="contact" kicker="/ 08 — LET'S TALK" labelledBy="contact-title">
+      <Panel id="contact" kicker="/ 07 — LET'S TALK" labelledBy="contact-title">
         <div className="contact-layout">
           <div>
             <SectionHeading

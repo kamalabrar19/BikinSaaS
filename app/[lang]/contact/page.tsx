@@ -12,16 +12,11 @@ import { buildContactLabels } from "@/components/site/labels";
 import { Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { Panel } from "@/components/site/Panel";
 import { consultTarget } from "@/lib/whatsapp";
-import { isLocale, locales } from "@/lib/locale";
+import { isLocale } from "@/lib/locale";
 import { pageMetadata } from "@/lib/metadata";
 import { getSiteCopy } from "@/lib/site-content";
 
-/* Safety net; the panel revalidates every page on save. */
-export const revalidate = 300;
-
-export function generateStaticParams() {
-  return locales.map((lang) => ({ lang }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;

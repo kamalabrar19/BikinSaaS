@@ -12,7 +12,7 @@ import { buildOrderLabels } from "@/components/site/labels";
 import { Magnetic, Parallax, Reveal, RevealText } from "@/components/site/Motion";
 import { Panel, SectionHeading } from "@/components/site/Panel";
 import { PricingExplorer } from "@/components/site/PricingExplorer";
-import { isLocale, locales } from "@/lib/locale";
+import { isLocale } from "@/lib/locale";
 import { pageMetadata } from "@/lib/metadata";
 import { getSiteCopy } from "@/lib/site-content";
 
@@ -23,12 +23,7 @@ const POLICY_ICONS: Record<Policy["icon"], LucideIcon> = {
   server: Server,
 };
 
-/* Safety net; the panel revalidates every page on save. */
-export const revalidate = 300;
-
-export function generateStaticParams() {
-  return locales.map((lang) => ({ lang }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
