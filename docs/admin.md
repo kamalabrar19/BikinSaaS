@@ -77,15 +77,14 @@ di panel = urutan di halaman.
 ```
 data/site.json              seluruh isi yang diubah dari panel
 data/backups/…              salinan sebelum setiap penyimpanan (20 terakhir)
-public/media/uploads/…      foto, GIF, dan video yang diunggah
+data/uploads/…              foto, GIF, dan video yang diunggah
 ```
 
 Ketiganya **tidak** masuk git (lihat `.gitignore`): itu data saat situs jalan,
 bukan kode. Kalau filenya hilang, situs kembali ke isi bawaan
 `content/*.ts` — tidak rusak, hanya kembali ke versi awal.
 
-Untuk memindahkan situs: salin `data/` dan `public/media/uploads/` ke server
-baru, di samping `.env.local`.
+Untuk memindahkan situs: salin `data/` ke server baru, di samping `.env.local`.
 
 Kalau nanti pindah ke penyimpanan lain (Vercel Blob, Supabase, S3),
 yang perlu ditulis ulang hanya `lib/admin/store.ts` — editor dan API-nya cuma

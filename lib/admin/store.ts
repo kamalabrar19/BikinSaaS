@@ -9,7 +9,7 @@ import { mediaKindOf, type AdminDoc, type MediaKind } from "./types";
  *
  *   data/site.json              the single content document
  *   data/backups/…              the previous version, before every save
- *   public/media/uploads/…      pictures, GIFs and videos
+ *   data/uploads/…              pictures, GIFs and videos
  *
  * Server-only. Every function is synchronous and tiny: the document is a few
  * tens of kilobytes and the pages that read it already run on the server.
@@ -24,7 +24,8 @@ const STORE_FILE = path.join(DATA_DIR, "site.json");
 const BACKUP_DIR = path.join(DATA_DIR, "backups");
 const KEEP_BACKUPS = 20;
 
-export const UPLOAD_DIR = path.join(process.cwd(), "public", "media", "uploads");
+/* `data/` is shared between releases, unlike the generated public directory. */
+export const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
 export const UPLOAD_URL_BASE = "/media/uploads";
 
 /** 64 MB. Big enough for a phone video, small enough to not fill a disk. */

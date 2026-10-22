@@ -12,7 +12,7 @@ import { mediaKindOf, type MediaItem, type MediaKind } from "@/lib/admin/types";
  * Files go straight from the browser to Cloudinary, signed by
  * /api/admin/upload-sign, and the panel keeps the https URL Cloudinary returns.
  * When Cloudinary is not configured the same button falls back to
- * /api/admin/upload, which saves under public/media/uploads. The library lists
+ * /api/admin/upload, which saves under data/uploads. The library lists
  * whichever store is in use, so a cover used by two entries is uploaded once.
  */
 

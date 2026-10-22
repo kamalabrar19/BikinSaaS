@@ -547,7 +547,7 @@ function Panel({
                 English <small>opsional</small>
               </button>
             </div>
-            {locale === "en" ? <p className="hint">Kolom yang kosong otomatis memakai teks Indonesia.</p> : null}
+            {locale === "en" ? <p className="hint">Isi teks English di sini agar halaman /en konsisten berbahasa Inggris.</p> : null}
           </div>
 
           <div className="fields">
