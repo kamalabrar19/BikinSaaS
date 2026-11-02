@@ -7,7 +7,7 @@ export interface PlanCardData {
   id: string;
   name: string;
   tagline?: string;
-  features: string[];
+  features: readonly string[];
   priceLabel: string;
   popular?: boolean;
 }

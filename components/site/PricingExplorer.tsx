@@ -11,7 +11,7 @@ import { EASE } from "./Motion";
 import { OrderButton, OrderDialog, type OrderLabels } from "./OrderDialog";
 import { PlanCard, type PlanCardData } from "./PlanCard";
 
-type Tab = "website" | "webapp" | "addOns" | "maintenance";
+type Tab = "website" | "webapp" | "catalog" | "addOns" | "maintenance";
 
 export interface AddOnData {
   id: string;
@@ -28,6 +28,13 @@ export interface MaintenanceData {
   name: string;
   features: string[];
   priceLabel: string;
+}
+
+export interface ServiceCatalogGroup {
+  id: string;
+  title: string;
+  lead: string;
+  plans: readonly PlanCardData[];
 }
 
 export interface PricingLabels {
@@ -64,6 +71,7 @@ export function PricingExplorer({
   labels,
   websitePlans,
   webappPlans,
+  serviceCatalog,
   addOns,
   maintenance,
   intros,
@@ -74,6 +82,7 @@ export function PricingExplorer({
   labels: PricingLabels;
   websitePlans: PlanCardData[];
   webappPlans: PlanCardData[];
+  serviceCatalog: readonly ServiceCatalogGroup[];
   addOns: AddOnData[];
   maintenance: MaintenanceData[];
   intros: { plan: string; addOn: string; maintenance: string };
@@ -92,9 +101,9 @@ export function PricingExplorer({
   const toggle = (id: string) =>
     setSelected((current) => (current.includes(id) ? current.filter((x) => x !== id) : [...current, id]));
 
-  const tabs: Tab[] = ["website", "webapp", "addOns", "maintenance"];
+  const tabs: Tab[] = ["website", "webapp", "catalog", "addOns", "maintenance"];
 
-  const planGrid = (plans: PlanCardData[]) => (
+  const planGrid = (plans: readonly PlanCardData[]) => (
     <div className="plan-grid">
       {plans.map((plan, index) => (
         <motion.div key={plan.id} {...stagger(index)}>
@@ -159,6 +168,20 @@ export function PricingExplorer({
           {tab === "webapp" ? (
             <motion.div key="webapp" {...panel}>
               {planGrid(webappPlans)}
+            </motion.div>
+          ) : null}
+
+          {tab === "catalog" ? (
+            <motion.div key="catalog" className="service-catalog" {...panel}>
+              {serviceCatalog.map((group) => (
+                <section key={group.id} className="service-catalog-group" aria-labelledby={`catalog-${group.id}`}>
+                  <div className="service-catalog-head">
+                    <h2 id={`catalog-${group.id}`}>{group.title}</h2>
+                    <p>{group.lead}</p>
+                  </div>
+                  {planGrid(group.plans)}
+                </section>
+              ))}
             </motion.div>
           ) : null}
 

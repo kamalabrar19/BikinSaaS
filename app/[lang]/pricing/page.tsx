@@ -16,6 +16,67 @@ import { isLocale } from "@/lib/locale";
 import { pageMetadata } from "@/lib/metadata";
 import { getSiteCopy } from "@/lib/site-content";
 
+const SERVICE_CATALOG = {
+  id: [
+    {
+      id: "wedding",
+      title: "Undangan Pernikahan Digital",
+      lead: "Undangan online yang mudah dibagikan lewat WhatsApp.",
+      plans: [
+        { id: "wedding-basic", name: "Basic", tagline: "Satu halaman undangan siap bagikan.", features: ["Template pilihan", "Detail acara", "Tombol konfirmasi hadir"], priceLabel: "Rp99.000" },
+        { id: "wedding-standard", name: "Standard", tagline: "Lebih lengkap untuk cerita hari spesial Anda.", features: ["Semua fitur Basic", "Galeri foto", "Peta lokasi dan countdown"], priceLabel: "Rp149.000", popular: true },
+        { id: "wedding-pro", name: "Pro", tagline: "Undangan personal dengan detail yang lebih lengkap.", features: ["Semua fitur Standard", "Ucapan tamu", "Musik latar dan domain 1 tahun"], priceLabel: "Rp249.000" },
+      ],
+    },
+    {
+      id: "broadcast",
+      title: "Jasa Broadcast WhatsApp",
+      lead: "Kami bantu siapkan dan kirim pesan ke kontak yang Anda sediakan.",
+      plans: [
+        { id: "broadcast-basic", name: "Basic", tagline: "Untuk hingga 100 kontak.", features: ["Hingga 100 kontak", "1 template pesan", "Laporan pengiriman"], priceLabel: "Rp75.000" },
+        { id: "broadcast-standard", name: "Standard", tagline: "Untuk hingga 500 kontak.", features: ["Hingga 500 kontak", "Hingga 2 template pesan", "Laporan pengiriman"], priceLabel: "Rp150.000", popular: true },
+        { id: "broadcast-pro", name: "Pro", tagline: "Untuk hingga 1.000 kontak.", features: ["Hingga 1.000 kontak", "Hingga 3 template pesan", "Laporan pengiriman"], priceLabel: "Rp275.000" },
+      ],
+    },
+    {
+      id: "portfolio",
+      title: "Desain Web Portofolio Kustom",
+      lead: "Tampilan portofolio personal yang rapi dan siap dibagikan.",
+      plans: [
+        { id: "portfolio-basic", name: "Basic", tagline: "Satu halaman portofolio yang sederhana.", features: ["1 halaman", "Desain responsif", "Tautan kontak"], priceLabel: "Rp149.000" },
+        { id: "portfolio-standard", name: "Standard", tagline: "Ruang lebih untuk karya dan pengalaman.", features: ["Hingga 3 halaman", "Galeri karya", "Form kontak"], priceLabel: "Rp199.000", popular: true },
+        { id: "portfolio-pro", name: "Pro", tagline: "Portofolio yang lebih lengkap dan personal.", features: ["Hingga 5 halaman", "Galeri dan animasi ringan", "Domain 1 tahun"], priceLabel: "Rp299.000" },
+      ],
+    },
+  ],
+  en: [
+    {
+      id: "wedding", title: "Digital Wedding Invitations", lead: "Online invitations that are easy to share on WhatsApp.",
+      plans: [
+        { id: "wedding-basic", name: "Basic", tagline: "A share-ready one-page invitation.", features: ["Choice of template", "Event details", "RSVP button"], priceLabel: "Rp99,000" },
+        { id: "wedding-standard", name: "Standard", tagline: "More space for your special-day story.", features: ["Everything in Basic", "Photo gallery", "Location map and countdown"], priceLabel: "Rp149,000", popular: true },
+        { id: "wedding-pro", name: "Pro", tagline: "A personal invitation with fuller details.", features: ["Everything in Standard", "Guest messages", "Background music and 1-year domain"], priceLabel: "Rp249,000" },
+      ],
+    },
+    {
+      id: "broadcast", title: "WhatsApp Broadcast Service", lead: "We prepare and send your message to the contacts you provide.",
+      plans: [
+        { id: "broadcast-basic", name: "Basic", tagline: "For up to 100 contacts.", features: ["Up to 100 contacts", "1 message template", "Delivery report"], priceLabel: "Rp75,000" },
+        { id: "broadcast-standard", name: "Standard", tagline: "For up to 500 contacts.", features: ["Up to 500 contacts", "Up to 2 message templates", "Delivery report"], priceLabel: "Rp150,000", popular: true },
+        { id: "broadcast-pro", name: "Pro", tagline: "For up to 1,000 contacts.", features: ["Up to 1,000 contacts", "Up to 3 message templates", "Delivery report"], priceLabel: "Rp275,000" },
+      ],
+    },
+    {
+      id: "portfolio", title: "Custom Portfolio Website Design", lead: "A polished personal portfolio ready to share.",
+      plans: [
+        { id: "portfolio-basic", name: "Basic", tagline: "A simple one-page portfolio.", features: ["1 page", "Responsive design", "Contact links"], priceLabel: "Rp149,000" },
+        { id: "portfolio-standard", name: "Standard", tagline: "More room for work and experience.", features: ["Up to 3 pages", "Work gallery", "Contact form"], priceLabel: "Rp199,000", popular: true },
+        { id: "portfolio-pro", name: "Pro", tagline: "A fuller, more personal portfolio.", features: ["Up to 5 pages", "Gallery and subtle animation", "1-year domain"], priceLabel: "Rp299,000" },
+      ],
+    },
+  ],
+} as const;
+
 const POLICY_ICONS: Record<Policy["icon"], LucideIcon> = {
   wallet: Wallet,
   shield: ShieldCheck,
@@ -91,6 +152,7 @@ export default async function PricingPage({ params }: { params: Promise<{ lang: 
             tabs: {
               website: ui.pricing.websiteTab,
               webapp: ui.pricing.webappTab,
+              catalog: lang === "id" ? "Katalog layanan" : "Service catalogue",
               addOns: ui.pricing.addOnsTab,
               maintenance: ui.pricing.maintenanceTitle,
             },
@@ -109,6 +171,7 @@ export default async function PricingPage({ params }: { params: Promise<{ lang: 
           }}
           websitePlans={content.websitePlans}
           webappPlans={content.webappPlans}
+          serviceCatalog={SERVICE_CATALOG[lang]}
           addOns={content.addOns}
           maintenance={content.maintenance}
           intros={{ plan: ui.wa.planIntro, addOn: ui.wa.addOnIntro, maintenance: ui.wa.maintenanceIntro }}
