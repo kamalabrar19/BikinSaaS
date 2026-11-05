@@ -2,6 +2,12 @@ import type { MetadataRoute } from "next";
 import { getContent } from "@/content";
 import { locales, type Locale } from "@/lib/locale";
 
+/* Without this, `next build` prerenders the file once (nothing here reads a
+   request-specific API, so Next treats it as static by default) and a case
+   study the panel adds later never appears until the next deploy — the
+   same reason /[lang]/portfolio/[slug] forces dynamic. */
+export const dynamic = "force-dynamic";
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 /** Every static route under `/[lang]`, besides the home page itself. */
