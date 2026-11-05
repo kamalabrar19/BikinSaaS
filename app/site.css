@@ -2972,9 +2972,7 @@ a.channel:hover {
 .team-card {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
   height: 100%;
-  padding: 0.7rem 0.7rem 1.4rem;
   border-radius: var(--radius-lg);
   background: var(--surface);
   transition: transform 420ms var(--ease), box-shadow 420ms var(--ease);
@@ -2982,6 +2980,71 @@ a.channel:hover {
 .team-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-lift);
+}
+/* The flip mechanism: a perspective box around an inner element that rotates
+   180°. Both faces sit in the same grid cell (`grid-template-areas`) so the
+   card's height is whichever face is taller, front or back. */
+.team-flip {
+  position: relative;
+  flex: 1;
+  perspective: 1800px;
+}
+.team-flip-inner {
+  display: grid;
+  grid-template-areas: "face";
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 650ms var(--ease);
+}
+.team-flip-inner:disabled {
+  cursor: default;
+}
+.team-flip[data-flipped="true"] .team-flip-inner {
+  transform: rotateY(180deg);
+}
+.team-face {
+  grid-area: face;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: 0.7rem 0.7rem 1.4rem;
+  backface-visibility: hidden;
+}
+.team-face-back {
+  transform: rotateY(180deg);
+  justify-content: center;
+}
+.team-flip-hint {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--action);
+  color: var(--action-on);
+  transition: transform 300ms var(--ease);
+}
+.team-flip-inner:hover .team-flip-hint {
+  transform: scale(1.1);
+}
+.team-flip-hint-back {
+  position: static;
+  align-self: center;
+  margin-top: 0.3rem;
+  background: var(--surface-2);
+  color: var(--ink-quiet);
 }
 .team-photo {
   position: relative;
@@ -3055,6 +3118,9 @@ a.channel:hover {
   letter-spacing: 0.08em;
   backdrop-filter: blur(6px);
 }
+/* Anchored to the flip box, not the photo: the links only matter once a
+   visitor has flipped to the detail side, so they live there instead of
+   cluttering the clean front face the card now shows by default. */
 .team-links {
   position: absolute;
   right: 0.8rem;
@@ -3065,11 +3131,12 @@ a.channel:hover {
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 320ms var(--ease), transform 320ms var(--ease);
+  pointer-events: none;
 }
-.team-card:hover .team-links,
-.team-card:focus-within .team-links {
+.team-flip[data-flipped="true"] .team-links {
   opacity: 1;
   transform: none;
+  pointer-events: auto;
 }
 .team-links a {
   display: grid;
@@ -3099,12 +3166,15 @@ a.channel:hover {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.team-body h3 {
+.team-name {
   margin: 0;
   font-size: clamp(1.35rem, 2vw, 1.7rem);
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
+}
+.team-body-back .team-name {
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
 }
 .team-bio {
   margin: 0;
@@ -3151,15 +3221,9 @@ a.channel:hover {
     aspect-ratio: 5 / 4;
   }
 }
-/* Touch screens have no hover, so the links are simply always there. */
-@media (hover: none) {
-  .team-links {
-    opacity: 1;
-    transform: none;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .team-card,
+  .team-flip-inner,
   .team-photo img,
   .team-initial {
     transition: none;
