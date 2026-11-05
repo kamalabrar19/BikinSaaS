@@ -3020,31 +3020,29 @@ a.channel:hover {
 }
 .team-face-back {
   transform: rotateY(180deg);
-  justify-content: center;
 }
-.team-flip-hint {
-  position: absolute;
-  right: 0.85rem;
-  bottom: 0.85rem;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--action);
-  color: var(--action-on);
-  transition: transform 300ms var(--ease);
-}
-.team-flip-inner:hover .team-flip-hint {
-  transform: scale(1.1);
-}
-.team-flip-hint-back {
-  position: static;
-  align-self: center;
-  margin-top: 0.3rem;
-  background: var(--surface-2);
+/* Pinned to the bottom of whichever face it's in (`margin-top: auto` eats
+   the leftover space), so the front face never ends in a dead gap and both
+   faces read as one consistent card height instead of two different ones. */
+.team-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: auto;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--line);
   color: var(--ink-quiet);
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: color 200ms var(--ease), gap 200ms var(--ease);
+}
+.team-flip-inner:hover .team-hint,
+.team-flip-inner:focus-visible .team-hint {
+  gap: 0.55rem;
+  color: var(--action);
+}
+.team-face-back .team-hint {
+  justify-content: center;
 }
 .team-photo {
   position: relative;

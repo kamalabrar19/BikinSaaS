@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Github, Instagram, Linkedin, Plus, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Github, Instagram, Linkedin } from "lucide-react";
 
 import type { TeamMember } from "@/content";
 import { Reveal } from "./Motion";
@@ -75,16 +75,17 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
                   <span className="team-index" aria-hidden="true">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  {hasDetail ? (
-                    <span className="team-flip-hint" aria-hidden="true">
-                      <Plus size={16} />
-                    </span>
-                  ) : null}
                 </div>
                 <div className="team-body">
                   <p className="team-role">{member.role}</p>
                   <p className="team-name">{member.name}</p>
                 </div>
+                {hasDetail ? (
+                  <span className="team-hint" aria-hidden="true">
+                    Klik untuk lihat bio
+                    <ArrowRight size={14} />
+                  </span>
+                ) : null}
               </div>
 
               <div className="team-face team-face-back">
@@ -100,8 +101,9 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
                     </ul>
                   ) : null}
                 </div>
-                <span className="team-flip-hint team-flip-hint-back" aria-hidden="true">
-                  <X size={16} />
+                <span className="team-hint" aria-hidden="true">
+                  <ArrowLeft size={14} />
+                  Kembali
                 </span>
               </div>
             </button>
