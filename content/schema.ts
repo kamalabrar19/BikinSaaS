@@ -248,7 +248,19 @@ export interface UiCopy {
     labelEstimate: string;
   };
 
-  meta: { title: string; description: string; ogImageAlt: string };
+  meta: {
+    title: string;
+    description: string;
+    ogImageAlt: string;
+    /** Dedicated title/description per inner page, kept apart from its
+        visible H1/lead so a meta rewrite never changes what a visitor reads. */
+    pages: {
+      pricing: { title: string; description: string };
+      portfolio: { title: string; description: string };
+      team: { title: string; description: string };
+      contact: { title: string; description: string };
+    };
+  };
 }
 
 /* --------------------------------------------------------------- whole --- */

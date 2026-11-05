@@ -19,12 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const { ui } = getContent(lang);
-  return pageMetadata(
-    lang,
-    "/portfolio",
-    `${ui.sections.work.title} · BikinSaaS`,
-    ui.sections.work.lead ?? ui.meta.description,
-  );
+  return pageMetadata(lang, "/portfolio", ui.meta.pages.portfolio.title, ui.meta.pages.portfolio.description);
 }
 
 export default async function PortfolioPage({ params }: { params: Promise<{ lang: string }> }) {

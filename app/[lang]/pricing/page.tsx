@@ -90,12 +90,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const { ui } = getContent(lang);
-  return pageMetadata(
-    lang,
-    "/pricing",
-    `${ui.sections.pricing.title} · BikinSaaS`,
-    ui.sections.pricing.lead ?? ui.meta.description,
-  );
+  return pageMetadata(lang, "/pricing", ui.meta.pages.pricing.title, ui.meta.pages.pricing.description);
 }
 
 export default async function PricingPage({ params }: { params: Promise<{ lang: string }> }) {

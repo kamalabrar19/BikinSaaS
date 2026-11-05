@@ -225,10 +225,32 @@ export const copyId = {
     },
 
     meta: {
-      title: "BikinSaaS. Website bisnis dengan harga tertulis",
+      title: "Jasa Pembuatan Website & Sistem Bisnis Custom | BikinSaaS",
       description:
-        "Website dan sistem digital untuk UMKM dan bisnis lokal. Sembilan paket dengan harga tertulis mulai Rp399.000, dijelaskan tanpa istilah teknis.",
+        "BikinSaaS, jasa pembuatan website, aplikasi web, dan sistem bisnis custom (CRM, ERP, SaaS) untuk UMKM dan bisnis lokal. Sembilan paket harga tertulis mulai Rp399.000.",
       ogImageAlt: "BikinSaaS, website dan sistem digital dengan harga yang tertulis terbuka",
+      pages: {
+        pricing: {
+          title: "Harga Jasa Pembuatan Website & Sistem Bisnis | BikinSaaS",
+          description:
+            "Daftar harga jasa pembuatan website, aplikasi web, dan sistem bisnis custom BikinSaaS — sembilan paket dengan harga tertulis, mulai Rp399.000.",
+        },
+        portfolio: {
+          title: "Portofolio Jasa Pembuatan Website & Sistem Bisnis | BikinSaaS",
+          description:
+            "Portofolio proyek website, aplikasi web, dan sistem bisnis custom yang dikerjakan BikinSaaS untuk UMKM dan bisnis lokal.",
+        },
+        team: {
+          title: "Tim BikinSaaS — Jasa Pembuatan Website & Sistem Bisnis",
+          description:
+            "Kenalan dengan tim di balik jasa pembuatan website, aplikasi web, dan sistem bisnis custom BikinSaaS.",
+        },
+        contact: {
+          title: "Hubungi Kami — Jasa Pembuatan Website & Sistem Bisnis | BikinSaaS",
+          description:
+            "Konsultasikan kebutuhan jasa pembuatan website, aplikasi web, atau sistem bisnis custom Anda dengan tim BikinSaaS lewat WhatsApp atau form kontak.",
+        },
+      },
     },
   },
 

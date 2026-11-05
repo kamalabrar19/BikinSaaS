@@ -19,8 +19,8 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  const copy = getSiteCopy(lang);
-  return pageMetadata(lang, "/team", `${copy.nav.team} · BikinSaaS`, copy.team.lead);
+  const { ui } = getContent(lang);
+  return pageMetadata(lang, "/team", ui.meta.pages.team.title, ui.meta.pages.team.description);
 }
 
 export default async function TeamPage({ params }: { params: Promise<{ lang: string }> }) {

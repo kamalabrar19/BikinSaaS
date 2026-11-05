@@ -22,12 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const { ui } = getContent(lang);
-  return pageMetadata(
-    lang,
-    "/contact",
-    `${ui.sections.contact.title} · BikinSaaS`,
-    ui.sections.contact.lead ?? ui.meta.description,
-  );
+  return pageMetadata(lang, "/contact", ui.meta.pages.contact.title, ui.meta.pages.contact.description);
 }
 
 export default async function ContactPage({ params }: { params: Promise<{ lang: string }> }) {

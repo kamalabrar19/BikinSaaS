@@ -1,21 +1,43 @@
 import type { MetadataRoute } from "next";
-import { locales } from "@/lib/locale";
+import { getContent } from "@/content";
+import { locales, type Locale } from "@/lib/locale";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
+/** Every static route under `/[lang]`, besides the home page itself. */
+const STATIC_PATHS = ["/pricing", "/portfolio", "/team", "/contact"] as const;
+
+function entry(
+  locale: Locale,
+  path: string,
+  priority: number,
+): MetadataRoute.Sitemap[number] {
+  return {
+    url: `${siteUrl}/${locale}${path}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority,
+    alternates: {
+      languages: Object.fromEntries(locales.map((other) => [other, `${siteUrl}/${other}${path}`])),
+    },
+  };
+}
+
 /**
- * Both locales are listed, each pointing at the other through `alternates`,
+ * Every locale is listed, each pointing at the other through `alternates`,
  * so a search engine reads them as one page in two languages rather than as
- * duplicate content.
+ * duplicate content. Case-study slugs come from `getContent`, the same
+ * admin-editable list the `/portfolio` pages render, so a project the panel
+ * just added (or removed) is reflected here too — there is no build-time
+ * list to go stale.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  return locales.map((locale) => ({
-    url: `${siteUrl}/${locale}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: locale === "id" ? 1 : 0.8,
-    alternates: {
-      languages: Object.fromEntries(locales.map((other) => [other, `${siteUrl}/${other}`])),
-    },
-  }));
+  return locales.flatMap((locale) => {
+    const { work } = getContent(locale);
+    return [
+      entry(locale, "", locale === "id" ? 1 : 0.8),
+      ...STATIC_PATHS.map((path) => entry(locale, path, 0.7)),
+      ...work.map((item) => entry(locale, `/portfolio/${item.id}`, 0.6)),
+    ];
+  });
 }

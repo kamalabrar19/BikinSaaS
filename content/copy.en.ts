@@ -232,10 +232,31 @@ export const copyEn = {
     },
 
     meta: {
-      title: "BikinSaaS. Business websites with the prices published",
+      title: "Website & Custom Business System Development | BikinSaaS",
       description:
-        "Websites and digital systems for small and local businesses. Nine packages with published prices from Rp399,000, explained without the jargon.",
+        "BikinSaaS builds websites, web apps, and custom business systems (CRM, ERP, SaaS) for small and local businesses. Nine packages with published prices from Rp399,000.",
       ogImageAlt: "BikinSaaS, websites and digital systems with the prices published openly",
+      pages: {
+        pricing: {
+          title: "Website & Business System Development Pricing | BikinSaaS",
+          description:
+            "See BikinSaaS pricing for website, web app, and custom business system development — nine packages with published prices, starting at Rp399,000.",
+        },
+        portfolio: {
+          title: "Portfolio — Website & Business System Development | BikinSaaS",
+          description:
+            "A portfolio of website, web app, and custom business system projects built by BikinSaaS for small and local businesses.",
+        },
+        team: {
+          title: "The BikinSaaS Team — Website & Business System Development",
+          description: "Meet the team behind BikinSaaS's website, web app, and custom business system development.",
+        },
+        contact: {
+          title: "Contact Us — Website & Business System Development | BikinSaaS",
+          description:
+            "Talk to the BikinSaaS team about your website, web app, or custom business system needs, over WhatsApp or the contact form.",
+        },
+      },
     },
   },
 

@@ -14,9 +14,11 @@ import { SiteBackdrop } from "@/components/site/SiteBackdrop";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { Tracker } from "@/components/site/Tracker";
+import { instagramProfile } from "@/lib/contact-target";
 import { consultTarget, contactSettings } from "@/lib/whatsapp";
 import { htmlLang, isLocale, locales, ogLocale, otherLocale, type Locale } from "@/lib/locale";
 import { getSiteCopy } from "@/lib/site-content";
+import { organizationJsonLd } from "@/lib/structured-data";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "../globals.css";
 
@@ -119,6 +121,12 @@ export default async function RootLayout({
   /* Resolved here so the client parts that build a link (the order dialog, the
      contact form) use the same number the server would. */
   const contact = contactSettings();
+  const organizationLd = organizationJsonLd({
+    locale,
+    description: ui.meta.description,
+    whatsapp: contact.whatsapp,
+    instagramUrl: instagramProfile().url,
+  });
 
   return (
     <html
@@ -129,6 +137,10 @@ export default async function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+        />
       </head>
       <body>
         <a href="#main" className="skip-link">

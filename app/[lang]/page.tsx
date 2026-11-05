@@ -20,6 +20,7 @@ import { consultTarget } from "@/lib/whatsapp";
 import { targetProps } from "@/lib/contact";
 import { isLocale } from "@/lib/locale";
 import { getSiteCopy } from "@/lib/site-content";
+import { servicesJsonLd } from "@/lib/structured-data";
 
 /** The three plans shown on the home page: cheapest, most chosen website, most chosen app. */
 const TEASER_PLANS = ["lp-starter", "cp-plus", "biz-app"] as const;
@@ -50,6 +51,10 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd(lang, content.services)) }}
+      />
       {/* 01 — Hero */}
       <Panel kicker="/ 01 — INTRO" tone="hero" className="hero" labelledBy="hero-title">
         <div className="hero-grid">
